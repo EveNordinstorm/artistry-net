@@ -7,7 +7,6 @@ import RightBar from './components/RightBar.vue';
 <template>
   <NavBar />
     <LeftBar />
-  <RightBar />
 </template> 
 
 <style scoped>

@@ -10,33 +10,17 @@
       <div class="flex flex-wrap justify-between items-center">
           <div class="flex justify-start items-center">
               <button id="toggleSidebar" aria-expanded="true" aria-controls="sidebar" class="hidden p-2 mr-3 text-gray-600 rounded cursor-pointer lg:inline hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-700">
-                <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 12"> <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h14M1 6h14M1 11h7"/> </svg>
+                <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 16 12"> <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h14M1 6h14M1 11h7"/> </svg>
               </button>
-              <button aria-expanded="true" aria-controls="sidebar" class="p-2 mr-2 text-gray-600 rounded-lg cursor-pointer lg:hidden hover:text-gray-900 hover:bg-gray-100 focus:bg-gray-100 dark:focus:bg-gray-700 focus:ring-2 focus:ring-gray-100 dark:focus:ring-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                <svg class="w-[18px] h-[18px]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/></svg>
+              <button aria-expanded="true" aria-controls="sidebar" class="p-2 mr-2 text-gray-600 rounded-lg cursor-pointer lg:hidden hover:text-gray-900 hover:bg-gray-900 focus:bg-gray-300 dark:focus:bg-gray-700 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600">
+                <svg class="w-[18px] h-[18px] text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 17 14"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/></svg>
                 <span class="sr-only">Toggle sidebar</span>
               </button>
               <a href="/" class="flex mr-4">
             <img src="../assets/Artistry-Net-logo-05.png" class="mr-3 h-14" alt="Artistry Net Logo" />
           </a>
-              <form action="#" method="GET" class="hidden lg:block lg:pl-2">
-                <label for="topbar-search" class="sr-only">Search</label>
-                <div class="relative mt-1 lg:w-96">
-                  <div class="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
-                      <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20"> <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/> </svg>
-                  </div>
-                  <input type="text" name="email" id="topbar-search" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-9 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Search">
-                </div>
-              </form>
             </div>
           <div class="flex items-center lg:order-2">
-              <button id="toggleSidebarMobileSearch" type="button" class="p-2 text-gray-500 rounded-lg lg:hidden hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                  <span class="sr-only">Search</span>
-                  <!-- Search icon -->
-                    <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
-                    </svg>
-              </button>
               <button type="button" data-dropdown-toggle="darkmode-dropdown" class="p-2 mr-1 text-gray-500 rounded-lg hover:text-gray-900 hover:bg-gray-900 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-700 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600">
                   <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 250.25 249.15"><path class="cls-1" d="m0,111.85c.47-2.49,1.05-4.97,1.39-7.49,1.57-11.68,4.89-22.86,9.68-33.6,9.73-21.82,24.73-39.25,44.33-52.77C67.06,9.95,79.79,4.11,93.46.33c3.62-1,7.26.33,9.26,3.26,2.1,3.05,2.11,6.57-.38,9.74-5.92,7.53-10.84,15.61-14.16,24.62-5.93,16.05-7.76,32.53-4.86,49.44,3.92,22.87,14.77,41.87,32.5,56.76,13.96,11.73,30.16,18.73,48.3,20.97,25.71,3.18,48.82-3.3,69.4-18.98,1.49-1.13,2.94-2.35,4.56-3.26,3.12-1.75,6.35-1.63,9.18.55,2.78,2.14,3.53,5.09,2.65,8.52-8.66,33.89-27.57,60.28-57.46,78.65-16.7,10.26-34.88,16.3-54.35,18.03C71.87,254.51,15.91,209.49,2.97,149.5c-1.13-5.23-1.65-10.6-2.48-15.9-.07-.42-.32-.81-.49-1.21,0-6.84,0-13.69,0-20.53Z"/></svg>
               </button>
