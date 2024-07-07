@@ -12,11 +12,11 @@
       </svg>
    </button>
  
- <aside id="separator-sidebar" class="fixed pt-20 w-64 shadow-md transition-transform -translate-x-full sm:translate-x-0" aria-label="Sidebar">
+ <aside id="separator-sidebar" class="fixed w-64 shadow-md transition-transform -translate-x-full sm:translate-x-0" aria-label="Sidebar">
     <div class="h-full px-3 py-4 overflow-y-auto bg-white dark:bg-gray-800">
        <ul class="space-y-2 font-medium">
          <li>
-             <a href="#" class="flex items-center p-2 text-blue-900 rounded-lg dark:text-white hover:bg-blue-100 dark:hover:bg-gray-700 group">
+             <a href="/home" class="flex items-center p-2 text-blue-900 rounded-lg dark:text-white hover:bg-blue-100 dark:hover:bg-gray-700 group">
                 <svg class="flex-shrink-0 w-5 h-5 text-blue-900 transition duration-75 dark:text-gray-400 group-hover:text-blue-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 408 385">
                   <path d="M401.77,194.88c-2.3,6.88-5.67,12.95-12.61,16.2c-8.46,3.96-16.49,3.13-23.97-2.44c-1.64-1.22-3.1-2.71-4.55-4.17
                      c-48.35-48.34-96.7-96.68-145.05-145.03c-8.22-8.22-15.02-8.24-23.2-0.06c-48.62,48.61-97.24,97.23-145.87,145.84
@@ -36,7 +36,7 @@
              </a>
           </li>
          <li>
-             <a href="#" class="flex items-center p-2 text-blue-900 rounded-lg dark:text-white hover:bg-blue-100 dark:hover:bg-gray-700 group">
+             <a href="/explore" class="flex items-center p-2 text-blue-900 rounded-lg dark:text-white hover:bg-blue-100 dark:hover:bg-gray-700 group">
                 <svg class="flex-shrink-0 w-5 h-5 text-blue-900 transition duration-75 dark:text-gray-400 group-hover:text-blue-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 412 412">
                   <path d="M405.56,194.39c0,7.73,0,15.46,0,23.19c-0.32,2.79-0.66,5.57-0.97,8.36c-4.64,41.87-20.46,78.93-48.4,110.51
                      c-30.63,34.63-68.78,56.2-114.38,64.31c-7.44,1.32-14.98,2.07-22.48,3.08c-7.73,0-15.45,0-23.18,0c-1.25-0.23-2.5-0.51-3.75-0.69
@@ -54,7 +54,7 @@
              </a>
           </li>
           <li>
-             <a href="#" class="flex items-center p-2 text-blue-900 rounded-lg dark:text-white hover:bg-blue-100 dark:hover:bg-gray-700 group">
+             <a href="/market" class="flex items-center p-2 text-blue-900 rounded-lg dark:text-white hover:bg-blue-100 dark:hover:bg-gray-700 group">
                 <svg class="flex-shrink-0 w-5 h-5 text-blue-900 transition duration-75 dark:text-gray-400 group-hover:text-blue-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 311.64 335.44">
                   <path class="cls-1" d="m203.27,155.49c-23.47,32.18-71.03,32.04-95.42.75-6.85,8.53-15.17,15.05-25.36,19.11C46.34,189.76,5.6,165.66.58,127.03c-1.76-13.54.73-26.54,4.02-39.52,4.98-19.66,9.9-39.34,14.82-59.02C23.82,10.87,37.57.02,55.74.02c66.76-.02,133.52-.03,200.28,0,17.42,0,31.36,10.54,35.67,27.36,6.15,23.98,12.37,47.97,17.81,72.12,4.8,21.32,1.92,41.46-12.77,58.71-24.66,28.98-67.52,28.57-91.77-.79-.54-.65-1.11-1.27-1.69-1.93Z"/>
                   <path class="cls-1" d="m203.63,335.41c0-19.88,0-39.33,0-58.78,0-15.59-9.53-25.07-25.21-25.07-15.47,0-30.95-.02-46.42,0-14.34.02-24.2,9.87-24.21,24.19-.02,19.71,0,39.42,0,59.42-.99.08-1.93.22-2.87.22-18.72.01-37.44.07-56.16,0-20.98-.08-36.75-15.71-36.8-36.58-.08-36.06-.02-72.12-.02-108.18v-2.23c.89.42,1.53.65,2.08,1.01,29.93,19.36,60.19,18.71,90.63,1.37,2.52-1.43,4-1.43,6.52.04,31.03,18.15,61.72,17.08,92.23-1.86,31.71,19.54,63.62,20.27,95.82-.4.09.88.25,1.79.25,2.7.01,35.81.07,71.62-.01,107.43-.05,20.98-15.71,36.62-36.67,36.71-19.58.08-39.15.02-59.15.02Z"/>
@@ -63,7 +63,7 @@
              </a>
           </li>
           <li>
-             <a href="#" class="flex items-center p-2 text-blue-900 rounded-lg dark:text-white hover:bg-blue-100 dark:hover:bg-gray-700 group">
+             <a href="/auction" class="flex items-center p-2 text-blue-900 rounded-lg dark:text-white hover:bg-blue-100 dark:hover:bg-gray-700 group">
                 <svg class="flex-shrink-0 w-5 h-5 text-blue-900 transition duration-75 dark:text-gray-400 group-hover:text-blue-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 427 426">
                   <path class="st0" d="M9,373.54c0.45-0.59,1.16-1.11,1.31-1.77c1.8-7.83,6.48-13.83,12.01-19.35
                      c43.97-43.93,87.91-87.88,131.86-131.84c0.94-0.94,1.81-1.95,2.44-2.63c17.36,17.37,34.53,34.54,52.05,52.07
@@ -83,7 +83,7 @@
              </a>
           </li>
           <li>
-             <a href="#" class="flex items-center p-2 text-blue-900 rounded-lg dark:text-white hover:bg-blue-100 dark:hover:bg-gray-700 group">
+             <a href="/events" class="flex items-center p-2 text-blue-900 rounded-lg dark:text-white hover:bg-blue-100 dark:hover:bg-gray-700 group">
                 <svg class="flex-shrink-0 w-5 h-5 text-blue-900 transition duration-75 dark:text-gray-400 group-hover:text-blue-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 98.34 99.71">
                   <path class="cls-1" d="m24.2,0h2.54c2.97.94,4.13,3.03,3.93,6.06-.1,1.48-.02,2.97-.02,4.47h36.9c0-1.81-.01-3.55,0-5.3.02-2.42,1.07-4.15,3.4-5.01.1-.04.18-.15.27-.22.91,0,1.82,0,2.73,0,.4.15.82.26,1.21.46,1.98,1,2.83,2.66,2.82,4.82,0,1.74,0,3.48,0,5.31.35,0,.61,0,.86,0,3.09,0,6.18-.03,9.27,0,5.97.06,10.24,4.36,10.24,10.29,0,22.85,0,45.7,0,68.55,0,5.93-4.33,10.27-10.24,10.28-25.95,0-51.9,0-77.85,0-.9,0-1.83-.09-2.7-.31C3.02,98.26,0,94.32,0,89.53,0,66.61,0,43.7,0,20.79c0-.29,0-.58.02-.88.25-4.75,4.21-8.87,8.96-9.23,1.62-.12,3.25-.08,4.87-.09,2.11-.01,4.21,0,6.42,0,0-.75,0-1.43,0-2.1,0-1.23-.02-2.47.01-3.7C20.35,2.2,21.89.78,24.2,0Zm62.89,34.64H11.29v53.83h75.79v-53.83Z"/>
                   <path class="cls-1" d="m49.42,40.68c1.26.04,2.23.83,2.87,2.12,1.16,2.35,2.36,4.68,3.5,7.04.31.64.65.96,1.42,1.05,2.58.31,5.14.74,7.71,1.11,1.46.21,2.62.85,3.1,2.3.48,1.43,0,2.66-1.07,3.69-1.91,1.85-3.79,3.74-5.72,5.58-.49.46-.58.88-.46,1.53.49,2.64.9,5.3,1.36,7.95.24,1.37-.14,2.53-1.23,3.37-1.13.87-2.4.92-3.67.27-2.39-1.23-4.79-2.45-7.15-3.74-.69-.38-1.2-.34-1.86.02-2.25,1.22-4.54,2.36-6.8,3.56-1.31.7-2.61.86-3.85-.03-1.27-.9-1.6-2.18-1.31-3.69.48-2.61.87-5.24,1.35-7.85.11-.59-.04-.95-.46-1.35-1.95-1.86-3.86-3.76-5.79-5.65-1.04-1.01-1.49-2.22-1.05-3.62.45-1.41,1.55-2.1,2.97-2.33.93-.15,1.86-.28,2.79-.41,1.83-.27,3.67-.51,5.49-.82.3-.05.66-.37.81-.66,1.24-2.42,2.44-4.86,3.66-7.28.76-1.5,1.77-2.18,3.4-2.17Z"/>
@@ -93,7 +93,7 @@
              </a>
           </li>
           <li>
-             <a href="#" class="flex items-center p-2 text-blue-900 rounded-lg dark:text-white hover:bg-blue-100 dark:hover:bg-gray-700 group">
+             <a href="/saved" class="flex items-center p-2 text-blue-900 rounded-lg dark:text-white hover:bg-blue-100 dark:hover:bg-gray-700 group">
                 <svg class="flex-shrink-0 w-5 h-5 text-blue-900 transition duration-75 dark:text-gray-400 group-hover:text-blue-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 170 172">
                   <path d="M36.98,6.7c32.11,0,64.22,0,96.33,0c0.5,0.17,1,0.35,1.51,0.49c6.1,1.68,9.98,6.95,9.98,13.63c0.01,44.96,0,89.93,0,134.89
                      c0,0.57,0.07,1.15-0.05,1.7c-0.29,1.35-0.48,2.77-1.05,4c-1.42,3.1-4.6,4.6-7.83,3.55c-1.71-0.56-3.4-1.53-4.78-2.7
@@ -107,7 +107,7 @@
        </ul>
        <ul class="pt-4 mt-4 space-y-2 font-medium border-t border-gray-200 dark:border-gray-700">
          <li>
-             <a href="#" class="flex items-center p-2 text-blue-900 rounded-lg dark:text-white hover:bg-blue-100 dark:hover:bg-gray-700 group">
+             <a href="/groups" class="flex items-center p-2 text-blue-900 rounded-lg dark:text-white hover:bg-blue-100 dark:hover:bg-gray-700 group">
                 <svg class="flex-shrink-0 w-5 h-5 text-blue-900 transition duration-75 dark:text-gray-400 group-hover:text-blue-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 408.95 346.75">
                   <path class="cls-1" d="m0,237.99c.99-3.36,1.88-6.75,2.99-10.06,8.26-24.57,29.31-40,56.06-40.8,10.33-.31,20.67-.05,31.45-.05-.9,3.18-2.03,5.9-2.42,8.73-1.01,7.36-2.35,14.75-2.41,22.14-.25,33.79-.17,67.58-.07,101.37.03,8.99.53,17.99.83,27.32-4.99,0-10.81,0-16.62,0-10.38,0-20.77-.31-31.13.07-17.66.66-32.95-9.52-37.6-26.96-.18-.69-.71-1.29-1.08-1.93,0-26.61,0-53.23,0-79.84Z"/>
                   <path class="cls-2" d="m204,346.65c-26.88,0-53.76,0-80.64,0-9.79,0-14.04-4.27-14.05-14.08,0-38.72-.08-77.44.02-116.16.08-28.98,18.18-51.85,46.31-58.51,4.22-1,8.68-1.35,13.03-1.37,23.82-.13,47.64-.2,71.45-.03,28.64.21,51.57,18.6,57.96,46.48,1.03,4.48,1.33,9.22,1.34,13.84.1,38.72.07,77.44.05,116.16,0,9.27-4.39,13.66-13.65,13.67-27.28.02-54.56,0-81.83,0Z"/>
@@ -120,7 +120,7 @@
              </a>
           </li>
           <li>
-             <a href="#" class="flex items-center p-2 text-blue-900 rounded-lg dark:text-white hover:bg-blue-100 dark:hover:bg-gray-700 group">
+             <a href="/friends" class="flex items-center p-2 text-blue-900 rounded-lg dark:text-white hover:bg-blue-100 dark:hover:bg-gray-700 group">
                 <svg class="w-5 h-5 text-blue-900 transition duration-75 dark:text-gray-400 group-hover:text-blue-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 71.06 50.78">
                   <path class="cls-1" d="m21.97,50.78c-6.57,0-13.15,0-19.72,0-1.68,0-2.25-.56-2.25-2.21,0-3.14,0-6.28,0-9.42.01-6.16,4.07-10.94,10.14-11.94.64-.11,1.31-.11,1.97-.11,6.6,0,13.2,0,19.79,0,6.91,0,12.08,5.17,12.09,12.09,0,3.12,0,6.23,0,9.35,0,1.65-.59,2.25-2.23,2.25-6.6,0-13.2,0-19.79,0Z"/>
                   <path class="cls-1" d="m33.82,11.9c-.04,6.56-5.31,11.8-11.86,11.78-6.56-.02-11.87-5.37-11.82-11.92C10.19,5.25,15.55-.04,22.06,0c6.53.04,11.8,5.38,11.76,11.9Z"/>
@@ -131,7 +131,7 @@
              </a>
           </li>
           <li>
-             <a href="#" class="flex items-center p-2 text-blue-900 rounded-lg dark:text-white hover:bg-blue-100 dark:hover:bg-gray-700 group">
+             <a href="/messages" class="flex items-center p-2 text-blue-900 rounded-lg dark:text-white hover:bg-blue-100 dark:hover:bg-gray-700 group">
                 <svg class="flex-shrink-0 w-5 h-5 text-blue-900 transition duration-75 dark:text-gray-400 group-hover:text-blue-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                    <path d="m17.418 3.623-.018-.008a6.713 6.713 0 0 0-2.4-.569V2h1a1 1 0 1 0 0-2h-2a1 1 0 0 0-1 1v2H9.89A6.977 6.977 0 0 1 12 8v5h-2V8A5 5 0 1 0 0 8v6a1 1 0 0 0 1 1h8v4a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-4h6a1 1 0 0 0 1-1V8a5 5 0 0 0-2.582-4.377ZM6 12H4a1 1 0 0 1 0-2h2a1 1 0 0 1 0 2Z"/>
                 </svg>

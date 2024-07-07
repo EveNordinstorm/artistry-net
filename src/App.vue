@@ -1,12 +1,12 @@
 <script setup>
 import NavBar from './components/NavBar.vue';
 import LeftBar from './components/LeftBar.vue';
-import RightBar from './components/RightBar.vue';
 </script>
 
 <template>
   <NavBar />
     <LeftBar />
+    <router-view></router-view>
 </template> 
 
 <style scoped>
