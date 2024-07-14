@@ -5,5 +5,5 @@ export default {
 </script>
 
 <template>
-  <h1>Events works!</h1>
+  <img class="pt-20" src="../assets/events.jpg" />
 </template>

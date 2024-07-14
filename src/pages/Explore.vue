@@ -13,7 +13,7 @@ export default {
 
 <template>
   
-  <h1 class="pt-20">EXPLORE BANNER GOES HERE</h1>
+  <img class="pt-20" src="../assets/explore.jpg" />
 
   <ProfileCard />
   <PortfolioCard />
