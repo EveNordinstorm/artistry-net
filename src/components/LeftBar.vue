@@ -1,22 +1,37 @@
 <script>
     export default {
-        name: "LeftBar"
-    }
+      props: {
+         open: {
+            type: Boolean,
+            default: false,
+         },
+      },
+      data() {
+         return {
+            isLeftbarOpen: this.open,
+         };
+      },
+      methods: {
+         toggleLeftbar() {
+            this.isLeftbarOpen = !this.isLeftbarOpen;
+         },
+      },
+   };
 </script>
 
 <template>
-   <button data-drawer-target="separator-sidebar" data-drawer-toggle="separator-sidebar" aria-controls="separator-sidebar" type="button" class="inline-flex items-center p-2 mt-2 ms-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
+   <button @click="toggleLeftbar" type="button" class="inline-flex items-center p-2 mt-2 ms-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
       <span class="sr-only">Open left bar</span>
       <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
          <path clip-rule="evenodd" fill-rule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"></path>
       </svg>
    </button>
  
- <aside id="separator-sidebar" class="fixed w-64 shadow-md transition-transform -translate-x-full sm:translate-x-0" aria-label="Sidebar">
+ <aside :class="{'-translate-x-full': !isLeftbarOpen, 'translate-x-0': isLeftbarOpen}" class="fixed pt-20 w-64 shadow-md transition-transform -translate-x-full sm:translate-x-0" aria-label="Leftbar">
     <div class="h-full px-3 py-4 overflow-y-auto bg-white dark:bg-gray-800">
        <ul class="space-y-2 font-medium">
          <li>
-             <a href="/home" class="flex items-center p-2 text-blue-900 rounded-lg dark:text-white hover:bg-blue-100 dark:hover:bg-gray-700 group">
+             <a href="/" class="flex items-center p-2 text-blue-900 rounded-lg dark:text-white hover:bg-blue-100 dark:hover:bg-gray-700 group">
                 <svg class="flex-shrink-0 w-5 h-5 text-blue-900 transition duration-75 dark:text-gray-400 group-hover:text-blue-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 408 385">
                   <path d="M401.77,194.88c-2.3,6.88-5.67,12.95-12.61,16.2c-8.46,3.96-16.49,3.13-23.97-2.44c-1.64-1.22-3.1-2.71-4.55-4.17
                      c-48.35-48.34-96.7-96.68-145.05-145.03c-8.22-8.22-15.02-8.24-23.2-0.06c-48.62,48.61-97.24,97.23-145.87,145.84

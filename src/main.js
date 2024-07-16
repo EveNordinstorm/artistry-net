@@ -16,7 +16,7 @@ import Messages from "./pages/Messages.vue";
 const router = createRouter({
   history: createWebHistory(),
   routes: [
-    { path: "/home", component: Home },
+    { path: "/", component: Home },
     { path: "/profile", component: Profile },
     { path: "/explore", component: Explore },
     { path: "/events", component: Events },
