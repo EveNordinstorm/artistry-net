@@ -5,7 +5,7 @@ export default {
 </script>
 
 <template>
-  <h1 class="pt-20">Messages</h1>
+  <h1 >Messages</h1>
 
   
 <div class="flex items-start gap-2.5">

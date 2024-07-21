@@ -12,9 +12,6 @@ export default {
 </script>
 
 <template>
-  <div class="container">
     <Publish />
     <Post />
-  </div>
-  
 </template>

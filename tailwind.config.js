@@ -7,9 +7,6 @@ export default {
   ],
   theme: {
     extend: {},
-    container: {
-      center: true,
-    },
   },
   plugins: [require("flowbite/plugin")],
 };

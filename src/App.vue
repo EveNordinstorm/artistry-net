@@ -13,7 +13,7 @@ const toggleLeftbar = () => {
 <template>
   <NavBar @toggle-leftbar="toggleLeftbar" />
     <LeftBar :open.sync="leftBarOpen" />
-    <div class="sm:ml-64">
+    <div class="sm:ml-64 p-8 pt-20">
       <router-view></router-view>
     </div>
     

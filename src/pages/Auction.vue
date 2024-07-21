@@ -5,5 +5,5 @@ export default {
 </script>
 
 <template>
-  <img class="pt-20" src="../assets/auction.jpg" />
+  <img src="../assets/auction.jpg" />
 </template>
