@@ -13,12 +13,44 @@ const toggleLeftbar = () => {
 <template>
   <NavBar @toggle-leftbar="toggleLeftbar" />
     <LeftBar :open.sync="leftBarOpen" />
-    <div class="sm:ml-64 p-8 pt-20">
+    <div class="content-container">
       <router-view></router-view>
     </div>
     
 </template> 
 
+
 <style scoped>
 
+/* MAIN CONTENT BREAKPOINTS */
+
+.content-container {
+    padding-top: 3rem;
+    margin-left: 2rem;
+    margin-right: 2rem;
+  }
+
+@media only screen and (min-width: 600px) {
+  .content-container {
+    padding-top: 6rem;
+    margin-left: 18rem;
+    margin-right: 0rem;
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  .content-container {
+    padding-top: 6rem;
+    margin-left: 18rem;
+    margin-right: 2rem;
+  }
+}
+
+@media only screen and (min-width: 992px) {
+  .content-container {
+    padding-top: 6rem;
+    margin-left: 18rem;
+    margin-right: 18rem;
+  }
+}
 </style>

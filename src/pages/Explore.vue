@@ -15,13 +15,13 @@ export default {
   
   <img src="../assets/explore.jpg" />
 
-  <h2 class="text-2xl pt-20 pb-5">Explore Profiles</h2>
+  <h2 class="text-2xl mb-3 mt-10">Explore Profiles</h2>
   <ProfileCard />
 
-  <h2 class="text-2xl pt-20 pb-5">Explore Portfolios</h2>
+  <h2 class="text-2xl mb-3 mt-10">Explore Portfolios</h2>
   <PortfolioCard />
 
-  <h2 class="text-2xl pt-20 pb-5">Explore Artwork</h2>
+  <h2 class="text-2xl mb-3 mt-10">Explore Artwork</h2>
 
   <div class="flex items-center justify-center py-4 md:py-8 flex-wrap pt-5">
     <button type="button" class="text-white bg-red-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-full text-base font-medium px-5 py-2.5 text-center me-3 mb-3 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:bg-gray-900 dark:focus:ring-blue-800">All categories</button>

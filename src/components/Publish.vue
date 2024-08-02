@@ -30,7 +30,7 @@ export default {
                         <li>Update your followers</li>
                     </ul>
                     </p>
-                    <button type="button" class="text-white bg-gradient-to-br from-red-400 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">Post Something!</button>
+                    <button type="button" class="text-white bg-gradient-to-br from-red-400 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-xl px-5 py-2.5 text-center me-2 mb-2">Post Something!</button>
                 </div>
                 <img class="w-96" src="../assets/post.jpg" />
             </div>
@@ -78,7 +78,7 @@ export default {
                     <span class="leading-tight">Book Launch</span>
                 </li>
             </ul>
-            <a href="#" class="text-xl pb-3 inline-flex items-center font-bold text-blue-600 hover:text-blue-900 dark:text-blue-500 dark:hover:text-blue-700 mt-5">
+            <a href="/events" class="text-xl pb-3 inline-flex items-center font-bold text-blue-600 hover:text-blue-900 dark:text-blue-500 dark:hover:text-blue-700 mt-5">
                 Create an Event
                 <svg class=" w-2.5 h-2.5 ms-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>

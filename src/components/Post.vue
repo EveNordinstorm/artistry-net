@@ -1,18 +1,25 @@
 <script>
     export default {
-        name: "Post"
+        name: "Post",
+        props: {
+            username: String,
+            profilePhoto: String,
+            postDateTime: String,
+            description: String,
+            imageUrl: String
+        }
     }
 </script>
 
 <template>
-    <div class="w-full bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 p-5">
+    <div class="w-[50px] bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 p-5">
         <div class="flex">
-            <img class="w-14 h-14 rounded-full" src="../assets/artistry-net-logo-11.jpg" alt="profile picture" />
-            <p class="pl-5 pt-2 text-3xl font-bold">Artistry Net</p>
+            <img class="w-14 h-14 rounded-full" :src="profilePhoto" alt="profile picture" />
+            <p class="pl-5 pt-2 text-3xl font-bold">{{ username }}</p>
         </div>
-        <p class="text-right font-bold">6 July 2024</p>
-        <p class="pt-3">We're glad you're enjoying the launch of our new social media platform for designers of all shapes and sizes! <br />Keep sharing the inspiration</p>
-        <img class="w-96 mt-5" src="../assets/jonathan-borba-o15lOC7SJKs-unsplash.jpg" alt="woman drawing" />
+        <p class="text-right font-bold">{{ postDateTime }}</p>
+        <p class="pt-3">{{ description }}</p>
+        <img class="w-96 h-96 object-cover mt-5" :src="imageUrl" alt="post photo" />
 
 
         <div class="mt-4">

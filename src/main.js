@@ -12,6 +12,8 @@ import Saved from "./pages/Saved.vue";
 import Groups from "./pages/Groups.vue";
 import Friends from "./pages/Friends.vue";
 import Messages from "./pages/Messages.vue";
+import Register from "./pages/Registration.vue";
+import Login from "./pages/Login.vue";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -26,6 +28,8 @@ const router = createRouter({
     { path: "/groups", component: Groups },
     { path: "/friends", component: Friends },
     { path: "/messages", component: Messages },
+    { path: "/register", component: Register },
+    { path: "/login", component: Login },
   ],
 });
 

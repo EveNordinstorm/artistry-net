@@ -5,7 +5,7 @@
 </script>
 
 <template>
-    <div class="w-40 rounded-lg shadow">
+    <div class="w-40 rounded-lg bg-white shadow">
         <div class="bg-blue-600 p-8 rounded-t-lg">
             <img class="w-24 h-24 rounded-full" src="../assets/artistry-net-logo-11.jpg" alt="profile picture" />
         </div>
