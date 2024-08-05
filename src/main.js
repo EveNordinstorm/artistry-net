@@ -14,6 +14,7 @@ import Friends from "./pages/Friends.vue";
 import Messages from "./pages/Messages.vue";
 import Register from "./pages/Registration.vue";
 import Login from "./pages/Login.vue";
+import store from "./store/index";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -35,6 +36,26 @@ const router = createRouter({
 
 const app = createApp(App);
 
+app.use(store);
 app.use(router);
+
+const token = sessionStorage.getItem("authToken");
+const userData = sessionStorage.getItem("userData");
+
+if (token && userData) {
+  try {
+    const parsedUserData = JSON.parse(userData);
+    store.dispatch("login", {
+      token,
+      username: parsedUserData.username,
+      email: parsedUserData.email,
+      profilePhoto: parsedUserData.profilePhoto,
+    });
+  } catch (error) {
+    console.error("Failed to parse user data:", error);
+    sessionStorage.removeItem("authToken");
+    sessionStorage.removeItem("userData");
+  }
+}
 
 app.mount("#app");
