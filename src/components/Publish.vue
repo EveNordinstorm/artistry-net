@@ -1,6 +1,11 @@
 <script>
+import CreatePost from '../components/CreatePost.vue';
+
 export default {
-  name: "Publish"
+  name: "Publish",
+  components: {
+    CreatePost,
+  }
 }
 </script>
 
@@ -19,8 +24,8 @@ export default {
         </li>
     </ul>
     <div id="defaultTabContent">
-        <div class="hidden p-4 bg-white rounded-lg md:p-8 dark:bg-gray-800" id="post" role="tabpanel" aria-labelledby="post-tab">
-            <h2 class="mb-3 text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white">Create a Post</h2>
+        <div class="hidden bg-white rounded-lg dark:bg-gray-800" id="post" role="tabpanel" aria-labelledby="post-tab">
+            <!-- <h2 class="mb-3 text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white">Create a Post</h2>
             <div class="sm:block md:flex">
                 <div class="w-96">
                     <p class="mb-5 text-gray-500 dark:text-gray-400">
@@ -33,7 +38,8 @@ export default {
                     <button type="button" class="text-white bg-gradient-to-br from-red-400 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-xl px-5 py-2.5 text-center me-2 mb-2">Post Something!</button>
                 </div>
                 <img class="w-96" src="../assets/post.jpg" />
-            </div>
+            </div> -->
+            <CreatePost />
             
         </div>
         <div class="hidden p-4 bg-white rounded-lg md:p-8 dark:bg-gray-800" id="sell" role="tabpanel" aria-labelledby="sell-tab">

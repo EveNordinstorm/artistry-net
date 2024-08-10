@@ -1,22 +1,18 @@
-<script>
-    export default {
-      props: {
-         open: {
-            type: Boolean,
-            default: false,
-         },
-      },
-      data() {
-         return {
-            isLeftbarOpen: this.open,
-         };
-      },
-      methods: {
-         toggleLeftbar() {
-            this.isLeftbarOpen = !this.isLeftbarOpen;
-         },
-      },
-   };
+<script setup>
+import { defineProps, defineEmits } from 'vue';
+
+const props = defineProps({
+  open: {
+    type: Boolean,
+    default: false,
+  },
+});
+
+const emit = defineEmits(['update:open']);
+
+const toggleLeftbar = () => {
+  emit('update:open', !props.open);
+};
 </script>
 
 <template>
@@ -27,7 +23,7 @@
       </svg>
    </button>
  
- <aside :class="{'-translate-x-full': !isLeftbarOpen, 'translate-x-0': isLeftbarOpen}" class="fixed pt-20 w-64 shadow-md transition-transform -translate-x-full sm:translate-x-0" aria-label="Leftbar">
+ <aside :class="{'-translate-x-full': !props.open, 'translate-x-0': props.open}" class="leftbar-container fixed w-64 shadow-md transition-transform -translate-x-full sm:translate-x-0" aria-label="Leftbar">
     <div class="h-full px-3 py-4 overflow-y-auto bg-white dark:bg-gray-800">
        <ul class="space-y-2 font-medium">
          <li>
@@ -159,3 +155,17 @@
  </aside>
 </template>
 
+<style scoped>
+
+/* LEFTBAR BREAKPOINTS */
+
+.leftbar-container {
+    padding-top: 1.5rem;
+  }
+
+@media only screen and (min-width: 600px) {
+  .leftbar-container {
+    padding-top: 4.5rem;
+  }
+}
+</style>

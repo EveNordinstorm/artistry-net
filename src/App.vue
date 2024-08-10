@@ -12,7 +12,7 @@ const toggleLeftbar = () => {
 
 <template>
   <NavBar @toggle-leftbar="toggleLeftbar" />
-    <LeftBar :open.sync="leftBarOpen" />
+    <LeftBar :open="leftBarOpen" @update:open="val => leftBarOpen.value = val" />
     <div class="content-container">
       <router-view></router-view>
     </div>

@@ -17,7 +17,7 @@ export default {
     ...mapActions(['login']),
     async handleLogin() {
       try {
-        const response = await axios.post('https://localhost:5000/api/account/login', this.form);
+        const response = await axios.post('/account/login', this.form);
         
         const userData = {
           token: response.data.token,
@@ -25,6 +25,7 @@ export default {
           email: response.data.email,
           profilePhoto: response.data.profilePhoto
         };
+        console.log('User data:', userData);
         sessionStorage.setItem('authToken', userData.token);
         sessionStorage.setItem('userData', JSON.stringify(userData));
 

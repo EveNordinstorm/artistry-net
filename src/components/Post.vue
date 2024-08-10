@@ -1,14 +1,29 @@
 <script>
-    export default {
-        name: "Post",
-        props: {
-            username: String,
-            profilePhoto: String,
-            postDateTime: String,
-            description: String,
-            imageUrl: String
-        }
+export default {
+  name: "Post",
+  props: {
+    username: {
+      type: String,
+      required: true
+    },
+    profilePhoto: {
+      type: String,
+      required: true
+    },
+    postDateTime: {
+      type: String,
+      required: true
+    },
+    description: {
+      type: String,
+      required: true
+    },
+    imageUrl: {
+      type: String,
+      required: true
     }
+  }
+}
 </script>
 
 <template>
@@ -65,6 +80,5 @@
             </svg>
         </button>
         </div>
-        
     </div>
 </template>

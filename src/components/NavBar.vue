@@ -4,7 +4,8 @@ import { mapGetters, mapActions } from 'vuex';
 export default {
   data() {
     return {
-      dropdownOpen: false, // Assuming you have a dropdown in your NavBar
+      dropdownOpen: false,
+      isLoading: true,
     };
   },
   computed: {
@@ -16,11 +17,14 @@ export default {
       return this.user.email || 'unknown@example.com';
     },
     profilePhoto() {
-      return this.user.profilePhoto || '../assets/artistry-net-logo-11.jpg';
+      const profilePhotoPath = this.user.profilePhoto || '../assets/artistry-net-logo-11.jpg';
+      return `${import.meta.env.VITE_API_BASE_URL}${profilePhotoPath}`;
     }
   },
   mounted() {
-    this.fetchUserData(); // Fetch user data on mount
+    this.fetchUserData().then(() => {
+    this.isLoading = false;
+  });
   },
   methods: {
     ...mapActions(['logout']),
@@ -32,8 +36,6 @@ export default {
           return;
         }
 
-        // Decode the JWT token or make a request to get user data
-        // For simplicity, we're assuming the user data is stored in sessionStorage
         const userData = JSON.parse(sessionStorage.getItem('userData'));
         
         if (userData) {
@@ -59,10 +61,10 @@ export default {
     },
     async logout() {
       try {
-        await this.$store.dispatch('logout'); // Log out the user in Vuex
-        sessionStorage.removeItem('authToken'); // Remove token from sessionStorage
-        sessionStorage.removeItem('userData'); // Remove user data from sessionStorage
-        this.$router.push('/'); // Redirect to home or login page
+        await this.$store.dispatch('logout');
+        sessionStorage.removeItem('authToken');
+        sessionStorage.removeItem('userData');
+        this.$router.push('/');
       } catch (error) {
         console.error('Logout failed:', error);
       }
@@ -76,9 +78,6 @@ export default {
   <nav class="fixed z-50 w-full border-gray-200 px-4 lg:px-6 py-2.5 dark:bg-gray-800">
       <div class="flex flex-wrap justify-between items-center">
           <div class="flex justify-start items-center">
-              <!-- <button @click="toggleLeftbar" id="toggleLeftbar" aria-expanded="true" aria-controls="separator-sidebar" class="hidden p-2 mr-3 text-gray-600 rounded cursor-pointer lg:inline hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-700">
-                <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 16 12"> <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h14M1 6h14M1 11h7"/> </svg>
-              </button> -->
               <button @click="$emit('toggle-leftbar')" id="toggleLeftbar" class="p-2 mr-2 text-gray-600 rounded-lg cursor-pointer lg:hidden hover:text-gray-900 hover:bg-gray-900 focus:bg-gray-300 dark:focus:bg-gray-700 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600">
                 <svg class="w-[18px] h-[18px] text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 17 14"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/></svg>
                 <span class="sr-only">Toggle sidebar</span>
@@ -205,7 +204,7 @@ export default {
                       <svg class="mx-auto mb-2 w-5 h-5 text-gray-400 group-hover:text-gray-500 dark:text-gray-400 dark:group-hover:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 16"><path d="M19 0H1a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h18a1 1 0 0 0 1-1V1a1 1 0 0 0-1-1ZM2 6v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6H2Zm11 3a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1V8a1 1 0 0 1 2 0h2a1 1 0 0 1 2 0v1Z"/></svg>
                       <div class="text-sm font-medium text-gray-900 dark:text-white">Products</div>
                   </a>
-                  <a href="#" class="block p-4 text-center rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 group">
+                  <a @click="logout" class="block p-4 text-center rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 group">
                       <svg class="mx-auto mb-2 w-5 h-5 text-gray-400 group-hover:text-gray-500 dark:text-gray-400 dark:group-hover:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 16"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h11m0 0-4-4m4 4-4 4m-5 3H3a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h3"/></svg>
                       <div class="text-sm font-medium text-gray-900 dark:text-white">Logout</div>
                   </a>
@@ -240,7 +239,7 @@ export default {
     <!-- Dropdown Menu -->
     <div
       v-if="dropdownOpen"
-      class="block z-50 my-4 w-56 text-base list-none bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600"
+      class="absolute right-0 z-50 my-4 w-56 text-base list-none bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600"
       id="dropdown"
     >
       <div class="py-3 px-4">

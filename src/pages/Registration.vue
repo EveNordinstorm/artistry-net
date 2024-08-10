@@ -32,7 +32,7 @@ export default {
           formData.append('profilePhoto', this.profilePhotoFile);
         }
 
-        const response = await axios.post('https://localhost:5000/api/account/register', formData, {
+        const response = await axios.post('/account/register', formData, {
           headers: {
             'Content-Type': 'multipart/form-data'
           }
@@ -42,7 +42,7 @@ export default {
 
         // Automatically log in the user
         try {
-          const loginResponse = await axios.post('https://localhost:5000/api/account/login', {
+          const loginResponse = await axios.post('/account/login', {
             username: this.form.username,
             password: this.form.password
           });

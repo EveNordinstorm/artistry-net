@@ -9,6 +9,24 @@ export default {
     ProfileBanner,
     Timeline,
     Post
+},
+  data() {
+    return {
+      userPosts: []
+    };
+  },
+  created() {
+    this.fetchUserPosts();
+  },
+  methods: {
+    async fetchUserPosts() {
+      try {
+        const response = await axios.get(`https://localhost:5000/api/users/${this.userId}/posts`);
+        this.userPosts = response.data;
+      } catch (error) {
+        console.error('Error fetching user posts:', error);
+      }
+    }
   }
 }
 </script>
@@ -101,7 +119,18 @@ export default {
 
 
     <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="styled-posts" role="tabpanel" aria-labelledby="posts-tab">
-      <Post />
+        <div v-if="userPosts.length">
+        <Post
+          v-for="post in userPosts"
+          :key="post.id"
+          :username="post.username"
+          :profilePhoto="post.profilePhoto"
+          :postDateTime="post.postDateTime"
+          :description="post.description"
+          :imageUrl="post.imageUrl"
+        />
+      </div>
+      <p v-else>No posts yet.</p>
     </div>
 
 
