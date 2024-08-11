@@ -4,14 +4,15 @@ import Post from '../components/Post.vue';
 import axios from '../axios';
 
 export default {
-  name: "Home",
+  name: 'Home',
   components: {
     Publish,
     Post
   },
   data() {
     return {
-      posts: []
+      posts: [],
+      isLoading: true
     };
   },
   created() {
@@ -20,10 +21,16 @@ export default {
   methods: {
     async fetchPosts() {
       try {
-        const response = await axios.get('https://localhost:5000/api/posts');
-        this.posts = response.data;
+        const response = await axios.get('/posts');
+        this.posts = response.data.map(post => ({
+          ...post,
+          profilePhoto: `${import.meta.env.VITE_API_BASE_URL}${post.profilePhoto}`,
+          imageUrl: `${import.meta.env.VITE_API_BASE_URL}${post.imageUrl}`
+        }));
+        this.isLoading = false;
       } catch (error) {
         console.error('Error fetching posts:', error);
+        this.isLoading = false;
       }
     }
   }
@@ -32,16 +39,8 @@ export default {
 
 <template>
     <Publish />
-    <div v-if="posts.length > 0">
-      <Post
-        v-for="post in posts"
-        :key="post.id"
-        :username="post.username"
-        :profilePhoto="post.profilePhoto"
-        :postDateTime="post.postDateTime"
-        :description="post.description"
-        :imageUrl="post.imageUrl"
-      />
-    </div>
-    <p v-else>No posts available.</p>
+    <div v-if="isLoading">Loading...</div>
+  <div v-else>
+    <Post v-for="post in posts" :key="post.id" :username="post.username" :profilePhoto="post.profilePhoto" :postDateTime="post.postDateTime" :description="post.description" :imageUrl="post.imageUrl" />
+  </div>
 </template>

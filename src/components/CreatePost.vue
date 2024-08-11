@@ -19,7 +19,22 @@ export default {
         const formData = new FormData();
         formData.append('description', this.description);
         if (this.imageUrlFile) {
-          formData.append('ImagePath', this.imageUrlFile);
+          formData.append('ImageUrl', this.imageUrlFile);
+        }
+
+        const token = sessionStorage.getItem("authToken");
+        if (token) {
+          const payload = JSON.parse(atob(token.split('.')[1]));
+          const userId = payload["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"];
+
+          console.log('User ID from Token:', userId); // debugging
+          if (userId) {
+            formData.append('UserId', userId);
+          } else {
+            console.error('User ID is undefined or not found in token');
+          }
+        } else {
+          console.error('No auth token found');
         }
 
         const response = await axios.post('/posts', formData, {
@@ -41,6 +56,7 @@ export default {
   }
 };
 </script>
+
 
 <template>
   <div class="bg-blue-200 p-5 rounded">
