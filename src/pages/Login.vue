@@ -23,7 +23,8 @@ export default {
           token: response.data.token,
           username: response.data.username,
           email: response.data.email,
-          profilePhoto: response.data.profilePhoto
+          profilePhoto: response.data.profilePhoto,
+          bio: response.data.bio
         };
         console.log('User data:', userData);
         sessionStorage.setItem('authToken', userData.token);

@@ -32,15 +32,18 @@ export default {
         console.error('Error fetching posts:', error);
         this.isLoading = false;
       }
+    },
+    handlePostCreated() {
+      this.fetchPosts();
     }
   }
 }
 </script>
 
 <template>
-    <Publish />
+    <Publish @postCreated="handlePostCreated" />
     <div v-if="isLoading">Loading...</div>
   <div v-else>
-    <Post v-for="post in posts" :key="post.id" :username="post.username" :profilePhoto="post.profilePhoto" :postDateTime="post.postDateTime" :description="post.description" :imageUrl="post.imageUrl" />
+    <Post v-for="post in posts" :key="post.id" :postId="post.id" :username="post.username" :profilePhoto="post.profilePhoto" :postDateTime="post.postDateTime" :description="post.description" :imageUrl="post.imageUrl" />
   </div>
 </template>

@@ -1,4 +1,5 @@
 import { createStore } from "vuex";
+import axios from "../axios";
 
 const store = createStore({
   state() {
@@ -7,6 +8,7 @@ const store = createStore({
       username: "",
       profilePhoto: "",
       email: "",
+      bio: "",
     };
 
     return {
@@ -32,6 +34,7 @@ const store = createStore({
         username: "",
         profilePhoto: "",
         email: "",
+        bio: "",
       };
     },
   },

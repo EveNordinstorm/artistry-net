@@ -1,30 +1,114 @@
 <script>
+import { mapGetters, mapMutations } from 'vuex';
 import ProfileBanner from '../components/ProfileBanner.vue';
 import Timeline from '../components/Timeline.vue';
 import Post from '../components/Post.vue';
+import SharedPost from '../components/SharedPost.vue';
+import axios from '../axios';
 
 export default {
   name: "Profile",
   components: {
     ProfileBanner,
     Timeline,
-    Post
-},
+    Post,
+    SharedPost
+  },
   data() {
     return {
-      userPosts: []
+      userPosts: [],
+      sharedPost: [],
+      isLoading: true,
+      error: null
     };
   },
+  computed: {
+    ...mapGetters(['user']),
+    bio() {
+      return this.user?.bio || 'No bio available.';
+    }
+  },
   created() {
-    this.fetchUserPosts();
+    this.initUserAndFetchPosts();
   },
   methods: {
+    ...mapMutations(['setUser']),
+
+    async initUserAndFetchPosts() {
+      if (!this.user || !this.user.username) {
+        const userData = JSON.parse(sessionStorage.getItem('userData'));
+        if (userData) {
+          this.setUser(userData);
+          console.log('Restored user data from sessionStorage:', userData);
+        } else {
+          console.error('User data is not available.');
+          this.error = 'User data is not available.';
+          this.isLoading = false;
+          return;
+        }
+      }
+
+      console.log('User data in Vuex:', this.user);
+
+      await this.fetchUserPosts();
+    },
+
     async fetchUserPosts() {
+      const token = sessionStorage.getItem('authToken');
+
+      if (!token) {
+        console.error('Auth token is missing.');
+        this.error = 'Auth token is missing.';
+        this.isLoading = false;
+        return;
+      }
+
       try {
-        const response = await axios.get(`https://localhost:5000/api/users/${this.userId}/posts`);
-        this.userPosts = response.data;
+        const [postsResponse, sharesResponse] = await Promise.all([
+          axios.get('/posts/user', {
+            headers: { Authorization: `Bearer ${token}` }
+          }),
+          axios.get('/shares/user', {
+            headers: { Authorization: `Bearer ${token}` }
+          })
+        ]);
+
+        console.log('Shares response data:', sharesResponse.data);
+
+        const posts = postsResponse.data.map(post => ({
+          ...post,
+          profilePhoto: `${import.meta.env.VITE_API_BASE_URL}${post.profilePhoto}`,
+          imageUrl: `${import.meta.env.VITE_API_BASE_URL}${post.imageUrl}`
+        }));
+
+        const shares = sharesResponse.data.map(share => ({
+      type: 'share',
+      data: {
+        ...share,
+        sharer: {
+          username: share.sharer.username || 'Unknown',
+          profilePhoto: `${import.meta.env.VITE_API_BASE_URL}${share.sharer.profilePhoto}`
+        },
+        postDetails: {
+          ...share.originalPost,
+          profilePhoto: `${import.meta.env.VITE_API_BASE_URL}${share.originalPost.profilePhoto}`,
+          imageUrl: `${import.meta.env.VITE_API_BASE_URL}${share.originalPost.imageUrl}`,
+          username: share.originalPost.username || 'Unknown',
+          description: share.originalPost.description || 'No description available'
+        }
+      },
+      date: new Date(share.shareDateTime)
+    }));
+
+        this.userPosts = [...posts, ...shares].sort((a, b) => b.date - a.date);
+
+        console.log('Combined user posts:', this.userPosts);
+
+        this.isLoading = false;
       } catch (error) {
-        console.error('Error fetching user posts:', error);
+        console.error('Error fetching user posts or shares:', error);
+        this.error = 'Error fetching posts or shares.';
+        this.isLoading = false;
       }
     }
   }
@@ -55,7 +139,7 @@ export default {
     <div class="hidden" id="styled-profile" role="tabpanel" aria-labelledby="profile-tab">
       <div class="p-4 rounded-lg bg-gray-50 dark:bg-gray-800">
         <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Bio</h3>  
-      <p class="text-base font-normal dark:text-gray-400 py-3">A modern network for designers to connect and share inspiration.</p>
+      <p class="text-base font-normal dark:text-gray-400 py-3">{{ bio }}</p>
       </div>
       <Timeline />
     </div>
@@ -119,18 +203,34 @@ export default {
 
 
     <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="styled-posts" role="tabpanel" aria-labelledby="posts-tab">
-        <div v-if="userPosts.length">
-        <Post
-          v-for="post in userPosts"
-          :key="post.id"
-          :username="post.username"
-          :profilePhoto="post.profilePhoto"
-          :postDateTime="post.postDateTime"
-          :description="post.description"
-          :imageUrl="post.imageUrl"
-        />
+      <div v-if="isLoading" class="loading-indicator">Loading...</div>
+
+      <div v-else>
+        <div v-for="item in userPosts" :key="item.data.id">
+          <Post
+            v-if="item.type === 'post'"
+            :username="item.data.username"
+            :profilePhoto="item.data.profilePhoto"
+            :postDateTime="item.data.createdDateTime"
+            :description="item.data.description"
+            :imageUrl="item.data.imageUrl"
+            :postId="item.data.id"
+          />
+          
+          <SharedPost
+            v-else
+            :shareUsername="user.username"
+            :shareUserPhoto="user.profilePhoto"
+            :shareDateTime="item.data.ShareDateTime"
+            :originalPostUsername="item.data.PostDetails.Username"
+            :originalPostProfilePhoto="item.data.PostDetails.ProfilePhoto"
+            :originalPostDateTime="item.data.PostDetails.CreatedDateTime"
+            :originalPostDescription="item.data.PostDetails.Description"
+            :originalPostImageUrl="item.data.PostDetails.ImageUrl"
+            :postId="item.data.PostDetails.Id"
+          />
+        </div>
       </div>
-      <p v-else>No posts yet.</p>
     </div>
 
 

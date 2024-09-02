@@ -22,40 +22,27 @@ export default {
           formData.append('ImageUrl', this.imageUrlFile);
         }
 
-        const token = sessionStorage.getItem("authToken");
-        if (token) {
-          const payload = JSON.parse(atob(token.split('.')[1]));
-          const userId = payload["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"];
-
-          console.log('User ID from Token:', userId); // debugging
-          if (userId) {
-            formData.append('UserId', userId);
-          } else {
-            console.error('User ID is undefined or not found in token');
-          }
-        } else {
-          console.error('No auth token found');
-        }
-
         const response = await axios.post('/posts', formData, {
           headers: {
             'Content-Type': 'multipart/form-data'
           }
         });
 
-        if (response.status === 201) {
+        if (response.status === 200) {
           this.message = 'Post created successfully';
+          this.$emit('postCreated');
         } else {
           this.message = 'Failed to create post';
         }
       } catch (error) {
-        console.error('Error:', error);
+        console.error('Error creating post:', error);
         this.message = 'Error creating post: ' + (error.response?.data?.message || error.message);
       }
     }
   }
 };
 </script>
+
 
 
 <template>
