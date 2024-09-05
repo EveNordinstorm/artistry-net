@@ -156,7 +156,7 @@ export default {
   <div class="w-[50px] bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 p-5 my-5">
     <div class="flex">
       <img class="w-14 h-14 object-cover rounded-full" :src="profilePhoto" alt="profile picture" />
-      <p class="pl-5 pt-2 text-3xl font-bold">{{ username }}</p>
+      <span class="pl-5 pt-2 text-3xl font-bold">{{ username }}</span>
     </div>
     <p class="text-right font-bold">{{ formattedDateTime }}</p>
     <p class="pt-3">{{ description }}</p>

@@ -30,15 +30,12 @@ export default {
 </script>
 
 <template>
-  <div class="shared-post">
-    <div class="shared-by">
-      <img :src="shareUserPhoto" class="w-10 h-10 rounded-full" alt="User photo" />
-      <span>{{ shareUsername }} shared this post on {{ formattedShareDateTime }}</span>
+  <div class="w-[50px] bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 p-5 my-5">
+    <div class="flex">
+      <img :src="shareUserPhoto" class="w-14 h-14 object-cover rounded-full" alt="Profile photo" />
+      <span class="pl-5 pt-2 text-3xl font-bold">{{ shareUsername }}</span>
     </div>
-    <div class="original-post-details">
-      <img :src="originalPostProfilePhoto" class="w-10 h-10 rounded-full" alt="Original User photo" />
-      <span>{{ originalPostUsername }}</span>
-    </div>
+    <p class="text-right font-bold">Shared this post on <br /> {{ formattedShareDateTime }}</p>
     <Post
       :username="originalPostUsername"
       :profilePhoto="originalPostProfilePhoto"
@@ -51,18 +48,6 @@ export default {
 </template>
 
 <style scoped>
-.shared-post {
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 10px;
-  margin-bottom: 15px;
-}
-.shared-by {
-  display: flex;
-  align-items: center;
-  margin-bottom: 8px;
-}
-.shared-by img {
-  margin-right: 10px;
-}
+
+
 </style>

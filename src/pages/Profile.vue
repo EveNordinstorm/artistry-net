@@ -17,7 +17,6 @@ export default {
   data() {
     return {
       userPosts: [],
-      sharedPost: [],
       isLoading: true,
       error: null
     };
@@ -33,7 +32,12 @@ export default {
   },
   methods: {
     ...mapMutations(['setUser']),
-
+    constructAbsoluteUrl(relativePath) {
+      if (!relativePath.startsWith('http') && relativePath.startsWith('/')) {
+        return `${import.meta.env.VITE_API_BASE_URL}${relativePath}`;
+      }
+      return relativePath;
+    },
     async initUserAndFetchPosts() {
       if (!this.user || !this.user.username) {
         const userData = JSON.parse(sessionStorage.getItem('userData'));
@@ -47,72 +51,79 @@ export default {
           return;
         }
       }
-
       console.log('User data in Vuex:', this.user);
-
       await this.fetchUserPosts();
     },
-
     async fetchUserPosts() {
-      const token = sessionStorage.getItem('authToken');
+  const token = sessionStorage.getItem('authToken');
+  if (!token) {
+    console.error('Auth token is missing.');
+    this.error = 'Auth token is missing.';
+    this.isLoading = false;
+    return;
+  }
+  try {
+    const [postsResponse, sharesResponse] = await Promise.all([
+      axios.get('/posts/user', {
+        headers: { Authorization: `Bearer ${token}` }
+      }),
+      axios.get('/shares/user', {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+    ]);
 
-      if (!token) {
-        console.error('Auth token is missing.');
-        this.error = 'Auth token is missing.';
-        this.isLoading = false;
-        return;
-      }
+    console.log('Posts response:', postsResponse.data);
+    console.log('Shares response:', sharesResponse.data);
 
-      try {
-        const [postsResponse, sharesResponse] = await Promise.all([
-          axios.get('/posts/user', {
-            headers: { Authorization: `Bearer ${token}` }
-          }),
-          axios.get('/shares/user', {
-            headers: { Authorization: `Bearer ${token}` }
-          })
-        ]);
-
-        console.log('Shares response data:', sharesResponse.data);
-
-        const posts = postsResponse.data.map(post => ({
-          ...post,
-          profilePhoto: `${import.meta.env.VITE_API_BASE_URL}${post.profilePhoto}`,
-          imageUrl: `${import.meta.env.VITE_API_BASE_URL}${post.imageUrl}`
-        }));
-
-        const shares = sharesResponse.data.map(share => ({
-      type: 'share',
+    const posts = postsResponse.data.map(post => ({
+      type: 'post',
       data: {
-        ...share,
-        sharer: {
-          username: share.sharer.username || 'Unknown',
-          profilePhoto: `${import.meta.env.VITE_API_BASE_URL}${share.sharer.profilePhoto}`
-        },
-        postDetails: {
-          ...share.originalPost,
-          profilePhoto: `${import.meta.env.VITE_API_BASE_URL}${share.originalPost.profilePhoto}`,
-          imageUrl: `${import.meta.env.VITE_API_BASE_URL}${share.originalPost.imageUrl}`,
-          username: share.originalPost.username || 'Unknown',
-          description: share.originalPost.description || 'No description available'
-        }
+        ...post,
+        profilePhoto: this.constructAbsoluteUrl(post.profilePhoto),
+        imageUrl: this.constructAbsoluteUrl(post.imageUrl),
+        postDateTime: post.postDateTime ? new Date(post.postDateTime).toISOString() : ''
       },
-      date: new Date(share.shareDateTime)
+      date: new Date(post.postDateTime)
     }));
 
-        this.userPosts = [...posts, ...shares].sort((a, b) => b.date - a.date);
-
-        console.log('Combined user posts:', this.userPosts);
-
-        this.isLoading = false;
-      } catch (error) {
-        console.error('Error fetching user posts or shares:', error);
-        this.error = 'Error fetching posts or shares.';
-        this.isLoading = false;
+    const shares = sharesResponse.data.map(share => {
+      if (!share || !share.id) {
+        console.warn('Share data is missing or invalid:', share);
+        return null;
       }
-    }
+      return {
+        type: 'share',
+        data: {
+          ...share,
+          sharer: {
+            username: share.sharer?.username || 'Unknown',
+            profilePhoto: this.constructAbsoluteUrl(share.sharer?.profilePhoto)
+          },
+          postDetails: {
+            ...share.originalPost,
+            profilePhoto: this.constructAbsoluteUrl(share.originalPost?.profilePhoto),
+            imageUrl: this.constructAbsoluteUrl(share.originalPost?.imageUrl),
+            username: share.originalPost?.username || 'Unknown',
+            description: share.originalPost?.description || 'No description available',
+            postDateTime: share.originalPost?.postDateTime ? new Date(share.originalPost?.postDateTime).toISOString() : ''
+          }
+        },
+        date: new Date(share.shareDateTime),
+        shareDateTime: new Date(share.shareDateTime).toISOString()
+      };
+    }).filter(share => share !== null);
+
+    this.userPosts = [...posts, ...shares].sort((a, b) => b.date - a.date);
+    console.log('Combined user posts:', this.userPosts);
+    this.isLoading = false;
+  } catch (error) {
+    console.error('Error fetching user posts or shares:', error);
+    this.error = 'Error fetching posts or shares.';
+    this.isLoading = false;
   }
 }
+  }
+};
 </script>
 
 <template>
@@ -211,23 +222,23 @@ export default {
             v-if="item.type === 'post'"
             :username="item.data.username"
             :profilePhoto="item.data.profilePhoto"
-            :postDateTime="item.data.createdDateTime"
+            :postDateTime="item.data.postDateTime"
             :description="item.data.description"
             :imageUrl="item.data.imageUrl"
             :postId="item.data.id"
           />
           
           <SharedPost
-            v-else
-            :shareUsername="user.username"
-            :shareUserPhoto="user.profilePhoto"
-            :shareDateTime="item.data.ShareDateTime"
-            :originalPostUsername="item.data.PostDetails.Username"
-            :originalPostProfilePhoto="item.data.PostDetails.ProfilePhoto"
-            :originalPostDateTime="item.data.PostDetails.CreatedDateTime"
-            :originalPostDescription="item.data.PostDetails.Description"
-            :originalPostImageUrl="item.data.PostDetails.ImageUrl"
-            :postId="item.data.PostDetails.Id"
+            v-else-if="item.type === 'share'"
+            :shareUsername="item.data.sharer.username"
+            :shareUserPhoto="item.data.sharer.profilePhoto"
+            :shareDateTime="item.date"
+            :originalPostUsername="item.data.postDetails.username"
+            :originalPostProfilePhoto="item.data.postDetails.profilePhoto"
+            :originalPostDateTime="item.data.postDetails.postDateTime"
+            :originalPostDescription="item.data.postDetails.description"
+            :originalPostImageUrl="item.data.postDetails.imageUrl"
+            :postId="item.data.postDetails.id"
           />
         </div>
       </div>

@@ -1,40 +1,76 @@
 <script>
 import Publish from '../components/Publish.vue';
 import Post from '../components/Post.vue';
+import SharedPost from '../components/SharedPost.vue';
 import axios from '../axios';
 
 export default {
   name: 'Home',
   components: {
     Publish,
-    Post
+    Post,
+    SharedPost
   },
   data() {
     return {
-      posts: [],
-      isLoading: true
+      postsAndShares: [],
+      isLoading: true,
+      error: null
     };
   },
   created() {
-    this.fetchPosts();
+    this.fetchPostsAndShares();
   },
   methods: {
-    async fetchPosts() {
+    async fetchPostsAndShares() {
       try {
-        const response = await axios.get('/posts');
-        this.posts = response.data.map(post => ({
-          ...post,
-          profilePhoto: `${import.meta.env.VITE_API_BASE_URL}${post.profilePhoto}`,
-          imageUrl: `${import.meta.env.VITE_API_BASE_URL}${post.imageUrl}`
+        const [postsResponse, sharesResponse] = await Promise.all([
+          axios.get('/posts'),
+          axios.get('/shares')
+        ]);
+
+        const posts = postsResponse.data.map(post => ({
+          type: 'post',
+          data: {
+            ...post,
+            profilePhoto: `${import.meta.env.VITE_API_BASE_URL}${post.profilePhoto}`,
+            imageUrl: `${import.meta.env.VITE_API_BASE_URL}${post.imageUrl}`,
+            postDateTime: post.postDateTime ? new Date(post.postDateTime).toISOString() : ''
+          },
+          date: new Date(post.postDateTime)
         }));
+
+        const shares = sharesResponse.data.map(share => ({
+          type: 'share',
+          data: {
+            ...share,
+            sharer: {
+              username: share.sharer?.username || 'Unknown',
+              profilePhoto: `${import.meta.env.VITE_API_BASE_URL}${share.sharer?.profilePhoto}`
+            },
+            postDetails: {
+              ...share.originalPost,
+              profilePhoto: `${import.meta.env.VITE_API_BASE_URL}${share.originalPost?.profilePhoto}`,
+              imageUrl: `${import.meta.env.VITE_API_BASE_URL}${share.originalPost?.imageUrl}`,
+              username: share.originalPost?.username || 'Unknown',
+              description: share.originalPost?.description || 'No description available',
+              postDateTime: share.originalPost?.postDateTime ? new Date(share.originalPost?.postDateTime).toISOString() : ''
+            }
+          },
+          date: new Date(share.shareDateTime),
+          shareDateTime: new Date(share.shareDateTime).toISOString()
+        }));
+
+        this.postsAndShares = [...posts, ...shares].sort((a, b) => b.date - a.date);
         this.isLoading = false;
       } catch (error) {
-        console.error('Error fetching posts:', error);
+        console.error('Error fetching posts or shares:', error);
+        this.error = 'Error fetching posts or shares.';
         this.isLoading = false;
       }
     },
     handlePostCreated() {
-      this.fetchPosts();
+      this.fetchPostsAndShares();
     }
   }
 }
@@ -43,7 +79,29 @@ export default {
 <template>
     <Publish @postCreated="handlePostCreated" />
     <div v-if="isLoading">Loading...</div>
-  <div v-else>
-    <Post v-for="post in posts" :key="post.id" :postId="post.id" :username="post.username" :profilePhoto="post.profilePhoto" :postDateTime="post.postDateTime" :description="post.description" :imageUrl="post.imageUrl" />
-  </div>
+    <div v-else>
+      <div v-for="item in postsAndShares" :key="item.data.id">
+        <Post
+          v-if="item.type === 'post'"
+          :postId="item.data.id"
+          :username="item.data.username"
+          :profilePhoto="item.data.profilePhoto"
+          :postDateTime="item.data.postDateTime"
+          :description="item.data.description"
+          :imageUrl="item.data.imageUrl"
+        />
+        <SharedPost
+          v-else-if="item.type === 'share'"
+          :shareUsername="item.data.sharer.username"
+          :shareUserPhoto="item.data.sharer.profilePhoto"
+          :shareDateTime="item.shareDateTime"
+          :originalPostUsername="item.data.postDetails.username"
+          :originalPostProfilePhoto="item.data.postDetails.profilePhoto"
+          :originalPostDateTime="item.data.postDetails.postDateTime"
+          :originalPostDescription="item.data.postDetails.description"
+          :originalPostImageUrl="item.data.postDetails.imageUrl"
+          :postId="item.data.postDetails.id"
+        />
+      </div>
+    </div>
 </template>
