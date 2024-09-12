@@ -26,29 +26,11 @@ export default {
 </div>
 <div id="default-styled-tab-content">
     <div class="hidden" id="styled-following" role="tabpanel" aria-labelledby="following-tab">
-        <div class="rounded bg-gray-200 mb-10 p-4">
-            <h2 class="text-2xl pb-5 pl-2">Suggested For You</h2>
-            <div class="sm:block lg:flex p-3 gap-4">
-                <SuggestedFriend />
-                <SuggestedFriend />
-                <SuggestedFriend />
-                <SuggestedFriend />
-            </div>
-        </div>
-
-      <Friend />
-      <Friend />
-      <Friend />
-      <Friend />
-      <Friend />
       <Friend />
     </div>
 </div>
 <div id="default-styled-tab-content">
     <div class="hidden" id="styled-followers" role="tabpanel" aria-labelledby="followers-tab">
-        <Friend />
-        <Friend />
-        <Friend />
         <Friend />
     </div>
 </div>

@@ -75,7 +75,7 @@ export default {
 
 <template>
 <header class="antialiased">
-  <nav class="fixed z-50 w-full border-gray-200 px-4 lg:px-6 py-2.5 dark:bg-gray-800">
+  <nav class="bg-red-600 fixed z-50 w-full border-gray-200 px-4 lg:px-6 py-2.5 dark:bg-gray-800">
       <div class="flex flex-wrap justify-between items-center">
           <div class="flex justify-start items-center">
               <button @click="$emit('toggle-leftbar')" id="toggleLeftbar" class="p-2 mr-2 text-gray-600 rounded-lg cursor-pointer lg:hidden hover:text-gray-900 hover:bg-gray-900 focus:bg-gray-300 dark:focus:bg-gray-700 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600">
@@ -283,9 +283,3 @@ export default {
   </nav>
 </header>
 </template>
-    
-    <style scoped>
-        nav {
-            background-color: #C82127;
-        }
-    </style>

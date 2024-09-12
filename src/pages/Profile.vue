@@ -24,7 +24,7 @@ export default {
   computed: {
     ...mapGetters(['user']),
     bio() {
-      return this.user?.bio || 'No bio available.';
+      return this.user.bio;
     }
   },
   created() {
@@ -39,21 +39,27 @@ export default {
       return relativePath;
     },
     async initUserAndFetchPosts() {
-      if (!this.user || !this.user.username) {
-        const userData = JSON.parse(sessionStorage.getItem('userData'));
-        if (userData) {
-          this.setUser(userData);
-          console.log('Restored user data from sessionStorage:', userData);
-        } else {
-          console.error('User data is not available.');
-          this.error = 'User data is not available.';
-          this.isLoading = false;
-          return;
-        }
-      }
-      console.log('User data in Vuex:', this.user);
-      await this.fetchUserPosts();
-    },
+    // Attempt to retrieve user data from session storage
+    let userData;
+    try {
+      userData = JSON.parse(sessionStorage.getItem('userData'));
+    } catch (error) {
+      this.error = 'Error parsing user data from session storage.';
+      this.isLoading = false;
+      return;
+    }
+
+    // If user data exists, set it in the Vuex store
+    if (userData) {
+      this.setUser(userData);
+    } else {
+      this.error = 'User data is not available.';
+      this.isLoading = false;
+      return;
+    }
+
+    await this.fetchUserPosts();
+  },
     async fetchUserPosts() {
   const token = sessionStorage.getItem('authToken');
   if (!token) {
@@ -136,13 +142,10 @@ export default {
             <button class="inline-block p-4 border-b-2 rounded-t-lg" id="profile-styled-tab" data-tabs-target="#styled-profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Profile</button>
         </li>
         <li class="me-2" role="presentation">
-            <button class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="portfolio-styled-tab" data-tabs-target="#styled-portfolio" type="button" role="tab" aria-controls="portfolio" aria-selected="false">Portfolio</button>
+            <button class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="products-styled-tab" data-tabs-target="#styled-products" type="button" role="tab" aria-controls="products" aria-selected="false">Products</button>
         </li>
         <li class="me-2" role="presentation">
             <button class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="posts-styled-tab" data-tabs-target="#styled-posts" type="button" role="tab" aria-controls="posts" aria-selected="false">Posts</button>
-        </li>
-        <li role="presentation">
-            <button class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="products-styled-tab" data-tabs-target="#styled-products" type="button" role="tab" aria-controls="products" aria-selected="false">Products</button>
         </li>
     </ul>
 </div>
@@ -156,7 +159,7 @@ export default {
     </div>
 
     
-<div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="styled-portfolio" role="tabpanel" aria-labelledby="portfolio-tab">
+<div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="styled-products" role="tabpanel" aria-labelledby="products-tab">
   <div class="flex items-center justify-center py-4 md:py-8 flex-wrap pt-5">
     <button type="button" class="text-white bg-red-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-full text-base font-medium px-5 py-2.5 text-center me-3 mb-3 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:bg-gray-900 dark:focus:ring-blue-800">All categories</button>
     <button type="button" class="text-white bg-blue-600 hover:bg-red-800 dark:bg-gray-900 dark:hover:border-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-300 rounded-full text-base font-medium px-5 py-2.5 text-center me-3 mb-3 dark:text-white dark:focus:ring-gray-800">Graphic Design</button>
@@ -244,10 +247,5 @@ export default {
       </div>
     </div>
 
-
-    <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="styled-products" role="tabpanel" aria-labelledby="products-tab">
-        <p class="text-sm text-gray-500 dark:text-gray-400">This is some placeholder content the <strong class="font-medium text-gray-800 dark:text-white">products tab's associated content</strong>. Clicking another tab will toggle the visibility of this one for the next. The tab JavaScript swaps classes to control the content visibility and styling.</p>
-    </div>
 </div>
-  
 </template>

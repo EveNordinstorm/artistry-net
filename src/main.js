@@ -4,6 +4,7 @@ import "./style.css";
 import App from "./App.vue";
 import Home from "./pages/Home.vue";
 import Profile from "./pages/Profile.vue";
+import VisitProfile from "./pages/VisitProfile.vue";
 import Explore from "./pages/Explore.vue";
 import Events from "./pages/Events.vue";
 import Market from "./pages/Market.vue";
@@ -21,6 +22,12 @@ const router = createRouter({
   routes: [
     { path: "/", component: Home },
     { path: "/profile", component: Profile },
+    {
+      path: "/profile/:userId",
+      name: "VisitProfile",
+      component: VisitProfile,
+      props: true,
+    },
     { path: "/explore", component: Explore },
     { path: "/events", component: Events },
     { path: "/market", component: Market },

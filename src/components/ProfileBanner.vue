@@ -17,11 +17,18 @@ export default {
 </script>
 
 <template>
-    <div class="flex">
-        <div class="p-5">
-            <img class="w-60 h-48 object-cover rounded-full" :src="profilePhoto" alt="profile picture" />
-        </div>
+    <div class="relative">
         <img class="w-full h-56 object-cover" src="../assets/david-pisnoy-46juD4zY1XA-unsplash.jpg" alt="banner image" />
+
+        <div class="absolute top-4 left-4">
+            <img class="w-48 h-48 object-cover rounded-full ms-5" :src="profilePhoto" alt="profile picture" />
+        </div>
+
+        <div class="absolute top-4 right-0 left-0 flex justify-end p-4">
+            <button type="button" class="py-2.5 px-5 text-md font-bold text-white bg-red-600 rounded-lg hover:bg-white hover:text-blue-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-700">
+                Edit Profile
+            </button>
+        </div>
     </div>
     <div class="bg-red-600 p-5 flex justify-between mb-10">
         <h1 class="text-white font-bold text-3xl">{{ username }}</h1>

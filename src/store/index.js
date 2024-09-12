@@ -22,7 +22,7 @@ const store = createStore({
       state.isLoggedIn = isLoggedIn;
     },
     setUser(state, user) {
-      state.user = user;
+      state.user = { ...user };
     },
     setToken(state, token) {
       state.token = token;
