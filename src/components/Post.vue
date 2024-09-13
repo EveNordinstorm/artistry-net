@@ -60,16 +60,9 @@ export default {
   methods: {
     async fetchUserData() {
       try {
-        const userId = await this.fetchUserId(this.username);
-
-        if (userId) {
-          console.log("Fetching user data from backend");
-          const response = await axios.get(`/users/account/${userId}`);
-          this.user = response.data;
-          console.log("User data fetched successfully:", this.user);
-        } else {
-          console.error("User ID is null or undefined.");
-        }
+        const response = await axios.get(`/account/${this.userId}`);
+        this.user = response.data;
+        console.log("User data fetched successfully:", this.user);
       } catch (error) {
         console.error("Error fetching user data from backend:", error);
         this.error = "Error fetching user data.";
@@ -299,7 +292,6 @@ export default {
               :key="comment.id"
               class="border-b border-gray-200 dark:border-gray-700 pb-2 mb-2"
             >
-              <!-- <img class="w-10 h-10 rounded-full" :src="comment.profilePhoto" alt="commenter profile picture" /> -->
               <div class="flex pl-4">
                 <p class="font-semibold">{{ comment.username }}:</p>
                 <p class="pl-2">{{ comment.commentText }}</p>

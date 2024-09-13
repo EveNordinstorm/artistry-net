@@ -135,7 +135,7 @@ export default {
     <div v-for="item in postsAndShares" :key="item.data.id">
       <Post
         v-if="item.type === 'post'"
-        :userId="user.id"
+        :userId="user.userId"
         :postId="item.data.id"
         :username="item.data.username"
         :profilePhoto="item.data.profilePhoto"
@@ -145,6 +145,7 @@ export default {
       />
       <SharedPost
         v-else-if="item.type === 'share'"
+        :userId="user.userId"
         :shareUsername="item.data.sharer.username"
         :shareUserPhoto="item.data.sharer.profilePhoto"
         :shareDateTime="item.shareDateTime"

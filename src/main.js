@@ -9,6 +9,7 @@ import Explore from "./pages/Explore.vue";
 import Events from "./pages/Events.vue";
 import Market from "./pages/Market.vue";
 import Auction from "./pages/Auction.vue";
+import Likes from "./pages/Likes.vue";
 import Saved from "./pages/Saved.vue";
 import Groups from "./pages/Groups.vue";
 import Friends from "./pages/Friends.vue";
@@ -32,6 +33,7 @@ const router = createRouter({
     { path: "/events", component: Events },
     { path: "/market", component: Market },
     { path: "/auction", component: Auction },
+    { path: "/likes", component: Likes },
     { path: "/saved", component: Saved },
     { path: "/groups", component: Groups },
     { path: "/friends", component: Friends },

@@ -4,6 +4,7 @@ import ProfileBanner from "../components/ProfileBanner.vue";
 import Timeline from "../components/Timeline.vue";
 import Post from "../components/Post.vue";
 import SharedPost from "../components/SharedPost.vue";
+import Product from "../components/Product.vue";
 import axios from "../axios";
 
 export default {
@@ -13,11 +14,13 @@ export default {
     Timeline,
     Post,
     SharedPost,
+    Product,
   },
   data() {
     return {
       visitedUser: null,
       userPosts: [],
+      products: [],
       isLoading: true,
       error: null,
     };
@@ -25,11 +28,12 @@ export default {
   computed: {
     ...mapGetters(["user"]),
     bio() {
-      return this.visitedUser.bio;
+      return this.visitedUser.bio ? this.visitedUser.bio : "";
     },
   },
-  created() {
-    this.fetchVisitedUserAndPosts();
+  async created() {
+    await this.fetchVisitedUserAndPosts();
+    await this.fetchProducts();
   },
   methods: {
     constructAbsoluteUrl(relativePath) {
@@ -39,23 +43,28 @@ export default {
       return relativePath;
     },
     async fetchVisitedUserAndPosts() {
-      const userId = this.$route.params.userId;
+      const username = this.$route.params.username;
 
-      if (!userId) {
-        this.error = "UserId is missing.";
+      if (!username) {
+        this.error = "Username is missing.";
         this.isLoading = false;
         return;
       }
 
       try {
-        const userResponse = await axios.get(`/user/account/${userId}`);
+        const userIdResponse = await axios.get(
+          `/account/getUserIdByUsername/${username}`
+        );
+        const userId = userIdResponse.data.Id;
 
+        if (!userId) {
+          throw new Error("User ID not found.");
+        }
+
+        const userResponse = await axios.get(`/account/${userId}`);
         this.visitedUser = userResponse.data || {};
+
         if (this.visitedUser.id) {
-          const userDetailResponse = await axios.get(
-            `/users/${this.visitedUser.id}`
-          );
-          this.visitedUser = userDetailResponse.data;
           await this.fetchUserPosts(this.visitedUser.id);
         } else {
           throw new Error("User not found.");
@@ -122,6 +131,23 @@ export default {
       } catch (error) {
         console.error("Error fetching posts:", error);
         this.error = "Error fetching posts or shares.";
+        this.isLoading = false;
+      }
+    },
+    async fetchProducts() {
+      try {
+        const response = await axios.get("/products");
+        this.products = response.data.map((product) => ({
+          ...product,
+          profilePhoto: `${import.meta.env.VITE_API_BASE_URL}${
+            product.profilePhoto
+          }`,
+          imageUrl: `${import.meta.env.VITE_API_BASE_URL}${product.imageUrl}`,
+        }));
+        this.isLoading = false;
+      } catch (error) {
+        console.error("Error fetching products:", error);
+        this.error = "Error fetching products.";
         this.isLoading = false;
       }
     },
@@ -202,131 +228,16 @@ export default {
       role="tabpanel"
       aria-labelledby="products-tab"
     >
-      <div class="flex items-center justify-center py-4 md:py-8 flex-wrap pt-5">
-        <button
-          type="button"
-          class="text-white bg-red-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-full text-base font-medium px-5 py-2.5 text-center me-3 mb-3 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:bg-gray-900 dark:focus:ring-blue-800"
-        >
-          All categories
-        </button>
-        <button
-          type="button"
-          class="text-white bg-blue-600 hover:bg-red-800 dark:bg-gray-900 dark:hover:border-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-300 rounded-full text-base font-medium px-5 py-2.5 text-center me-3 mb-3 dark:text-white dark:focus:ring-gray-800"
-        >
-          Graphic Design
-        </button>
-        <button
-          type="button"
-          class="text-white bg-blue-600 hover:bg-red-800 dark:bg-gray-900 dark:hover:border-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-300 rounded-full text-base font-medium px-5 py-2.5 text-center me-3 mb-3 dark:text-white dark:focus:ring-gray-800"
-        >
-          Illustration
-        </button>
-        <button
-          type="button"
-          class="text-white bg-blue-600 hover:bg-red-800 dark:bg-gray-900 dark:hover:border-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-300 rounded-full text-base font-medium px-5 py-2.5 text-center me-3 mb-3 dark:text-white dark:focus:ring-gray-800"
-        >
-          Web Design
-        </button>
-        <button
-          type="button"
-          class="text-white bg-blue-600 hover:bg-red-800 dark:bg-gray-900 dark:hover:border-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-300 rounded-full text-base font-medium px-5 py-2.5 text-center me-3 mb-3 dark:text-white dark:focus:ring-gray-800"
-        >
-          Product Design
-        </button>
-      </div>
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div class="grid gap-4">
-          <div>
-            <img
-              class="h-auto max-w-full rounded-lg"
-              src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image.jpg"
-              alt=""
-            />
-          </div>
-          <div>
-            <img
-              class="h-auto max-w-full rounded-lg"
-              src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-1.jpg"
-              alt=""
-            />
-          </div>
-          <div>
-            <img
-              class="h-auto max-w-full rounded-lg"
-              src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-2.jpg"
-              alt=""
-            />
-          </div>
-        </div>
-        <div class="grid gap-4">
-          <div>
-            <img
-              class="h-auto max-w-full rounded-lg"
-              src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-3.jpg"
-              alt=""
-            />
-          </div>
-          <div>
-            <img
-              class="h-auto max-w-full rounded-lg"
-              src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-4.jpg"
-              alt=""
-            />
-          </div>
-          <div>
-            <img
-              class="h-auto max-w-full rounded-lg"
-              src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-5.jpg"
-              alt=""
-            />
-          </div>
-        </div>
-        <div class="grid gap-4">
-          <div>
-            <img
-              class="h-auto max-w-full rounded-lg"
-              src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-6.jpg"
-              alt=""
-            />
-          </div>
-          <div>
-            <img
-              class="h-auto max-w-full rounded-lg"
-              src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-7.jpg"
-              alt=""
-            />
-          </div>
-          <div>
-            <img
-              class="h-auto max-w-full rounded-lg"
-              src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-8.jpg"
-              alt=""
-            />
-          </div>
-        </div>
-        <div class="grid gap-4">
-          <div>
-            <img
-              class="h-auto max-w-full rounded-lg"
-              src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-9.jpg"
-              alt=""
-            />
-          </div>
-          <div>
-            <img
-              class="h-auto max-w-full rounded-lg"
-              src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-10.jpg"
-              alt=""
-            />
-          </div>
-          <div>
-            <img
-              class="h-auto max-w-full rounded-lg"
-              src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-11.jpg"
-              alt=""
-            />
-          </div>
-        </div>
+      <div v-for="product in products" :key="product.id">
+        <Product
+          :userId="product.userId"
+          :username="product.username"
+          :profilePhoto="product.profilePhoto"
+          :title="product.title"
+          :imageUrl="product.imageUrl"
+          :price="product.price"
+          :productId="product.id"
+        />
       </div>
     </div>
 
