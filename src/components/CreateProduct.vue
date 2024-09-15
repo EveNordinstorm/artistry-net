@@ -17,10 +17,12 @@ export default {
     },
     async createProduct() {
       try {
+        const formattedPrice = parseFloat(this.price).toFixed(2);
+
         const formData = new FormData();
         formData.append("Title", this.title);
         formData.append("ImageUrl", this.imageUrlFile);
-        formData.append("Price", this.price);
+        formData.append("Price", formattedPrice);
 
         const response = await axios.post("/products", formData, {
           headers: {
@@ -78,15 +80,16 @@ export default {
       </div>
     </div>
     <div class="my-3 mt-5">
-      <div
-        class="flex bg-white rounded-md shadow-sm ring-2 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md"
+      <label class="block text-md font-medium leading-6 text-gray-900 mb-1"
+        >Price (in £):</label
       >
-        <textarea
-          class="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 focus:ring-0 sm:text-sm sm:leading-6"
-          v-model="price"
-          placeholder="Price"
-        ></textarea>
-      </div>
+      <input
+        type="number"
+        step="0.01"
+        class="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 focus:ring-0 sm:text-sm sm:leading-6"
+        v-model="price"
+        placeholder="Price"
+      />
     </div>
     <button
       @click="createProduct"

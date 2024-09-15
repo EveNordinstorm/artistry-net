@@ -1,7 +1,6 @@
 <script>
 import { mapGetters, mapMutations } from "vuex";
 import ProfileBanner from "../components/ProfileBanner.vue";
-import Timeline from "../components/Timeline.vue";
 import Product from "../components/Product.vue";
 import Post from "../components/Post.vue";
 import SharedPost from "../components/SharedPost.vue";
@@ -11,7 +10,6 @@ export default {
   name: "Profile",
   components: {
     ProfileBanner,
-    Timeline,
     Product,
     Post,
     SharedPost,
@@ -241,7 +239,6 @@ export default {
         <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Bio</h3>
         <p class="text-base font-normal dark:text-gray-400 py-3">{{ bio }}</p>
       </div>
-      <Timeline />
     </div>
 
     <div

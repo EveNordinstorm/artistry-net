@@ -4,10 +4,6 @@ import axios from "../axios";
 export default {
   name: "Product",
   props: {
-    userId: {
-      type: String,
-      required: true,
-    },
     username: {
       type: String,
       required: true,
@@ -33,37 +29,18 @@ export default {
       required: true,
     },
   },
-
-  data() {
-    return {
-      user: null,
-      error: null,
-    };
+  computed: {
+    formattedPrice() {
+      return new Intl.NumberFormat("en-GB", {
+        style: "currency",
+        currency: "GBP",
+      }).format(this.price);
+    },
   },
   methods: {
-    async fetchUserData() {
-      try {
-        const response = await axios.get(`/account/${this.userId}`);
-        this.user = response.data;
-        console.log("User data fetched successfully:", this.user);
-      } catch (error) {
-        console.error("Error fetching user data from backend:", error);
-        this.error = "Error fetching user data.";
-      }
+    navigateToProfile(username) {
+      this.$router.push({ name: "VisitProfile", params: { username } });
     },
-    async navigateToProfile() {
-      try {
-        this.$router.push({
-          name: "VisitProfile",
-          params: { userId: this.userId },
-        });
-      } catch (error) {
-        console.error("Error navigating to profile:", error);
-      }
-    },
-  },
-  mounted() {
-    this.fetchUserData();
   },
 };
 </script>
@@ -72,7 +49,7 @@ export default {
   <div
     class="w-[50px] bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 p-5 my-5"
   >
-    <div class="flex" @click="navigateToProfile">
+    <div class="flex" @click="navigateToProfile(username)">
       <img
         class="w-14 h-14 object-cover rounded-full"
         :src="profilePhoto"
@@ -86,6 +63,11 @@ export default {
       :src="imageUrl"
       alt="product photo"
     />
-    <p class="pt-3 text-xl">{{ price }}</p>
+    <p class="pt-3 text-2xl font-bold text-blue-900">{{ formattedPrice }}</p>
+    <button
+      class="mt-3 text-lg uppercase bg-gradient-to-br from-red-400 to-blue-500 text-white hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+    >
+      Shop Now
+    </button>
   </div>
 </template>

@@ -13,7 +13,6 @@ export default {
   },
   data() {
     return {
-      user: null,
       postsAndShares: [],
       isLoading: true,
       error: null,
@@ -21,7 +20,6 @@ export default {
   },
   async created() {
     try {
-      await this.fetchUserData();
       await this.fetchPostsAndShares();
     } catch (error) {
       console.error("Error during component creation:", error);
@@ -30,35 +28,6 @@ export default {
     }
   },
   methods: {
-    async fetchUserId(username) {
-      try {
-        const response = await axios.get(
-          `/users/getUserIdByUsername/${username}`
-        );
-        return response.data.id;
-      } catch (error) {
-        console.error("Error fetching user ID from backend:", error);
-        this.error = "Error fetching user ID.";
-        return null;
-      }
-    },
-    async fetchUserData() {
-      try {
-        const userId = await this.fetchUserId(this.username);
-
-        if (userId) {
-          console.log("Fetching user data from backend");
-          const response = await axios.get(`/users/account/${userId}`);
-          this.user = response.data;
-          console.log("User data fetched successfully:", this.user);
-        } else {
-          console.error("User ID is null or undefined.");
-        }
-      } catch (error) {
-        console.error("Error fetching user data from backend:", error);
-        this.error = "Error fetching user data.";
-      }
-    },
     async fetchPostsAndShares() {
       try {
         const [postsResponse, sharesResponse] = await Promise.all([
@@ -135,7 +104,6 @@ export default {
     <div v-for="item in postsAndShares" :key="item.data.id">
       <Post
         v-if="item.type === 'post'"
-        :userId="user.userId"
         :postId="item.data.id"
         :username="item.data.username"
         :profilePhoto="item.data.profilePhoto"
@@ -145,7 +113,6 @@ export default {
       />
       <SharedPost
         v-else-if="item.type === 'share'"
-        :userId="user.userId"
         :shareUsername="item.data.sharer.username"
         :shareUserPhoto="item.data.sharer.profilePhoto"
         :shareDateTime="item.shareDateTime"

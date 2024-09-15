@@ -4,10 +4,6 @@ import axios from "../axios";
 export default {
   name: "Post",
   props: {
-    userId: {
-      type: String,
-      required: true,
-    },
     username: {
       type: String,
       required: true,
@@ -58,25 +54,8 @@ export default {
     },
   },
   methods: {
-    async fetchUserData() {
-      try {
-        const response = await axios.get(`/account/${this.userId}`);
-        this.user = response.data;
-        console.log("User data fetched successfully:", this.user);
-      } catch (error) {
-        console.error("Error fetching user data from backend:", error);
-        this.error = "Error fetching user data.";
-      }
-    },
-    async navigateToProfile(username) {
-      try {
-        const response = await axios.get(`/api/users/${username}`);
-        const userId = response.data.userId;
-
-        this.$router.push({ name: "VisitProfile", params: { userId } });
-      } catch (error) {
-        console.error("Error fetching user ID:", error);
-      }
+    navigateToProfile(username) {
+      this.$router.push({ name: "VisitProfile", params: { username } });
     },
     async toggleLike() {
       try {
@@ -171,7 +150,6 @@ export default {
     },
   },
   mounted() {
-    this.fetchUserData();
     this.fetchComments();
     this.fetchLikeStatus();
     this.fetchShareStatus();
@@ -183,7 +161,7 @@ export default {
   <div
     class="w-[50px] bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 p-5 my-5"
   >
-    <div class="flex" @click="navigateToProfile">
+    <div class="flex" @click="navigateToProfile(username)">
       <img
         class="w-14 h-14 object-cover rounded-full"
         :src="profilePhoto"
