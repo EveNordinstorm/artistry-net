@@ -297,3 +297,7 @@ export default {
     <p v-else>Loading...</p>
   </div>
 </template>
+
+<style scoped>
+/* Add your styles here */
+</style>

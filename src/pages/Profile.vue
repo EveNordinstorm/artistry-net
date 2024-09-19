@@ -41,7 +41,6 @@ export default {
       return relativePath;
     },
     async initUserAndFetchPosts() {
-      // Attempt to retrieve user data from session storage
       let userData;
       try {
         userData = JSON.parse(sessionStorage.getItem("userData"));
@@ -51,7 +50,6 @@ export default {
         return;
       }
 
-      // If user data exists, set it in the Vuex store
       if (userData) {
         this.setUser(userData);
       } else {
@@ -171,6 +169,18 @@ export default {
         this.isLoading = false;
       }
     },
+    async handlePostDeleted(postId) {
+      try {
+        await axios.delete(`/posts/${postId}`, {
+          headers: {
+            Authorization: `Bearer ${sessionStorage.getItem("authToken")}`,
+          },
+        });
+        await this.fetchUserPosts();
+      } catch (error) {
+        console.error("Error deleting post:", error);
+      }
+    },
   },
 };
 </script>
@@ -278,6 +288,8 @@ export default {
             :description="item.data.description"
             :imageUrl="item.data.imageUrl"
             :postId="item.data.id"
+            :canDelete="item.data.username"
+            @postDeleted="handlePostDeleted"
           />
 
           <SharedPost
@@ -291,6 +303,8 @@ export default {
             :originalPostDescription="item.data.postDetails.description"
             :originalPostImageUrl="item.data.postDetails.imageUrl"
             :postId="item.data.postDetails.id"
+            :canDelete="item.data.sharer.username"
+            @postDeleted="handlePostDeleted"
           />
         </div>
       </div>

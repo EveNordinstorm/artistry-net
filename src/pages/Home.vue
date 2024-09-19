@@ -93,6 +93,18 @@ export default {
     handlePostCreated() {
       this.fetchPostsAndShares();
     },
+    async handlePostDeleted(postId) {
+      try {
+        await axios.delete(`/posts/${postId}`, {
+          headers: {
+            Authorization: `Bearer ${sessionStorage.getItem("authToken")}`,
+          },
+        });
+        await this.fetchUserPosts();
+      } catch (error) {
+        console.error("Error deleting post:", error);
+      }
+    },
   },
 };
 </script>
@@ -110,9 +122,12 @@ export default {
         :postDateTime="item.data.postDateTime"
         :description="item.data.description"
         :imageUrl="item.data.imageUrl"
+        :canDelete="item.data.username"
+        @postDeleted="handlePostDeleted"
       />
       <SharedPost
         v-else-if="item.type === 'share'"
+        :originalPostId="item.data.postDetails.id"
         :shareUsername="item.data.sharer.username"
         :shareUserPhoto="item.data.sharer.profilePhoto"
         :shareDateTime="item.shareDateTime"
@@ -121,7 +136,6 @@ export default {
         :originalPostDateTime="item.data.postDetails.postDateTime"
         :originalPostDescription="item.data.postDetails.description"
         :originalPostImageUrl="item.data.postDetails.imageUrl"
-        :postId="item.data.postDetails.id"
       />
     </div>
   </div>

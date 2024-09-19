@@ -22,11 +22,15 @@ export default {
     },
     imageUrl: {
       type: String,
-      required: true,
+      default: null,
     },
     postId: {
       type: Number,
       required: true,
+    },
+    canDelete: {
+      type: Boolean,
+      default: false,
     },
   },
 
@@ -40,8 +44,10 @@ export default {
       newComment: "",
       user: null,
       error: null,
+      showConfirm: false,
     };
   },
+
   computed: {
     formattedDateTime() {
       if (!this.postDateTime) return "Invalid Date";
@@ -53,11 +59,21 @@ export default {
       }).format(date);
     },
   },
+
   methods: {
     navigateToProfile(username) {
-      this.$router.push({ name: "VisitProfile", params: { username } });
+      this.$router.push({
+        name: "VisitProfile",
+        params: { username: this.username },
+      });
     },
+
+    // Toggle like
     async toggleLike() {
+      if (!this.postId) {
+        console.error("Post ID is undefined");
+        return;
+      }
       try {
         if (this.liked) {
           const response = await axios.delete(`/likes/${this.postId}`);
@@ -78,7 +94,12 @@ export default {
         console.error("Error toggling like:", error);
       }
     },
+
     async fetchLikeStatus() {
+      if (!this.postId) {
+        console.error("Post ID is undefined");
+        return;
+      }
       try {
         const response = await axios.get(`/likes/${this.postId}`);
         this.liked = response.data.isLikedByUser;
@@ -86,7 +107,13 @@ export default {
         console.error("Error fetching like status:", error);
       }
     },
+
+    // Toggle share
     async toggleShare() {
+      if (!this.postId) {
+        console.error("Post ID is undefined");
+        return;
+      }
       try {
         if (this.shared) {
           const response = await axios.delete(`/shares/${this.postId}`);
@@ -109,7 +136,12 @@ export default {
         console.error("Error toggling share:", error);
       }
     },
+
     async fetchShareStatus() {
+      if (!this.postId) {
+        console.error("Post ID is undefined");
+        return;
+      }
       try {
         const response = await axios.get(`/shares/${this.postId}`);
         this.shared = response.data.isSharedByUser;
@@ -117,14 +149,59 @@ export default {
         console.error("Error fetching share status:", error);
       }
     },
-    toggleSave() {
-      this.saved = !this.saved;
-      alert(`Post ${this.saved ? "saved" : "unsaved"}`);
+
+    // Toggle save
+    async toggleSave() {
+      if (!this.postId) {
+        console.error("Post ID is undefined");
+        return;
+      }
+      try {
+        if (this.saved) {
+          const response = await axios.delete(`/saves/${this.postId}`);
+          if (response.status === 200) {
+            this.saved = false;
+            alert("Post unsaved");
+          } else {
+            console.error("Failed to remove save");
+          }
+        } else {
+          const response = await axios.post(`/saves`, { postId: this.postId });
+          if (response.status === 200) {
+            this.saved = true;
+            alert("Post saved");
+          } else {
+            console.error("Failed to add save");
+          }
+        }
+      } catch (error) {
+        console.error("Error toggling save:", error);
+      }
     },
+    async fetchSaveStatus() {
+      if (!this.postId) {
+        console.error("Post ID is undefined");
+        return;
+      }
+      try {
+        const response = await axios.get(`/saves/${this.postId}`);
+        this.saved = response.data.isSavedByUser;
+      } catch (error) {
+        console.error("Error fetching save status:", error);
+      }
+    },
+
+    // Toggle comments section
     toggleCommentsSection() {
       this.showCommentsSection = !this.showCommentsSection;
     },
+
+    // Fetch comments
     async fetchComments() {
+      if (!this.postId) {
+        console.error("Post ID is undefined");
+        return;
+      }
       try {
         const response = await axios.get(`/posts/${this.postId}/comments`);
         this.comments = response.data;
@@ -132,15 +209,21 @@ export default {
         console.error("Error fetching comments:", error);
       }
     },
+
+    // Add comment
     async addComment() {
+      if (!this.postId) {
+        console.error("Post ID is undefined");
+        return;
+      }
       try {
         const response = await axios.post(`/posts/${this.postId}/comments`, {
           commentText: this.newComment,
         });
 
         if (response.status === 200) {
+          this.comments.push(response.data);
           this.newComment = "";
-          this.fetchComments();
         } else {
           console.error("Failed to add comment");
         }
@@ -148,11 +231,47 @@ export default {
         console.error("Error:", error);
       }
     },
+
+    // Confirm delete
+    confirmDelete() {
+      this.showConfirm = true;
+    },
+
+    // Delete post
+    async deletePost() {
+      const token = sessionStorage.getItem("authToken");
+      if (!token) {
+        console.error("Auth token is missing.");
+        return;
+      }
+      try {
+        const response = await axios.delete(`/posts/${this.postId}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (response.status === 200) {
+          console.log("Post deleted successfully.");
+          this.$emit("postDeleted");
+          this.showConfirm = false;
+        } else {
+          console.error("Failed to delete the post");
+        }
+      } catch (error) {
+        console.error("Error deleting post:", error);
+      }
+    },
   },
+
+  // Check postId and fetch initial data
   mounted() {
-    this.fetchComments();
-    this.fetchLikeStatus();
-    this.fetchShareStatus();
+    if (!this.postId) {
+      console.error("Post ID is undefined during mounted");
+    } else {
+      console.log("Post ID:", this.postId);
+      this.fetchComments();
+      this.fetchLikeStatus();
+      this.fetchShareStatus();
+      this.fetchSaveStatus();
+    }
   },
 };
 </script>
@@ -171,15 +290,20 @@ export default {
     </div>
     <p class="text-right font-bold">{{ formattedDateTime }}</p>
     <p class="pt-3">{{ description }}</p>
-    <img class="w-96 h-96 object-cover mt-5" :src="imageUrl" alt="post photo" />
+    <img
+      v-if="imageUrl && !imageUrl.endsWith('/images/posts/')"
+      class="w-96 h-96 object-cover mt-5"
+      :src="imageUrl"
+      alt="post photo"
+    />
 
-    <div class="mt-4">
+    <div class="mt-4 flex items-center">
       <button
         @click="toggleLike"
         :class="
           liked ? 'bg-red-600' : 'bg-gradient-to-br from-red-400 to-blue-500'
         "
-        class="text-white hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+        class="text-white hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2"
       >
         <svg
           class="flex-shrink-0 w-5 h-5 text-white"
@@ -201,7 +325,7 @@ export default {
             ? 'bg-blue-600'
             : 'bg-gradient-to-br from-red-400 to-blue-500'
         "
-        class="text-white hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+        class="text-white hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2"
       >
         <svg
           class="flex-shrink-0 w-5 h-5 text-white"
@@ -221,7 +345,7 @@ export default {
         :class="
           shared ? 'bg-blue-600' : 'bg-gradient-to-br from-red-400 to-blue-500'
         "
-        class="text-white hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+        class="text-white hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2"
       >
         <svg
           class="flex-shrink-0 w-5 h-5 text-white"
@@ -238,7 +362,10 @@ export default {
 
       <button
         @click="toggleSave"
-        class="text-white bg-gradient-to-br from-red-400 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+        :class="
+          saved ? 'bg-blue-600' : 'bg-gradient-to-br from-red-400 to-blue-500'
+        "
+        class="text-white hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2"
       >
         <svg
           class="flex-shrink-0 w-5 h-5 text-white"
@@ -253,45 +380,82 @@ export default {
         </svg>
       </button>
 
+      <!-- Delete Button -->
+      <button
+        v-if="canDelete"
+        @click="confirmDelete"
+        class="text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm text-center px-4 py-2.5"
+      >
+        Delete
+      </button>
+
+      <!-- Confirmation Popup -->
       <div
-        v-if="showCommentsSection"
-        class="mt-4 pt-2 border-t border-gray-200 dark:border-gray-700"
+        v-if="showConfirm"
+        class="fixed inset-0 flex items-center justify-center z-50"
       >
         <div
-          v-if="comments.length === 0"
-          class="text-gray-500 dark:text-gray-400 my-4"
+          class="bg-white p-4 border rounded-lg shadow-lg dark:bg-gray-800 dark:border-gray-700"
         >
-          No comments yet
-        </div>
-        <div v-else class="max-h-64 overflow-y-auto mb-4">
-          <ul>
-            <li
-              v-for="comment in comments"
-              :key="comment.id"
-              class="border-b border-gray-200 dark:border-gray-700 pb-2 mb-2"
+          <p class="text-gray-700 dark:text-gray-300">
+            Are you sure you want to delete this post?
+          </p>
+          <div class="mt-4 flex justify-end">
+            <button
+              @click="deletePost"
+              class="text-white bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg"
             >
-              <div class="flex pl-4">
-                <p class="font-semibold">{{ comment.username }}:</p>
-                <p class="pl-2">{{ comment.commentText }}</p>
-              </div>
-            </li>
-          </ul>
+              Delete
+            </button>
+            <button
+              @click="showConfirm = false"
+              class="text-gray-700 dark:text-gray-300 px-4 py-2 rounded-lg ml-2"
+            >
+              Cancel
+            </button>
+          </div>
         </div>
-        <form @submit.prevent="addComment" class="flex">
-          <input
-            v-model="newComment"
-            type="text"
-            placeholder="Add a comment..."
-            class="w-full px-3 py-2 border border-gray-300 rounded-lg dark:border-gray-600 dark:bg-gray-800 dark:text-white"
-          />
-          <button
-            type="submit"
-            class="ml-2 text-white bg-blue-600 hover:bg-blue-600 font-medium rounded-lg text-sm px-4 py-2"
-          >
-            Add
-          </button>
-        </form>
       </div>
+    </div>
+
+    <div
+      v-if="showCommentsSection"
+      class="mt-4 pt-2 border-t border-gray-200 dark:border-gray-700"
+    >
+      <div
+        v-if="comments.length === 0"
+        class="text-gray-500 dark:text-gray-400 my-4"
+      >
+        No comments yet
+      </div>
+      <div v-else class="max-h-64 overflow-y-auto mb-4">
+        <ul>
+          <li
+            v-for="comment in comments"
+            :key="comment.id"
+            class="border-b border-gray-200 dark:border-gray-700 pb-2 mb-2"
+          >
+            <div class="flex pl-4">
+              <p class="font-semibold">{{ comment.username }}:</p>
+              <p class="pl-2">{{ comment.commentText }}</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <form @submit.prevent="addComment" class="flex">
+        <input
+          v-model="newComment"
+          type="text"
+          placeholder="Add a comment..."
+          class="w-full px-3 py-2 border border-gray-300 rounded-lg dark:border-gray-600 dark:bg-gray-800 dark:text-white"
+        />
+        <button
+          type="submit"
+          class="ml-2 text-white bg-blue-600 hover:bg-blue-600 font-medium rounded-lg text-sm px-4 py-2"
+        >
+          Add
+        </button>
+      </form>
     </div>
   </div>
 </template>

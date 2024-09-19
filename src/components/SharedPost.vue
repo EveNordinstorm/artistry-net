@@ -1,5 +1,6 @@
 <script>
 import Post from "./Post.vue";
+import axios from "../axios";
 
 export default {
   name: "SharedPost",
@@ -14,6 +15,14 @@ export default {
     originalPostDescription: { type: String, required: true },
     originalPostImageUrl: { type: String, required: true },
     postId: { type: Number, required: true },
+    canDelete: { type: Boolean, default: false },
+  },
+  data() {
+    return {
+      user: null,
+      error: null,
+      showConfirm: false,
+    };
   },
   computed: {
     formattedShareDateTime() {
@@ -32,6 +41,30 @@ export default {
         ? this.shareUsername
         : this.originalPostUsername;
       this.$router.push({ name: "VisitProfile", params: { username } });
+    },
+    confirmDelete() {
+      this.showConfirm = true;
+    },
+    async deletePost() {
+      const token = sessionStorage.getItem("authToken");
+      if (!token) {
+        console.error("Auth token is missing.");
+        return;
+      }
+      try {
+        const response = await axios.delete(`/posts/${this.postId}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (response.status === 200) {
+          console.log("Post deleted successfully.");
+          this.$emit("postDeleted");
+          this.showConfirm = false;
+        } else {
+          console.error("Failed to delete the post");
+        }
+      } catch (error) {
+        console.error("Error deleting post:", error);
+      }
     },
   },
 };
@@ -59,7 +92,7 @@ export default {
       :postDateTime="originalPostDateTime"
       :description="originalPostDescription"
       :imageUrl="originalPostImageUrl"
-      :postId="postId"
+      :canDelete="originalPostUsername"
       @click="navigateToProfile(false)"
     />
   </div>
