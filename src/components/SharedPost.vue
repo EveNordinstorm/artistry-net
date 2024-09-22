@@ -27,7 +27,6 @@ export default {
     formattedShareDateTime() {
       if (!this.shareDateTime) return "Invalid Date";
       const date = new Date(this.shareDateTime);
-      console.log("Received shareDateTime:", this.shareDateTime);
       if (isNaN(date.getTime())) return "Invalid Date";
       return new Intl.DateTimeFormat("en-US", {
         dateStyle: "medium",

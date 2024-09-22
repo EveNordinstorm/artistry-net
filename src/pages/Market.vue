@@ -35,6 +35,19 @@ export default {
         this.isLoading = false;
       }
     },
+    handleProductDeleted(productId) {
+      this.products = this.products.filter((item) => item.id !== productId);
+    },
+  },
+  mounted() {
+    const authToken = sessionStorage.getItem("authToken");
+    const userData = JSON.parse(sessionStorage.getItem("userData"));
+    if (authToken && userData?.username) {
+      this.currentUser = {
+        token: authToken,
+        username: userData.username,
+      };
+    }
   },
 };
 </script>
@@ -51,6 +64,8 @@ export default {
       :imageUrl="product.imageUrl"
       :price="product.price"
       :productId="product.id"
+      :canDelete="currentUser && product.username === currentUser.username"
+      @productDeleted="handleProductDeleted"
     />
   </div>
 </template>

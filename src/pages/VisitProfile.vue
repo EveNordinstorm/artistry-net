@@ -15,6 +15,7 @@ export default {
   },
   data() {
     return {
+      activeTab: "profile",
       products: [],
       userPosts: [],
       isLoading: true,
@@ -156,49 +157,30 @@ export default {
     />
 
     <div class="mb-4 border-b border-gray-200 dark:border-gray-700">
-      <ul
-        class="flex flex-wrap -mb-px text-sm font-bold text-center text-xl"
-        id="default-styled-tab"
-        data-tabs-toggle="#default-styled-tab-content"
-        data-tabs-active-classes="text-blue-800 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-400 border-blue-800 dark:border-blue-400"
-        data-tabs-inactive-classes="dark:border-transparent text-gray-500 hover:text-gray-600 dark:text-gray-400 border-gray-100 hover:border-gray-300 dark:border-gray-700 dark:hover:text-gray-300"
-        role="tablist"
-      >
-        <li class="me-2" role="presentation">
+      <ul class="flex flex-wrap -mb-px text-sm font-bold text-center text-xl">
+        <li class="me-2">
           <button
             class="inline-block p-4 border-b-2 rounded-t-lg"
-            id="profile-styled-tab"
-            data-tabs-target="#styled-profile"
-            type="button"
-            role="tab"
-            aria-controls="styled-profile"
-            aria-selected="true"
+            :class="{ 'border-blue-800': activeTab === 'profile' }"
+            @click="activeTab = 'profile'"
           >
             Profile
           </button>
         </li>
-        <li class="me-2" role="presentation">
+        <li class="me-2">
           <button
-            class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
-            id="products-styled-tab"
-            data-tabs-target="#styled-products"
-            type="button"
-            role="tab"
-            aria-controls="styled-products"
-            aria-selected="false"
+            class="inline-block p-4 border-b-2 rounded-t-lg"
+            :class="{ 'border-blue-800': activeTab === 'products' }"
+            @click="activeTab = 'products'"
           >
             Products
           </button>
         </li>
-        <li class="me-2" role="presentation">
+        <li class="me-2">
           <button
-            class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
-            id="posts-styled-tab"
-            data-tabs-target="#styled-posts"
-            type="button"
-            role="tab"
-            aria-controls="styled-posts"
-            aria-selected="false"
+            class="inline-block p-4 border-b-2 rounded-t-lg"
+            :class="{ 'border-blue-800': activeTab === 'posts' }"
+            @click="activeTab = 'posts'"
           >
             Posts
           </button>
@@ -206,29 +188,18 @@ export default {
       </ul>
     </div>
 
-    <div id="default-styled-tab-content">
+    <div>
       <!-- Profile Tab -->
       <div
-        class="hidden"
-        id="styled-profile"
-        role="tabpanel"
-        aria-labelledby="profile-styled-tab"
+        v-if="activeTab === 'profile'"
+        class="p-4 rounded-lg bg-gray-50 dark:bg-gray-800"
       >
-        <div class="p-4 rounded-lg bg-gray-50 dark:bg-gray-800">
-          <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-            Bio
-          </h3>
-          <p class="text-base font-normal dark:text-gray-400 py-3">{{ bio }}</p>
-        </div>
+        <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Bio</h3>
+        <p class="text-base font-normal dark:text-gray-400 py-3">{{ bio }}</p>
       </div>
 
       <!-- Products Tab -->
-      <div
-        class="hidden"
-        id="styled-products"
-        role="tabpanel"
-        aria-labelledby="products-styled-tab"
-      >
+      <div v-if="activeTab === 'products'">
         <div v-if="products.length">
           <div v-for="product in products" :key="product.id">
             <Product
@@ -248,12 +219,7 @@ export default {
       </div>
 
       <!-- Posts Tab -->
-      <div
-        class="hidden"
-        id="styled-posts"
-        role="tabpanel"
-        aria-labelledby="posts-styled-tab"
-      >
+      <div v-if="activeTab === 'posts'">
         <div v-if="userPosts.length">
           <div v-for="item in userPosts" :key="item.data.id">
             <Post
@@ -267,20 +233,21 @@ export default {
               :postDateTime="item.data.postDateTime"
             />
             <SharedPost
-              v-if="item.type === 'share'"
-              :sharerUsername="item.data.sharer.username"
-              :sharerProfilePhoto="
+              v-else-if="item.type === 'share'"
+              :shareUsername="item.data.sharer.username"
+              :shareUserPhoto="
                 constructAbsoluteUrl(item.data.sharer.profilePhoto)
               "
-              :originalPostUsername="item.data.postDetails.username"
+              :originalPostUsername="item.data.originalPost.username"
               :originalPostProfilePhoto="
-                constructAbsoluteUrl(item.data.postDetails.profilePhoto)
+                constructAbsoluteUrl(item.data.originalPost.profilePhoto)
               "
               :originalPostImageUrl="
-                constructAbsoluteUrl(item.data.postDetails.imageUrl)
+                constructAbsoluteUrl(item.data.originalPost.imageUrl)
               "
-              :originalPostDescription="item.data.postDetails.description"
-              :originalPostId="item.data.postDetails.id"
+              :originalPostDescription="item.data.originalPost.description"
+              :originalPostId="item.data.originalPost.id"
+              :originalPostDateTime="item.data.originalPost.postDateTime"
               :shareDateTime="item.shareDateTime"
             />
           </div>
@@ -297,7 +264,3 @@ export default {
     <p v-else>Loading...</p>
   </div>
 </template>
-
-<style scoped>
-/* Add your styles here */
-</style>

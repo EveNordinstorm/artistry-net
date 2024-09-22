@@ -28,6 +28,20 @@ export default {
       type: Number,
       required: true,
     },
+    userId: {
+      type: String,
+      required: true,
+    },
+    canDelete: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  data() {
+    return {
+      user: null,
+      showConfirm: false,
+    };
   },
   computed: {
     formattedPrice() {
@@ -40,6 +54,32 @@ export default {
   methods: {
     navigateToProfile(username) {
       this.$router.push({ name: "VisitProfile", params: { username } });
+    },
+    // Confirm delete
+    confirmDelete() {
+      this.showConfirm = true;
+    },
+
+    // Delete product
+    async deleteProduct() {
+      const token = sessionStorage.getItem("authToken");
+      if (!token) {
+        console.error("Auth token is missing.");
+        return;
+      }
+      try {
+        const response = await axios.delete(`/products/${this.productId}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (response.status === 200) {
+          this.$emit("productDeleted", this.productId);
+          this.showConfirm = false;
+        } else {
+          console.error("Failed to delete the product");
+        }
+      } catch (error) {
+        console.error("Error deleting product:", error);
+      }
     },
   },
 };
@@ -69,5 +109,41 @@ export default {
     >
       Shop Now
     </button>
+    <!-- Delete Button -->
+    <button
+      v-if="canDelete"
+      @click="confirmDelete"
+      class="text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm text-center px-4 py-2.5"
+    >
+      Delete
+    </button>
+
+    <!-- Confirmation Popup -->
+    <div
+      v-if="showConfirm"
+      class="fixed inset-0 flex items-center justify-center z-50"
+    >
+      <div
+        class="bg-white p-4 border rounded-lg shadow-lg dark:bg-gray-800 dark:border-gray-700"
+      >
+        <p class="text-gray-700 dark:text-gray-300">
+          Are you sure you want to delete this product?
+        </p>
+        <div class="mt-4 flex justify-end">
+          <button
+            @click="deleteProduct"
+            class="text-white bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg"
+          >
+            Delete
+          </button>
+          <button
+            @click="showConfirm = false"
+            class="text-gray-700 dark:text-gray-300 px-4 py-2 rounded-lg ml-2"
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>

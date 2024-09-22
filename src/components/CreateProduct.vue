@@ -31,7 +31,7 @@ export default {
         });
 
         if (response.status === 200) {
-          this.message = "Product listing created successfully";
+          this.message = "Product listing added to Market";
           this.$emit("productCreated");
         } else {
           this.message = "Failed to create product listing";
