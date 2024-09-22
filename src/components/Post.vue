@@ -68,6 +68,16 @@ export default {
       });
     },
 
+    getAuthToken() {
+      const token = sessionStorage.getItem("authToken");
+      if (!token) {
+        console.error("Auth token is missing.");
+        alert("Authentication required to perform this action.");
+        return null;
+      }
+      return token;
+    },
+
     // Toggle like
     async toggleLike() {
       if (!this.postId) {
@@ -114,20 +124,89 @@ export default {
         console.error("Post ID is undefined");
         return;
       }
+
       try {
         if (this.shared) {
-          const response = await axios.delete(`/shares/${this.postId}`);
-          if (response.status === 200) {
+          const response = await axios.delete(`/shares/${this.postId}`, {
+            headers: {
+              Authorization: `Bearer ${sessionStorage.getItem("authToken")}`,
+            },
+          });
+
+          if (response.status === 200 || response.status === 204) {
             this.shared = false;
             alert("Post unshared");
+
+            this.$emit("shareRemoved", this.postId);
           } else {
             console.error("Failed to unshare the post");
           }
         } else {
-          const response = await axios.post(`/shares`, { postId: this.postId });
+          const response = await axios.post(
+            `/shares`,
+            { postId: this.postId },
+            {
+              headers: {
+                Authorization: `Bearer ${sessionStorage.getItem("authToken")}`,
+              },
+            }
+          );
+
+          console.log("Share creation response:", response.data);
+
           if (response.status === 200) {
             this.shared = true;
             alert("Post shared");
+
+            const shareId = response.data.id;
+            if (!shareId) {
+              console.error("Share ID is missing from response");
+              return;
+            }
+
+            try {
+              const shareResponse = await axios.get(`/shares/${shareId}`);
+              const shareData = shareResponse.data;
+
+              console.log("Share Data Response:", shareData);
+
+              if (shareData) {
+                const newShare = {
+                  id: shareData.id,
+                  sharer: {
+                    username: shareData.sharer.username,
+                    profilePhoto: `${import.meta.env.VITE_API_BASE_URL}${
+                      shareData.sharer.profilePhoto
+                    }`,
+                  },
+                  postDetails: {
+                    id: shareData.originalPost.id,
+                    username: shareData.originalPost.username,
+                    description: shareData.originalPost.description,
+                    profilePhoto: `${import.meta.env.VITE_API_BASE_URL}${
+                      shareData.originalPost.profilePhoto
+                    }`,
+                    imageUrl: shareData.originalPost.imageUrl
+                      ? `${import.meta.env.VITE_API_BASE_URL}${
+                          shareData.originalPost.imageUrl
+                        }`
+                      : null,
+                    postDateTime: shareData.originalPost.postDateTime,
+                  },
+                  shareDateTime: shareData.shareDateTime,
+                };
+
+                console.log("Emitting new share:", newShare);
+                this.$emit("shareCreated", {
+                  ...newShare,
+                  shareDateTime: new Date(newShare.shareDateTime).toISOString(),
+                });
+              } else {
+                console.error("No share data received");
+              }
+            } catch (fetchError) {
+              console.error("Error fetching share details:", fetchError);
+            }
           } else {
             console.error("Failed to share the post");
           }
@@ -136,14 +215,13 @@ export default {
         console.error("Error toggling share:", error);
       }
     },
-
     async fetchShareStatus() {
       if (!this.postId) {
         console.error("Post ID is undefined");
         return;
       }
       try {
-        const response = await axios.get(`/shares/${this.postId}`);
+        const response = await axios.get(`/shares/share-status/${this.postId}`);
         this.shared = response.data.isSharedByUser;
       } catch (error) {
         console.error("Error fetching share status:", error);
@@ -250,7 +328,7 @@ export default {
         });
         if (response.status === 200) {
           console.log("Post deleted successfully.");
-          this.$emit("postDeleted");
+          this.$emit("postDeleted", this.postId);
           this.showConfirm = false;
         } else {
           console.error("Failed to delete the post");
@@ -263,14 +341,13 @@ export default {
 
   // Check postId and fetch initial data
   mounted() {
-    if (!this.postId) {
-      console.error("Post ID is undefined during mounted");
-    } else {
-      console.log("Post ID:", this.postId);
+    if (this.postId) {
       this.fetchComments();
       this.fetchLikeStatus();
       this.fetchShareStatus();
       this.fetchSaveStatus();
+    } else {
+      console.error("Post ID is undefined during mounted");
     }
   },
 };

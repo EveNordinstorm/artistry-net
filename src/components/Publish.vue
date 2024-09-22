@@ -8,6 +8,17 @@ export default {
     CreatePost,
     CreateProduct,
   },
+  methods: {
+    handlePostCreated(newPost) {
+      this.$emit("postCreated", {
+        id: newPost.id,
+        username: newPost.username,
+        description: newPost.description,
+        profilePhoto: newPost.profilePhoto,
+        imageUrl: newPost.imageUrl,
+      });
+    },
+  },
 };
 </script>
 
@@ -56,7 +67,7 @@ export default {
           role="tabpanel"
           aria-labelledby="post-tab"
         >
-          <CreatePost />
+          <CreatePost @postCreated="handlePostCreated" />
         </div>
         <div
           class="hidden bg-white rounded-lg dark:bg-gray-800"

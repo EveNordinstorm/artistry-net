@@ -13,6 +13,7 @@ export default {
   },
   data() {
     return {
+      currentUser: null,
       postsAndShares: [],
       isLoading: true,
       error: null,
@@ -90,21 +91,85 @@ export default {
         this.isLoading = false;
       }
     },
-    handlePostCreated() {
-      this.fetchPostsAndShares();
+    handlePostCreated(newPost) {
+      const post = {
+        type: "post",
+        data: {
+          id: newPost.id,
+          username: newPost.username,
+          description: newPost.description,
+          profilePhoto: newPost.profilePhoto,
+          imageUrl: newPost.imageUrl,
+          postDateTime: new Date().toISOString(),
+        },
+        date: new Date(),
+      };
+      this.postsAndShares.unshift(post);
     },
-    async handlePostDeleted(postId) {
-      try {
-        await axios.delete(`/posts/${postId}`, {
-          headers: {
-            Authorization: `Bearer ${sessionStorage.getItem("authToken")}`,
+    handlePostDeleted(postId) {
+      console.log("Removing post with ID:", postId);
+
+      this.postsAndShares = this.postsAndShares.filter((item) => {
+        if (item.type === "share") {
+          return item.data.postDetails.id !== postId;
+        } else {
+          return item.data.id !== postId;
+        }
+      });
+
+      console.log(
+        "Updated posts and shares after post deletion:",
+        this.postsAndShares
+      );
+    },
+    handleShareCreated(newShare) {
+      console.log("New share received:", newShare);
+      console.log("Original post:", newShare.originalPost);
+      console.log("Post details:", newShare.postDetails);
+      const share = {
+        type: "share",
+        data: {
+          id: newShare.id,
+          sharer: {
+            username: newShare.sharer.username,
+            profilePhoto: newShare.sharer.profilePhoto,
           },
-        });
-        await this.fetchUserPosts();
-      } catch (error) {
-        console.error("Error deleting post:", error);
-      }
+          postDetails: {
+            id: newShare.postDetails.id,
+            username: newShare.postDetails.username,
+            description: newShare.postDetails.description,
+            profilePhoto: newShare.postDetails.profilePhoto,
+            imageUrl: newShare.postDetails.imageUrl,
+            postDateTime: newShare.postDetails.postDateTime,
+          },
+          shareDateTime: new Date(newShare.shareDateTime).toISOString(),
+        },
+        date: new Date(newShare.shareDateTime).toISOString(),
+      };
+      this.postsAndShares.unshift(share);
+      console.log("Updated posts and shares:", this.postsAndShares);
     },
+    handleShareRemoved(postId) {
+      console.log("Removing share for post ID:", postId);
+      this.postsAndShares = this.postsAndShares.filter(
+        (item) =>
+          !(item.type === "share" && item.data.postDetails.id === postId)
+      );
+      console.log(
+        "Updated posts and shares after removal:",
+        this.postsAndShares
+      );
+    },
+  },
+  mounted() {
+    const authToken = sessionStorage.getItem("authToken");
+    const userData = JSON.parse(sessionStorage.getItem("userData"));
+    if (authToken && userData?.username) {
+      this.currentUser = {
+        token: authToken,
+        username: userData.username,
+      };
+    }
   },
 };
 </script>
@@ -122,11 +187,14 @@ export default {
         :postDateTime="item.data.postDateTime"
         :description="item.data.description"
         :imageUrl="item.data.imageUrl"
-        :canDelete="item.data.username"
+        :canDelete="currentUser && item.data.username === currentUser.username"
         @postDeleted="handlePostDeleted"
+        @shareCreated="handleShareCreated"
+        @shareRemoved="handleShareRemoved"
       />
       <SharedPost
         v-else-if="item.type === 'share'"
+        :shareId="item.data.id"
         :originalPostId="item.data.postDetails.id"
         :shareUsername="item.data.sharer.username"
         :shareUserPhoto="item.data.sharer.profilePhoto"
@@ -136,6 +204,8 @@ export default {
         :originalPostDateTime="item.data.postDetails.postDateTime"
         :originalPostDescription="item.data.postDetails.description"
         :originalPostImageUrl="item.data.postDetails.imageUrl"
+        @postDeleted="removePost(item.data.postDetails.id)"
+        @shareRemoved="removeShare(item.data.id)"
       />
     </div>
   </div>

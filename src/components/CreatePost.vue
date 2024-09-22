@@ -28,9 +28,30 @@ export default {
           },
         });
 
+        console.log("API Response for Posts:", response.data);
+
         if (response.status === 200) {
           this.message = "Post created successfully";
-          this.$emit("postCreated");
+
+          const createdPostResponse = await axios.get(
+            `/posts/${response.data.id}`
+          );
+          const createdPostData = createdPostResponse.data;
+          this.$emit("postCreated", {
+            id: createdPostData.id,
+            username: createdPostData.username,
+            description: createdPostData.description,
+            profilePhoto: `${import.meta.env.VITE_API_BASE_URL}${
+              createdPostData.profilePhoto
+            }`,
+            imageUrl: `${import.meta.env.VITE_API_BASE_URL}${
+              createdPostData.imageUrl
+            }`,
+            postDateTime: createdPostData.postDateTime,
+          });
+
+          this.description = "";
+          this.imageUrlFile = null;
         } else {
           this.message = "Failed to create post";
         }

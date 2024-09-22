@@ -14,8 +14,7 @@ export default {
     originalPostDateTime: { type: String, required: true },
     originalPostDescription: { type: String, required: true },
     originalPostImageUrl: { type: String, required: true },
-    postId: { type: Number, required: true },
-    canDelete: { type: Boolean, default: false },
+    originalPostId: { type: Number },
   },
   data() {
     return {
@@ -28,6 +27,7 @@ export default {
     formattedShareDateTime() {
       if (!this.shareDateTime) return "Invalid Date";
       const date = new Date(this.shareDateTime);
+      console.log("Received shareDateTime:", this.shareDateTime);
       if (isNaN(date.getTime())) return "Invalid Date";
       return new Intl.DateTimeFormat("en-US", {
         dateStyle: "medium",
@@ -42,29 +42,15 @@ export default {
         : this.originalPostUsername;
       this.$router.push({ name: "VisitProfile", params: { username } });
     },
-    confirmDelete() {
+    confirmUnshare() {
       this.showConfirm = true;
     },
-    async deletePost() {
-      const token = sessionStorage.getItem("authToken");
-      if (!token) {
-        console.error("Auth token is missing.");
-        return;
-      }
-      try {
-        const response = await axios.delete(`/posts/${this.postId}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        if (response.status === 200) {
-          console.log("Post deleted successfully.");
-          this.$emit("postDeleted");
-          this.showConfirm = false;
-        } else {
-          console.error("Failed to delete the post");
-        }
-      } catch (error) {
-        console.error("Error deleting post:", error);
-      }
+    async unsharePost() {
+      await axios.delete(`/shares/${this.shareId}`);
+      this.$emit("shareRemoved", this.shareId);
+    },
+    handlePostDeleted(postId) {
+      this.$emit("postDeleted", postId);
     },
   },
 };
@@ -92,8 +78,7 @@ export default {
       :postDateTime="originalPostDateTime"
       :description="originalPostDescription"
       :imageUrl="originalPostImageUrl"
-      :canDelete="originalPostUsername"
-      @click="navigateToProfile(false)"
+      :postId="originalPostId"
     />
   </div>
 </template>
