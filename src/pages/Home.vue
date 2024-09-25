@@ -107,8 +107,6 @@ export default {
       this.postsAndShares.unshift(post);
     },
     handlePostDeleted(postId) {
-      console.log("Removing post with ID:", postId);
-
       this.postsAndShares = this.postsAndShares.filter((item) => {
         if (item.type === "share") {
           return item.data.postDetails.id !== postId;
@@ -116,16 +114,8 @@ export default {
           return item.data.id !== postId;
         }
       });
-
-      console.log(
-        "Updated posts and shares after post deletion:",
-        this.postsAndShares
-      );
     },
     handleShareCreated(newShare) {
-      console.log("New share received:", newShare);
-      console.log("Original post:", newShare.originalPost);
-      console.log("Post details:", newShare.postDetails);
       const share = {
         type: "share",
         data: {
@@ -147,17 +137,11 @@ export default {
         date: new Date(newShare.shareDateTime).toISOString(),
       };
       this.postsAndShares.unshift(share);
-      console.log("Updated posts and shares:", this.postsAndShares);
     },
     handleShareRemoved(postId) {
-      console.log("Removing share for post ID:", postId);
       this.postsAndShares = this.postsAndShares.filter(
         (item) =>
           !(item.type === "share" && item.data.postDetails.id === postId)
-      );
-      console.log(
-        "Updated posts and shares after removal:",
-        this.postsAndShares
       );
     },
   },

@@ -1,4 +1,8 @@
 <script>
+import { mapState, mapActions } from "vuex";
+import axios from "../axios";
+import { decodeToken } from "../utilities/JwtHelper";
+
 export default {
   name: "VisitProfileBanner",
   props: {
@@ -6,6 +10,103 @@ export default {
     profilePhoto: {
       type: String,
       default: "../assets/artistry-net-logo-11.jpg",
+    },
+  },
+  computed: {
+    ...mapState(["followerCounts"]),
+    followingCount() {
+      return this.followerCounts[this.username]?.followingCount || 0;
+    },
+    followersCount() {
+      return this.followerCounts[this.username]?.followersCount || 0;
+    },
+    isFollowing() {
+      return this.$store.getters.isFollowing(this.username);
+    },
+  },
+  created() {
+    this.fetchUserCounts();
+  },
+  methods: {
+    ...mapActions(["setFollowing", "setFollowerCounts"]),
+    async toggleFollow() {
+      try {
+        const token = sessionStorage.getItem("authToken");
+        const decodedToken = decodeToken(token);
+
+        if (!decodedToken || !decodedToken.userId) {
+          throw new Error("User ID not found in token");
+        }
+
+        const response = await axios.get(
+          `/account/getUserDetailsByUsername/${this.username}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        const followedId = response.data.id;
+
+        if (this.following) {
+          await axios.delete(`/followers/${followedId}`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+          this.setFollowing({ username: this.username, isFollowing: false });
+          this.$store.dispatch("updateFollowerCounts", {
+            username: this.username,
+            type: "decrement",
+          });
+        } else {
+          const existingFollowResponse = await axios.get(
+            `/followers/check?followerId=${decodedToken.userId}&followedId=${followedId}`
+          );
+          if (!existingFollowResponse.data.exists) {
+            await axios.post(
+              `/followers`,
+              { followedID: followedId },
+              {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            );
+            this.setFollowing({ username: this.username, isFollowing: true });
+            this.$store.dispatch("updateFollowerCounts", {
+              username: this.username,
+              type: "increment",
+            });
+          }
+        }
+        this.following = !this.following;
+        this.$store.dispatch("setFollowing", {
+          username: this.username,
+          isFollowing: this.following,
+        });
+        sessionStorage.setItem(
+          "followingStates",
+          JSON.stringify(this.$store.state.followingStates)
+        );
+      } catch (error) {
+        console.error("Error toggling follow status:", error);
+      }
+    },
+    async fetchUserCounts() {
+      try {
+        const response = await axios.get(`/followers/${this.username}/counts`, {
+          headers: {
+            Authorization: `Bearer ${this.authToken}`,
+          },
+        });
+        this.setFollowerCounts({
+          username: this.username,
+          counts: response.data,
+        });
+      } catch (error) {
+        console.error("Error fetching follow counts:", error);
+      }
     },
   },
 };
@@ -29,31 +130,26 @@ export default {
       </div>
     </div>
     <div class="bg-red-600 p-5 flex justify-between mb-10">
-      <h1 class="text-white font-bold text-3xl">{{ username }}</h1>
-      <a href="#">
-        <button
-          class="bg-white hover:bg-blue-700 hover:text-white rounded-full px-8 m-2"
-        >
-          Follow
-        </button>
-      </a>
       <div>
-        <a href="/friends">
-          <button
-            class="bg-white hover:bg-blue-700 hover:text-white rounded-full px-8 m-2"
-          >
-            <p class="text-2xl font-medium">2000</p>
-            <p class="font-medium">Following</p>
-          </button>
-        </a>
-        <a href="/friends">
-          <button
-            class="bg-white hover:bg-blue-700 hover:text-white rounded-full px-8 mx-2"
-          >
-            <p class="text-2xl font-medium">20K</p>
-            <p class="font-medium">Followers</p>
-          </button>
-        </a>
+        <h1 class="text-white font-bold text-3xl">{{ username }}</h1>
+
+        <button
+          class="mt-3 text-white text-xl bg-gradient-to-br from-red-400 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2"
+          @click="toggleFollow"
+        >
+          {{ $store.getters.isFollowing(username) ? "Following" : "Follow" }}
+        </button>
+      </div>
+
+      <div class="text-white text-center">
+        <div>
+          <p class="text-2xl font-medium">{{ followingCount }}</p>
+          <p class="font-medium">Following</p>
+        </div>
+        <div>
+          <p class="text-2xl font-medium">{{ followersCount }}</p>
+          <p class="font-medium">Followers</p>
+        </div>
       </div>
     </div>
   </div>

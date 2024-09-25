@@ -152,8 +152,6 @@ export default {
             }
           );
 
-          console.log("Share creation response:", response.data);
-
           if (response.status === 200) {
             this.shared = true;
             alert("Post shared");
@@ -167,8 +165,6 @@ export default {
             try {
               const shareResponse = await axios.get(`/shares/${shareId}`);
               const shareData = shareResponse.data;
-
-              console.log("Share Data Response:", shareData);
 
               if (shareData) {
                 const newShare = {
@@ -196,7 +192,6 @@ export default {
                   shareDateTime: shareData.shareDateTime,
                 };
 
-                console.log("Emitting new share:", newShare);
                 this.$emit("shareCreated", {
                   ...newShare,
                   shareDateTime: new Date(newShare.shareDateTime).toISOString(),
@@ -294,19 +289,24 @@ export default {
         console.error("Post ID is undefined");
         return;
       }
+
       try {
         const response = await axios.post(`/posts/${this.postId}/comments`, {
           commentText: this.newComment,
         });
 
         if (response.status === 200) {
-          this.comments.push(response.data);
+          const commentsResponse = await axios.get(
+            `/posts/${this.postId}/comments`
+          );
+          this.comments = commentsResponse.data;
+
           this.newComment = "";
         } else {
           console.error("Failed to add comment");
         }
       } catch (error) {
-        console.error("Error:", error);
+        console.error("Error adding comment:", error);
       }
     },
 
@@ -327,7 +327,6 @@ export default {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (response.status === 200) {
-          console.log("Post deleted successfully.");
           this.$emit("postDeleted", this.postId);
           this.showConfirm = false;
         } else {
@@ -505,6 +504,7 @@ export default {
       >
         No comments yet
       </div>
+
       <div v-else class="max-h-64 overflow-y-auto mb-4">
         <ul>
           <li
@@ -512,23 +512,24 @@ export default {
             :key="comment.id"
             class="border-b border-gray-200 dark:border-gray-700 pb-2 mb-2"
           >
-            <div class="flex pl-4">
+            <div class="flex items-start pl-4">
               <p class="font-semibold">{{ comment.username }}:</p>
-              <p class="pl-2">{{ comment.commentText }}</p>
+              <p class="pl-2 break-words">{{ comment.commentText }}</p>
             </div>
           </li>
         </ul>
       </div>
-      <form @submit.prevent="addComment" class="flex">
+
+      <form @submit.prevent="addComment" class="flex items-center">
         <input
           v-model="newComment"
           type="text"
           placeholder="Add a comment..."
-          class="w-full px-3 py-2 border border-gray-300 rounded-lg dark:border-gray-600 dark:bg-gray-800 dark:text-white"
+          class="w-full px-3 py-2 border border-gray-300 rounded-lg dark:border-gray-600 dark:bg-gray-800 dark:text-white focus:outline-none focus:ring focus:border-blue-300"
         />
         <button
           type="submit"
-          class="ml-2 text-white bg-blue-600 hover:bg-blue-600 font-medium rounded-lg text-sm px-4 py-2"
+          class="ml-2 text-white bg-blue-600 hover:bg-blue-700 font-medium rounded-lg text-sm px-4 py-2 focus:outline-none focus:ring focus:ring-blue-300"
         >
           Add
         </button>

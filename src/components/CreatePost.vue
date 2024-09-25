@@ -28,8 +28,6 @@ export default {
           },
         });
 
-        console.log("API Response for Posts:", response.data);
-
         if (response.status === 200) {
           this.message = "Post created successfully";
 

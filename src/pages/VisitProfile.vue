@@ -4,6 +4,7 @@ import Product from "../components/Product.vue";
 import Post from "../components/Post.vue";
 import SharedPost from "../components/SharedPost.vue";
 import axios from "../axios";
+import { mapGetters } from "vuex";
 
 export default {
   name: "VisitProfile",
@@ -22,11 +23,16 @@ export default {
       error: null,
       user: null,
       username: "",
+      currentUser: JSON.parse(sessionStorage.getItem("userData")) || null,
     };
   },
   computed: {
+    ...mapGetters(["isFollowing"]),
     bio() {
       return this.user?.bio || "No bio available";
+    },
+    authToken() {
+      return this.currentUser?.token;
     },
   },
   created() {
@@ -154,6 +160,7 @@ export default {
     <VisitProfileBanner
       :username="user.username"
       :profilePhoto="constructAbsoluteUrl(user.profilePhoto)"
+      :isFollowing="isFollowing(user.username)"
     />
 
     <div class="mb-4 border-b border-gray-200 dark:border-gray-700">
@@ -253,7 +260,7 @@ export default {
           </div>
         </div>
         <div v-else>
-          <p>No posts or shares available.</p>
+          <p>No posts or shares yet.</p>
         </div>
       </div>
     </div>

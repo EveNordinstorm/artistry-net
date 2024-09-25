@@ -16,6 +16,7 @@ export default {
   },
   data() {
     return {
+      currentUser: null,
       products: [],
       userPosts: [],
       isLoading: true,
@@ -52,6 +53,7 @@ export default {
 
       if (userData) {
         this.setUser(userData);
+        await this.$store.dispatch("fetchFollowerCounts", userData.username);
       } else {
         this.error = "User data is not available.";
         this.isLoading = false;
@@ -77,9 +79,6 @@ export default {
             headers: { Authorization: `Bearer ${token}` },
           }),
         ]);
-
-        console.log("Posts response:", postsResponse.data);
-        console.log("Shares response:", sharesResponse.data);
 
         const posts = postsResponse.data.map((post) => ({
           type: "post",
@@ -134,7 +133,6 @@ export default {
           .filter((share) => share !== null);
 
         this.userPosts = [...posts, ...shares].sort((a, b) => b.date - a.date);
-        console.log("Combined user posts:", this.userPosts);
         this.isLoading = false;
       } catch (error) {
         console.error("Error fetching user posts or shares:", error);
@@ -155,8 +153,6 @@ export default {
           headers: { Authorization: `Bearer ${token}` },
         });
 
-        console.log("Products response:", productsResponse.data);
-
         this.products = productsResponse.data.map((product) => ({
           ...product,
           profilePhoto: this.constructAbsoluteUrl(product.profilePhoto),
@@ -169,18 +165,34 @@ export default {
         this.isLoading = false;
       }
     },
-    async handlePostDeleted(postId) {
-      try {
-        await axios.delete(`/posts/${postId}`, {
-          headers: {
-            Authorization: `Bearer ${sessionStorage.getItem("authToken")}`,
-          },
-        });
-        await this.fetchUserPosts();
-      } catch (error) {
-        console.error("Error deleting post:", error);
-      }
+    handleProductDeleted(productId) {
+      this.products = this.products.filter((item) => item.id !== productId);
     },
+    handlePostDeleted(postId) {
+      this.userPosts = this.userPosts.filter((item) => {
+        if (item.type === "share") {
+          return item.data.postDetails.id !== postId;
+        } else {
+          return item.data.id !== postId;
+        }
+      });
+    },
+    handleShareRemoved(postId) {
+      this.userPosts = this.userPosts.filter(
+        (item) =>
+          !(item.type === "share" && item.data.postDetails.id === postId)
+      );
+    },
+  },
+  mounted() {
+    const authToken = sessionStorage.getItem("authToken");
+    const userData = JSON.parse(sessionStorage.getItem("userData"));
+    if (authToken && userData?.username) {
+      this.currentUser = {
+        token: authToken,
+        username: userData.username,
+      };
+    }
   },
 };
 </script>
@@ -257,16 +269,25 @@ export default {
       role="tabpanel"
       aria-labelledby="products-tab"
     >
-      <div v-for="product in products" :key="product.id">
-        <Product
-          :userId="product.userId"
-          :username="product.username"
-          :profilePhoto="product.profilePhoto"
-          :title="product.title"
-          :imageUrl="product.imageUrl"
-          :price="product.price"
-          :productId="product.id"
-        />
+      <div v-if="products.length">
+        <div v-for="product in products" :key="product.id">
+          <Product
+            :userId="product.userId"
+            :username="product.username"
+            :profilePhoto="product.profilePhoto"
+            :title="product.title"
+            :imageUrl="product.imageUrl"
+            :price="product.price"
+            :productId="product.id"
+            :canDelete="
+              currentUser && product.username === currentUser.username
+            "
+            @productDeleted="handleProductDeleted"
+          />
+        </div>
+      </div>
+      <div v-else>
+        <p>No products available.</p>
       </div>
     </div>
 
@@ -276,9 +297,7 @@ export default {
       role="tabpanel"
       aria-labelledby="posts-tab"
     >
-      <div v-if="isLoading" class="loading-indicator">Loading...</div>
-
-      <div v-else>
+      <div v-if="userPosts.length">
         <div v-for="item in userPosts" :key="item.data.id">
           <Post
             v-if="item.type === 'post'"
@@ -288,8 +307,11 @@ export default {
             :description="item.data.description"
             :imageUrl="item.data.imageUrl"
             :postId="item.data.id"
-            :canDelete="item.data.username"
+            :canDelete="
+              currentUser && item.data.username === currentUser.username
+            "
             @postDeleted="handlePostDeleted"
+            @shareRemoved="handleShareRemoved"
           />
 
           <SharedPost
@@ -302,11 +324,14 @@ export default {
             :originalPostDateTime="item.data.postDetails.postDateTime"
             :originalPostDescription="item.data.postDetails.description"
             :originalPostImageUrl="item.data.postDetails.imageUrl"
-            :postId="item.data.postDetails.id"
-            :canDelete="item.data.sharer.username"
-            @postDeleted="handlePostDeleted"
+            :originalPostId="item.data.postDetails.id"
+            @postDeleted="removePost(item.data.postDetails.id)"
+            @shareRemoved="removeShare(item.data.id)"
           />
         </div>
+      </div>
+      <div v-else>
+        <p>No posts or shares yet.</p>
       </div>
     </div>
   </div>

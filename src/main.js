@@ -48,6 +48,8 @@ const app = createApp(App);
 app.use(store);
 app.use(router);
 
+store.dispatch("initializeFollowingStates");
+
 const token = sessionStorage.getItem("authToken");
 const userData = sessionStorage.getItem("userData");
 
