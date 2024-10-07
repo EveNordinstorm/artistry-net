@@ -7,7 +7,7 @@ export default {
   data() {
     return {
       form: {
-        username: "",
+        userName: "",
         password: "",
       },
       message: "",
@@ -21,9 +21,10 @@ export default {
 
         const userData = {
           token: response.data.token,
-          username: response.data.username,
+          userName: response.data.userName,
           email: response.data.email,
           profilePhoto: response.data.profilePhoto,
+          bannerPhoto: response.data.bannerPhoto,
           bio: response.data.bio,
         };
         sessionStorage.setItem("authToken", userData.token);
@@ -47,9 +48,9 @@ export default {
     <form @submit.prevent="handleLogin">
       <div class="my-3">
         <label
-          for="username"
+          for="userName"
           class="block text-md font-medium leading-6 text-gray-900"
-          >Username:</label
+          >UserName:</label
         >
         <div
           class="flex rounded-md shadow-sm ring-2 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md"
@@ -57,8 +58,8 @@ export default {
           <input
             class="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 focus:ring-0 sm:text-sm sm:leading-6"
             type="text"
-            id="username"
-            v-model="form.username"
+            id="userName"
+            v-model="form.userName"
             required
           />
         </div>

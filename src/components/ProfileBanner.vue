@@ -1,53 +1,77 @@
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapState, mapActions } from "vuex";
 import axios from "../axios";
+import EditProfileModal from "../components/EditProfileModal.vue";
 
 export default {
   name: "ProfileBanner",
+  components: {
+    EditProfileModal,
+  },
+  data() {
+    return {
+      isModalOpen: false,
+    };
+  },
   computed: {
-    ...mapGetters(["user", "getFollowerCounts"]),
-    username() {
-      return this.user.username || "Unknown User";
+    ...mapState(["user", "followerCounts"]),
+    userName() {
+      return this.user.userName || "Unknown User";
     },
     profilePhoto() {
       const profilePhotoPath =
-        this.user.profilePhoto || "../assets/artistry-net-logo-11.jpg";
+        this.user.profilePhoto || "/images/profiles/artistry-net-logo-11.jpg";
       return `${import.meta.env.VITE_API_BASE_URL}${profilePhotoPath}`;
     },
+    bannerPhoto() {
+      const bannerPhoto =
+        this.user.bannerPhoto ||
+        "/images/banners/david-pisnoy-46juD4zY1XA-unsplash.jpg";
+      return `${import.meta.env.VITE_API_BASE_URL}${bannerPhoto}`;
+    },
     followingCount() {
-      const counts = this.getFollowerCounts(this.username);
-      return counts.followingCount || 0;
+      return this.followerCounts[this.userName]?.followingCount || 0;
     },
     followersCount() {
-      const counts = this.getFollowerCounts(this.username);
-      return counts.followersCount || 0;
+      return this.followerCounts[this.userName]?.followersCount || 0;
     },
   },
   created() {
-    this.fetchFollowerCounts(this.username);
+    this.fetchUserCounts();
   },
   methods: {
-    ...mapActions(["fetchFollowerCounts"]),
-    async fetchFollowerCounts(username) {
-      const token =
-        this.$store.state.token || sessionStorage.getItem("authToken");
+    ...mapActions(["setFollowerCounts"]),
+    async fetchUserCounts() {
+      const token = sessionStorage.getItem("authToken");
+
       if (!token) {
         console.error("Token is missing.");
         return;
       }
 
       try {
-        const response = await axios.get(`/followers/${username}/counts`, {
-          headers: { Authorization: `Bearer ${token}` },
+        const response = await axios.get(`/followers/${this.userName}/counts`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         });
 
-        this.$store.commit("setFollowerCounts", {
-          username: username,
+        this.setFollowerCounts({
+          userName: this.userName,
           counts: response.data,
         });
       } catch (error) {
         console.error("Error fetching follower counts:", error);
       }
+    },
+    openModal() {
+      this.isModalOpen = true;
+    },
+    closeModal() {
+      this.isModalOpen = false;
+    },
+    updateUser(updatedUser) {
+      this.$store.commit("setUser", updatedUser);
     },
   },
 };
@@ -57,7 +81,7 @@ export default {
   <div class="relative">
     <img
       class="w-full h-56 object-cover"
-      src="../assets/david-pisnoy-46juD4zY1XA-unsplash.jpg"
+      :src="bannerPhoto"
       alt="banner image"
     />
 
@@ -71,15 +95,23 @@ export default {
 
     <div class="absolute top-4 right-0 left-0 flex justify-end p-4">
       <button
+        @click="openModal"
         type="button"
         class="py-2.5 px-5 text-md font-bold text-white bg-red-600 rounded-lg hover:bg-white hover:text-blue-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-700"
       >
         Edit Profile
       </button>
     </div>
+
+    <EditProfileModal
+      :isOpen="isModalOpen"
+      :user="user"
+      @close="closeModal"
+      @updateUser="updateUser"
+    />
   </div>
   <div class="bg-red-600 p-5 flex justify-between mb-10">
-    <h1 class="text-white font-bold text-3xl">{{ username }}</h1>
+    <h1 class="text-white font-bold text-3xl">{{ userName }}</h1>
     <div class="text-white text-center">
       <a href="/friends">
         <p class="text-2xl font-medium">{{ followingCount }}</p>

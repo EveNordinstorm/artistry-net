@@ -22,7 +22,7 @@ export default {
       isLoading: true,
       error: null,
       user: null,
-      username: "",
+      userName: "",
       currentUser: JSON.parse(sessionStorage.getItem("userData")) || null,
     };
   },
@@ -36,21 +36,21 @@ export default {
     },
   },
   created() {
-    this.username = this.$route.params.username;
-    if (this.username) {
-      this.fetchUserData(this.username);
+    this.userName = this.$route.params.userName;
+    if (this.userName) {
+      this.fetchUserData(this.userName);
       this.fetchUserPostsAndShares();
       this.fetchUserProducts();
     } else {
-      this.error = "Username is not provided.";
+      this.error = "UserName is not provided.";
       this.isLoading = false;
     }
   },
   methods: {
-    async fetchUserData(username) {
+    async fetchUserData(userName) {
       try {
         const response = await axios.get(
-          `/account/getUserDetailsByUsername/${username}`
+          `/account/getUserDetailsByUserName/${userName}`
         );
         this.user = response.data;
       } catch (error) {
@@ -59,16 +59,16 @@ export default {
       }
     },
     async fetchUserPostsAndShares() {
-      const username = this.$route.params.username;
-      if (!username) {
-        this.error = "Username not provided.";
+      const userName = this.$route.params.userName;
+      if (!userName) {
+        this.error = "UserName not provided.";
         this.isLoading = false;
         return;
       }
       try {
         const [postsResponse, sharesResponse] = await Promise.all([
-          axios.get(`/posts/getPostsByUsername/${username}`),
-          axios.get(`/shares/getSharesByUsername/${username}`),
+          axios.get(`/posts/getPostsByUserName/${userName}`),
+          axios.get(`/shares/getSharesByUserName/${userName}`),
         ]);
 
         const posts = postsResponse.data.map((post) => ({
@@ -93,7 +93,7 @@ export default {
               data: {
                 ...share,
                 sharer: {
-                  username: share.sharer?.username || "Unknown",
+                  userName: share.sharer?.userName || "Unknown",
                   profilePhoto: this.constructAbsoluteUrl(
                     share.sharer?.profilePhoto
                   ),
@@ -106,7 +106,7 @@ export default {
                   imageUrl: this.constructAbsoluteUrl(
                     share.originalPost?.imageUrl
                   ),
-                  username: share.originalPost?.username || "Unknown",
+                  userName: share.originalPost?.userName || "Unknown",
                   description:
                     share.originalPost?.description ||
                     "No description available",
@@ -132,7 +132,7 @@ export default {
     async fetchUserProducts() {
       try {
         const response = await axios.get(
-          `/products/getProductsByUsername/${this.username}`
+          `/products/getProductsByUserName/${this.userName}`
         );
         this.products = response.data.map((product) => ({
           ...product,
@@ -158,9 +158,10 @@ export default {
 <template>
   <div v-if="user">
     <VisitProfileBanner
-      :username="user.username"
+      :userName="user.userName"
       :profilePhoto="constructAbsoluteUrl(user.profilePhoto)"
-      :isFollowing="isFollowing(user.username)"
+      :bannerPhoto="constructAbsoluteUrl(user.bannerPhoto)"
+      :isFollowing="isFollowing(user.userName)"
     />
 
     <div class="mb-4 border-b border-gray-200 dark:border-gray-700">
@@ -211,7 +212,7 @@ export default {
           <div v-for="product in products" :key="product.id">
             <Product
               :userId="product.userId"
-              :username="product.username"
+              :userName="product.userName"
               :profilePhoto="constructAbsoluteUrl(product.profilePhoto)"
               :title="product.title"
               :imageUrl="constructAbsoluteUrl(product.imageUrl)"
@@ -232,7 +233,7 @@ export default {
             <Post
               v-if="item.type === 'post'"
               :userId="item.data.userId"
-              :username="item.data.username"
+              :userName="item.data.userName"
               :profilePhoto="constructAbsoluteUrl(item.data.profilePhoto)"
               :imageUrl="constructAbsoluteUrl(item.data.imageUrl)"
               :description="item.data.description"
@@ -241,11 +242,11 @@ export default {
             />
             <SharedPost
               v-else-if="item.type === 'share'"
-              :shareUsername="item.data.sharer.username"
+              :shareUserName="item.data.sharer.userName"
               :shareUserPhoto="
                 constructAbsoluteUrl(item.data.sharer.profilePhoto)
               "
-              :originalPostUsername="item.data.originalPost.username"
+              :originalPostUserName="item.data.originalPost.userName"
               :originalPostProfilePhoto="
                 constructAbsoluteUrl(item.data.originalPost.profilePhoto)
               "

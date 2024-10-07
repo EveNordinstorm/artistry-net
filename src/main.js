@@ -24,7 +24,7 @@ const router = createRouter({
     { path: "/", component: Home },
     { path: "/profile", component: Profile },
     {
-      path: "/profile/:username",
+      path: "/profile/:userName",
       name: "VisitProfile",
       component: VisitProfile,
       props: true,
@@ -58,7 +58,7 @@ if (token && userData) {
     const parsedUserData = JSON.parse(userData);
     store.dispatch("login", {
       token,
-      username: parsedUserData.username,
+      userName: parsedUserData.userName,
       email: parsedUserData.email,
       profilePhoto: parsedUserData.profilePhoto,
     });

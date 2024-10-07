@@ -4,7 +4,7 @@ import axios from "../axios";
 export default {
   name: "Product",
   props: {
-    username: {
+    userName: {
       type: String,
       required: true,
     },
@@ -52,8 +52,8 @@ export default {
     },
   },
   methods: {
-    navigateToProfile(username) {
-      this.$router.push({ name: "VisitProfile", params: { username } });
+    navigateToProfile(userName) {
+      this.$router.push({ name: "VisitProfile", params: { userName } });
     },
     // Confirm delete
     confirmDelete() {
@@ -89,13 +89,13 @@ export default {
   <div
     class="w-[50px] bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 p-5 my-5"
   >
-    <div class="flex" @click="navigateToProfile(username)">
+    <div class="flex" @click="navigateToProfile(userName)">
       <img
         class="w-14 h-14 object-cover rounded-full"
         :src="profilePhoto"
         alt="profile picture"
       />
-      <span class="pl-5 pt-2 text-3xl font-bold">{{ username }}</span>
+      <span class="pl-5 pt-2 text-3xl font-bold">{{ userName }}</span>
     </div>
     <p class="pt-3 text-xl">{{ title }}</p>
     <img

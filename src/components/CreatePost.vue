@@ -37,7 +37,7 @@ export default {
           const createdPostData = createdPostResponse.data;
           this.$emit("postCreated", {
             id: createdPostData.id,
-            username: createdPostData.username,
+            userName: createdPostData.userName,
             description: createdPostData.description,
             profilePhoto: `${import.meta.env.VITE_API_BASE_URL}${
               createdPostData.profilePhoto
@@ -82,7 +82,7 @@ export default {
     </div>
     <div class="my-3">
       <label
-        for="profilePhoto"
+        for="imageUrl"
         class="block text-md font-medium leading-6 text-gray-900 mb-1"
         >Add an optional image</label
       >

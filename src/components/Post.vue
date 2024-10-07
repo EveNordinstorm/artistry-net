@@ -4,7 +4,7 @@ import axios from "../axios";
 export default {
   name: "Post",
   props: {
-    username: {
+    userName: {
       type: String,
       required: true,
     },
@@ -61,10 +61,10 @@ export default {
   },
 
   methods: {
-    navigateToProfile(username) {
+    navigateToProfile(userName) {
       this.$router.push({
         name: "VisitProfile",
-        params: { username: this.username },
+        params: { userName: this.userName },
       });
     },
 
@@ -170,14 +170,14 @@ export default {
                 const newShare = {
                   id: shareData.id,
                   sharer: {
-                    username: shareData.sharer.username,
+                    userName: shareData.sharer.userName,
                     profilePhoto: `${import.meta.env.VITE_API_BASE_URL}${
                       shareData.sharer.profilePhoto
                     }`,
                   },
                   postDetails: {
                     id: shareData.originalPost.id,
-                    username: shareData.originalPost.username,
+                    userName: shareData.originalPost.userName,
                     description: shareData.originalPost.description,
                     profilePhoto: `${import.meta.env.VITE_API_BASE_URL}${
                       shareData.originalPost.profilePhoto
@@ -356,13 +356,13 @@ export default {
   <div
     class="w-[50px] bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 p-5 my-5"
   >
-    <div class="flex" @click="navigateToProfile(username)">
+    <div class="flex" @click="navigateToProfile(userName)">
       <img
         class="w-14 h-14 object-cover rounded-full"
         :src="profilePhoto"
         alt="profile picture"
       />
-      <span class="pl-5 pt-2 text-3xl font-bold">{{ username }}</span>
+      <span class="pl-5 pt-2 text-3xl font-bold">{{ userName }}</span>
     </div>
     <p class="text-right font-bold">{{ formattedDateTime }}</p>
     <p class="pt-3">{{ description }}</p>
@@ -513,7 +513,7 @@ export default {
             class="border-b border-gray-200 dark:border-gray-700 pb-2 mb-2"
           >
             <div class="flex items-start pl-4">
-              <p class="font-semibold">{{ comment.username }}:</p>
+              <p class="font-semibold">{{ comment.userName }}:</p>
               <p class="pl-2 break-words">{{ comment.commentText }}</p>
             </div>
           </li>

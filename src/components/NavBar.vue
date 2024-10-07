@@ -10,15 +10,15 @@ export default {
   },
   computed: {
     ...mapGetters(["isLoggedIn", "user"]),
-    username() {
-      return this.user.username || "Unknown User";
+    userName() {
+      return this.user.userName || "Unknown User";
     },
     email() {
       return this.user.email || "unknown@example.com";
     },
     profilePhoto() {
       const profilePhotoPath =
-        this.user.profilePhoto || "../assets/artistry-net-logo-11.jpg";
+        this.user.profilePhoto || "images/profiles/artistry-net-logo-11.jpg";
       return `${import.meta.env.VITE_API_BASE_URL}${profilePhotoPath}`;
     },
   },
@@ -42,7 +42,7 @@ export default {
         if (userData) {
           this.$store.dispatch("login", {
             token,
-            username: userData.username,
+            userName: userData.userName,
             email: userData.email,
             profilePhoto: userData.profilePhoto,
           });
@@ -170,7 +170,7 @@ export default {
             <div class="py-3 px-4">
               <span
                 class="block text-sm font-semibold text-gray-900 dark:text-white"
-                >{{ username }}</span
+                >{{ userName }}</span
               >
               <span
                 class="block text-sm text-gray-500 truncate dark:text-gray-400"

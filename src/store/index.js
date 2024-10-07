@@ -7,8 +7,9 @@ const store = createStore({
       isLoggedIn: !!sessionStorage.getItem("authToken"),
       token: sessionStorage.getItem("authToken"),
       user: JSON.parse(sessionStorage.getItem("userData")) || {
-        username: "",
+        userName: "",
         profilePhoto: "",
+        bannerPhoto: "",
         email: "",
         bio: "",
       },
@@ -31,33 +32,34 @@ const store = createStore({
       state.isLoggedIn = false;
       state.token = null;
       state.user = {
-        username: "",
+        userName: "",
         profilePhoto: "",
+        bannerPhoto: "",
         email: "",
         bio: "",
       };
     },
-    setFollowing(state, { username, isFollowing }) {
-      state.followingStates[username] = isFollowing;
+    setFollowing(state, { userName, isFollowing }) {
+      state.followingStates[userName] = isFollowing;
       sessionStorage.setItem(
         "followingStates",
         JSON.stringify(state.followingStates)
       );
     },
-    setFollowerCounts(state, { username, counts }) {
-      state.followerCounts = { ...state.followerCounts, [username]: counts };
+    setFollowerCounts(state, { userName, counts }) {
+      state.followerCounts = { ...state.followerCounts, [userName]: counts };
     },
-    updateFollowerCounts(state, { username, type }) {
-      if (!state.followerCounts[username]) {
-        state.followerCounts[username] = {
+    updateFollowerCounts(state, { userName, type }) {
+      if (!state.followerCounts[userName]) {
+        state.followerCounts[userName] = {
           followersCount: 0,
           followingCount: 0,
         };
       }
       if (type === "increment") {
-        state.followerCounts[username].followersCount += 1;
+        state.followerCounts[userName].followersCount += 1;
       } else if (type === "decrement") {
-        state.followerCounts[username].followersCount -= 1;
+        state.followerCounts[userName].followersCount -= 1;
       }
     },
   },
@@ -76,10 +78,10 @@ const store = createStore({
       const savedStates = sessionStorage.getItem("followingStates");
       if (savedStates) {
         const parsedStates = JSON.parse(savedStates);
-        Object.keys(parsedStates).forEach((username) => {
+        Object.keys(parsedStates).forEach((userName) => {
           commit("setFollowing", {
-            username,
-            isFollowing: parsedStates[username],
+            userName,
+            isFollowing: parsedStates[userName],
           });
         });
       }
@@ -87,13 +89,13 @@ const store = createStore({
     setFollowing({ commit }, payload) {
       commit("setFollowing", payload);
     },
-    setFollowerCounts({ commit }, { username, counts }) {
-      commit("setFollowerCounts", { username, counts });
+    setFollowerCounts({ commit }, { userName, counts }) {
+      commit("setFollowerCounts", { userName, counts });
     },
-    updateFollowerCounts({ commit }, { username, type }) {
-      commit("updateFollowerCounts", { username, type });
+    updateFollowerCounts({ commit }, { userName, type }) {
+      commit("updateFollowerCounts", { userName, type });
     },
-    async fetchFollowerCounts({ commit, state }, username) {
+    async fetchFollowerCounts({ commit, state }, userName) {
       const token = state.token;
       if (!token) {
         console.error("Token is missing.");
@@ -101,11 +103,11 @@ const store = createStore({
       }
 
       try {
-        const response = await axios.get(`/account/${username}/counts`, {
+        const response = await axios.get(`/followers/${userName}/counts`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 
-        commit("setFollowerCounts", { username, counts: response.data });
+        commit("setFollowerCounts", { userName, counts: response.data });
       } catch (error) {
         console.error("Error fetching follower counts:", error);
       }
@@ -115,16 +117,16 @@ const store = createStore({
     isLoggedIn: (state) => state.isLoggedIn,
     user: (state) => state.user,
     token: (state) => state.token,
-    getFollowerCounts: (state) => (username) => {
+    getFollowerCounts: (state) => (userName) => {
       return (
-        state.followerCounts[username] || {
+        state.followerCounts[userName] || {
           followersCount: 0,
           followingCount: 0,
         }
       );
     },
-    isFollowing: (state) => (username) => {
-      return state.followingStates[username] || false;
+    isFollowing: (state) => (userName) => {
+      return state.followingStates[userName] || false;
     },
   },
 });

@@ -53,7 +53,7 @@ export default {
 
       if (userData) {
         this.setUser(userData);
-        await this.$store.dispatch("fetchFollowerCounts", userData.username);
+        await this.$store.dispatch("fetchFollowerCounts", userData.userName);
       } else {
         this.error = "User data is not available.";
         this.isLoading = false;
@@ -104,7 +104,7 @@ export default {
               data: {
                 ...share,
                 sharer: {
-                  username: share.sharer?.username || "Unknown",
+                  userName: share.sharer?.userName || "Unknown",
                   profilePhoto: this.constructAbsoluteUrl(
                     share.sharer?.profilePhoto
                   ),
@@ -117,7 +117,7 @@ export default {
                   imageUrl: this.constructAbsoluteUrl(
                     share.originalPost?.imageUrl
                   ),
-                  username: share.originalPost?.username || "Unknown",
+                  userName: share.originalPost?.userName || "Unknown",
                   description:
                     share.originalPost?.description ||
                     "No description available",
@@ -187,10 +187,10 @@ export default {
   mounted() {
     const authToken = sessionStorage.getItem("authToken");
     const userData = JSON.parse(sessionStorage.getItem("userData"));
-    if (authToken && userData?.username) {
+    if (authToken && userData?.userName) {
       this.currentUser = {
         token: authToken,
-        username: userData.username,
+        userName: userData.userName,
       };
     }
   },
@@ -273,14 +273,14 @@ export default {
         <div v-for="product in products" :key="product.id">
           <Product
             :userId="product.userId"
-            :username="product.username"
+            :userName="product.userName"
             :profilePhoto="product.profilePhoto"
             :title="product.title"
             :imageUrl="product.imageUrl"
             :price="product.price"
             :productId="product.id"
             :canDelete="
-              currentUser && product.username === currentUser.username
+              currentUser && product.userName === currentUser.userName
             "
             @productDeleted="handleProductDeleted"
           />
@@ -301,14 +301,14 @@ export default {
         <div v-for="item in userPosts" :key="item.data.id">
           <Post
             v-if="item.type === 'post'"
-            :username="item.data.username"
+            :userName="item.data.userName"
             :profilePhoto="item.data.profilePhoto"
             :postDateTime="item.data.postDateTime"
             :description="item.data.description"
             :imageUrl="item.data.imageUrl"
             :postId="item.data.id"
             :canDelete="
-              currentUser && item.data.username === currentUser.username
+              currentUser && item.data.userName === currentUser.userName
             "
             @postDeleted="handlePostDeleted"
             @shareRemoved="handleShareRemoved"
@@ -316,10 +316,10 @@ export default {
 
           <SharedPost
             v-else-if="item.type === 'share'"
-            :shareUsername="item.data.sharer.username"
+            :shareUserName="item.data.sharer.userName"
             :shareUserPhoto="item.data.sharer.profilePhoto"
-            :shareDateTime="item.date"
-            :originalPostUsername="item.data.postDetails.username"
+            :shareDateTime="item.shareDateTime"
+            :originalPostUserName="item.data.postDetails.userName"
             :originalPostProfilePhoto="item.data.postDetails.profilePhoto"
             :originalPostDateTime="item.data.postDetails.postDateTime"
             :originalPostDescription="item.data.postDetails.description"

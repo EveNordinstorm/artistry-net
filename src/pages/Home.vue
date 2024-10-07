@@ -56,7 +56,7 @@ export default {
           data: {
             ...share,
             sharer: {
-              username: share.sharer?.username || "Unknown",
+              userName: share.sharer?.userName || "Unknown",
               profilePhoto: `${import.meta.env.VITE_API_BASE_URL}${
                 share.sharer?.profilePhoto
               }`,
@@ -69,7 +69,7 @@ export default {
               imageUrl: `${import.meta.env.VITE_API_BASE_URL}${
                 share.originalPost?.imageUrl
               }`,
-              username: share.originalPost?.username || "Unknown",
+              userName: share.originalPost?.userName || "Unknown",
               description:
                 share.originalPost?.description || "No description available",
               postDateTime: share.originalPost?.postDateTime
@@ -96,7 +96,7 @@ export default {
         type: "post",
         data: {
           id: newPost.id,
-          username: newPost.username,
+          userName: newPost.userName,
           description: newPost.description,
           profilePhoto: newPost.profilePhoto,
           imageUrl: newPost.imageUrl,
@@ -121,12 +121,12 @@ export default {
         data: {
           id: newShare.id,
           sharer: {
-            username: newShare.sharer.username,
+            userName: newShare.sharer.userName,
             profilePhoto: newShare.sharer.profilePhoto,
           },
           postDetails: {
             id: newShare.postDetails.id,
-            username: newShare.postDetails.username,
+            userName: newShare.postDetails.userName,
             description: newShare.postDetails.description,
             profilePhoto: newShare.postDetails.profilePhoto,
             imageUrl: newShare.postDetails.imageUrl,
@@ -148,10 +148,10 @@ export default {
   mounted() {
     const authToken = sessionStorage.getItem("authToken");
     const userData = JSON.parse(sessionStorage.getItem("userData"));
-    if (authToken && userData?.username) {
+    if (authToken && userData?.userName) {
       this.currentUser = {
         token: authToken,
-        username: userData.username,
+        userName: userData.userName,
       };
     }
   },
@@ -166,12 +166,12 @@ export default {
       <Post
         v-if="item.type === 'post'"
         :postId="item.data.id"
-        :username="item.data.username"
+        :userName="item.data.userName"
         :profilePhoto="item.data.profilePhoto"
         :postDateTime="item.data.postDateTime"
         :description="item.data.description"
         :imageUrl="item.data.imageUrl"
-        :canDelete="currentUser && item.data.username === currentUser.username"
+        :canDelete="currentUser && item.data.userName === currentUser.userName"
         @postDeleted="handlePostDeleted"
         @shareCreated="handleShareCreated"
         @shareRemoved="handleShareRemoved"
@@ -180,10 +180,10 @@ export default {
         v-else-if="item.type === 'share'"
         :shareId="item.data.id"
         :originalPostId="item.data.postDetails.id"
-        :shareUsername="item.data.sharer.username"
+        :shareUserName="item.data.sharer.userName"
         :shareUserPhoto="item.data.sharer.profilePhoto"
         :shareDateTime="item.shareDateTime"
-        :originalPostUsername="item.data.postDetails.username"
+        :originalPostUserName="item.data.postDetails.userName"
         :originalPostProfilePhoto="item.data.postDetails.profilePhoto"
         :originalPostDateTime="item.data.postDetails.postDateTime"
         :originalPostDescription="item.data.postDetails.description"

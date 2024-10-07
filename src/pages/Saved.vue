@@ -57,13 +57,13 @@ export default {
   <div v-if="savedPosts.length">
     <Post
       v-for="post in savedPosts"
-      :key="post.postId"
-      :username="post.username"
+      :key="post.id"
+      :userName="post.userName"
       :profilePhoto="post.profilePhoto"
       :postDateTime="post.postDateTime"
       :description="post.description"
       :imageUrl="post.imageUrl"
-      :postId="post.postId"
+      :postId="post.id"
       :canDelete="false"
     />
   </div>

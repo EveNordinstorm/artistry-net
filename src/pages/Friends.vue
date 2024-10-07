@@ -32,9 +32,9 @@ export default {
     }
   },
   methods: {
-    isFollowing(username) {
+    isFollowing(userName) {
       const followingUser = this.followingList.find(
-        (friend) => friend.username === username
+        (friend) => friend.userName === userName
       );
       return !!followingUser;
     },
@@ -151,9 +151,9 @@ export default {
         v-for="friend in followingList"
         :key="friend.id"
         :followedId="friend.id"
-        :username="friend.username"
+        :userName="friend.userName"
         :profilePhoto="constructAbsoluteUrl(friend.profilePhoto)"
-        :isFollowing="isFollowing(friend.username)"
+        :isFollowing="isFollowing(friend.userName)"
       />
     </div>
   </div>
@@ -172,9 +172,9 @@ export default {
         v-for="friend in followersList"
         :key="friend.id"
         :followedId="friend.id"
-        :username="friend.username"
+        :userName="friend.userName"
         :profilePhoto="constructAbsoluteUrl(friend.profilePhoto)"
-        :isFollowing="isFollowing(friend.username)"
+        :isFollowing="isFollowing(friend.userName)"
       />
     </div>
   </div>

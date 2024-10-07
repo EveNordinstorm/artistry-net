@@ -12,7 +12,7 @@ export default {
     handlePostCreated(newPost) {
       this.$emit("postCreated", {
         id: newPost.id,
-        username: newPost.username,
+        userName: newPost.userName,
         description: newPost.description,
         profilePhoto: newPost.profilePhoto,
         imageUrl: newPost.imageUrl,

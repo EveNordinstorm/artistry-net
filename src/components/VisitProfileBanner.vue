@@ -6,22 +6,24 @@ import { decodeToken } from "../utilities/JwtHelper";
 export default {
   name: "VisitProfileBanner",
   props: {
-    username: { type: String, required: true },
+    userName: { type: String, required: true },
     profilePhoto: {
       type: String,
-      default: "../assets/artistry-net-logo-11.jpg",
+    },
+    bannerPhoto: {
+      type: String,
     },
   },
   computed: {
     ...mapState(["followerCounts"]),
     followingCount() {
-      return this.followerCounts[this.username]?.followingCount || 0;
+      return this.followerCounts[this.userName]?.followingCount || 0;
     },
     followersCount() {
-      return this.followerCounts[this.username]?.followersCount || 0;
+      return this.followerCounts[this.userName]?.followersCount || 0;
     },
     isFollowing() {
-      return this.$store.getters.isFollowing(this.username);
+      return this.$store.getters.isFollowing(this.userName);
     },
   },
   created() {
@@ -39,7 +41,7 @@ export default {
         }
 
         const response = await axios.get(
-          `/account/getUserDetailsByUsername/${this.username}`,
+          `/account/getUserDetailsByUserName/${this.userName}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -54,9 +56,9 @@ export default {
               Authorization: `Bearer ${token}`,
             },
           });
-          this.setFollowing({ username: this.username, isFollowing: false });
+          this.setFollowing({ userName: this.userName, isFollowing: false });
           this.$store.dispatch("updateFollowerCounts", {
-            username: this.username,
+            userName: this.userName,
             type: "decrement",
           });
         } else {
@@ -73,16 +75,16 @@ export default {
                 },
               }
             );
-            this.setFollowing({ username: this.username, isFollowing: true });
+            this.setFollowing({ userName: this.userName, isFollowing: true });
             this.$store.dispatch("updateFollowerCounts", {
-              username: this.username,
+              userName: this.userName,
               type: "increment",
             });
           }
         }
         this.following = !this.following;
         this.$store.dispatch("setFollowing", {
-          username: this.username,
+          userName: this.userName,
           isFollowing: this.following,
         });
         sessionStorage.setItem(
@@ -95,13 +97,13 @@ export default {
     },
     async fetchUserCounts() {
       try {
-        const response = await axios.get(`/followers/${this.username}/counts`, {
+        const response = await axios.get(`/followers/${this.userName}/counts`, {
           headers: {
             Authorization: `Bearer ${this.authToken}`,
           },
         });
         this.setFollowerCounts({
-          username: this.username,
+          userName: this.userName,
           counts: response.data,
         });
       } catch (error) {
@@ -117,27 +119,29 @@ export default {
     <div class="relative">
       <img
         class="w-full h-56 object-cover"
-        src="../assets/david-pisnoy-46juD4zY1XA-unsplash.jpg"
+        :src="
+          bannerPhoto || `/images/banners/david-pisnoy-46juD4zY1XA-unsplash.jpg`
+        "
         alt="banner image"
       />
 
       <div class="absolute top-4 left-4">
         <img
           class="w-48 h-48 object-cover rounded-full ms-5"
-          :src="profilePhoto || '../assets/artistry-net-logo-11.jpg'"
+          :src="profilePhoto"
           alt="profile picture"
         />
       </div>
     </div>
     <div class="bg-red-600 p-5 flex justify-between mb-10">
       <div>
-        <h1 class="text-white font-bold text-3xl">{{ username }}</h1>
+        <h1 class="text-white font-bold text-3xl">{{ userName }}</h1>
 
         <button
           class="mt-3 text-white text-xl bg-gradient-to-br from-red-400 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2"
           @click="toggleFollow"
         >
-          {{ $store.getters.isFollowing(username) ? "Following" : "Follow" }}
+          {{ $store.getters.isFollowing(userName) ? "Following" : "Follow" }}
         </button>
       </div>
 

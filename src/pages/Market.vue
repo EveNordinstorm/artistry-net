@@ -42,10 +42,10 @@ export default {
   mounted() {
     const authToken = sessionStorage.getItem("authToken");
     const userData = JSON.parse(sessionStorage.getItem("userData"));
-    if (authToken && userData?.username) {
+    if (authToken && userData?.userName) {
       this.currentUser = {
         token: authToken,
-        username: userData.username,
+        userName: userData.userName,
       };
     }
   },
@@ -58,13 +58,13 @@ export default {
   <div v-for="product in products" :key="product.id">
     <Product
       :userId="product.userId"
-      :username="product.username"
+      :userName="product.userName"
       :profilePhoto="product.profilePhoto"
       :title="product.title"
       :imageUrl="product.imageUrl"
       :price="product.price"
       :productId="product.id"
-      :canDelete="currentUser && product.username === currentUser.username"
+      :canDelete="currentUser && product.userName === currentUser.userName"
       @productDeleted="handleProductDeleted"
     />
   </div>

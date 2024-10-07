@@ -7,14 +7,14 @@ export default {
   name: "Friend",
   props: {
     followedId: String,
-    username: { type: String, required: true },
+    userName: { type: String, required: true },
     profilePhoto: { type: String, required: true },
   },
   computed: {
     // Use Vuex to get the follow state globally
     ...mapGetters(["isFollowing"]),
     isFollowingState() {
-      return this.isFollowing(this.username);
+      return this.isFollowing(this.userName);
     },
   },
   created() {
@@ -43,7 +43,7 @@ export default {
         );
         // Update Vuex store instead of local state
         this.setFollowing({
-          username: this.username,
+          userName: this.userName,
           isFollowing: response.data.exists,
         });
       } catch (error) {
@@ -70,9 +70,9 @@ export default {
               Authorization: `Bearer ${token}`,
             },
           });
-          this.setFollowing({ username: this.username, isFollowing: false });
+          this.setFollowing({ userName: this.userName, isFollowing: false });
           this.updateFollowerCounts({
-            username: this.username,
+            userName: this.userName,
             type: "decrement",
           });
         } else {
@@ -86,9 +86,9 @@ export default {
               },
             }
           );
-          this.setFollowing({ username: this.username, isFollowing: true });
+          this.setFollowing({ userName: this.userName, isFollowing: true });
           this.updateFollowerCounts({
-            username: this.username,
+            userName: this.userName,
             type: "increment",
           });
         }
@@ -100,7 +100,7 @@ export default {
     navigateToProfile() {
       this.$router.push({
         name: "VisitProfile",
-        params: { username: this.username },
+        params: { userName: this.userName },
       });
     },
   },
@@ -116,7 +116,7 @@ export default {
           :src="profilePhoto"
           alt="profile picture"
         />
-        <p class="pl-5 pt-2 text-2xl font-bold">{{ username }}</p>
+        <p class="pl-5 pt-2 text-2xl font-bold">{{ userName }}</p>
       </div>
       <button
         @click="toggleFollow"

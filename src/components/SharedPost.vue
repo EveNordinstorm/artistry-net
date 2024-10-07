@@ -6,10 +6,10 @@ export default {
   name: "SharedPost",
   components: { Post },
   props: {
-    shareUsername: { type: String, required: true },
+    shareUserName: { type: String, required: true },
     shareUserPhoto: { type: String, required: true },
     shareDateTime: { type: String, required: true },
-    originalPostUsername: { type: String, required: true },
+    originalPostUserName: { type: String, required: true },
     originalPostProfilePhoto: { type: String, required: true },
     originalPostDateTime: { type: String, required: true },
     originalPostDescription: { type: String, required: true },
@@ -36,10 +36,10 @@ export default {
   },
   methods: {
     navigateToProfile(isSharer) {
-      const username = isSharer
-        ? this.shareUsername
-        : this.originalPostUsername;
-      this.$router.push({ name: "VisitProfile", params: { username } });
+      const userName = isSharer
+        ? this.shareUserName
+        : this.originalPostUserName;
+      this.$router.push({ name: "VisitProfile", params: { userName } });
     },
     confirmUnshare() {
       this.showConfirm = true;
@@ -65,14 +65,14 @@ export default {
         class="w-14 h-14 object-cover rounded-full"
         alt="Profile photo"
       />
-      <span class="pl-5 pt-2 text-3xl font-bold">{{ shareUsername }}</span>
+      <span class="pl-5 pt-2 text-3xl font-bold">{{ shareUserName }}</span>
     </div>
     <p class="text-right font-bold">
       Shared this post on <br />
       {{ formattedShareDateTime }}
     </p>
     <Post
-      :username="originalPostUsername"
+      :userName="originalPostUserName"
       :profilePhoto="originalPostProfilePhoto"
       :postDateTime="originalPostDateTime"
       :description="originalPostDescription"
