@@ -24,10 +24,12 @@ export default {
       return `${import.meta.env.VITE_API_BASE_URL}${profilePhotoPath}`;
     },
     bannerPhoto() {
-      const bannerPhoto =
-        this.user.bannerPhoto ||
-        "/images/banners/david-pisnoy-46juD4zY1XA-unsplash.jpg";
-      return `${import.meta.env.VITE_API_BASE_URL}${bannerPhoto}`;
+      if (this.user.bannerPhoto && this.user.bannerPhoto !== "null") {
+        return `${import.meta.env.VITE_API_BASE_URL}/${this.user.bannerPhoto}`;
+      }
+      return `${
+        import.meta.env.VITE_API_BASE_URL
+      }/images/banners/david-pisnoy-46juD4zY1XA-unsplash.jpg`;
     },
     followingCount() {
       return this.followerCounts[this.userName]?.followingCount || 0;

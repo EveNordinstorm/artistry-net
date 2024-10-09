@@ -119,9 +119,7 @@ export default {
     <div class="relative">
       <img
         class="w-full h-56 object-cover"
-        :src="
-          bannerPhoto || `/images/banners/david-pisnoy-46juD4zY1XA-unsplash.jpg`
-        "
+        :src="bannerPhoto"
         alt="banner image"
       />
 

@@ -9,7 +9,7 @@ const store = createStore({
       user: JSON.parse(sessionStorage.getItem("userData")) || {
         userName: "",
         profilePhoto: "",
-        bannerPhoto: "",
+        bannerPhoto: null,
         email: "",
         bio: "",
       },

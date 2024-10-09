@@ -182,14 +182,16 @@ export default {
         :originalPostId="item.data.postDetails.id"
         :shareUserName="item.data.sharer.userName"
         :shareUserPhoto="item.data.sharer.profilePhoto"
-        :shareDateTime="item.shareDateTime"
+        :shareDateTime="item.data.shareDateTime"
         :originalPostUserName="item.data.postDetails.userName"
         :originalPostProfilePhoto="item.data.postDetails.profilePhoto"
         :originalPostDateTime="item.data.postDetails.postDateTime"
         :originalPostDescription="item.data.postDetails.description"
         :originalPostImageUrl="item.data.postDetails.imageUrl"
-        @postDeleted="removePost(item.data.postDetails.id)"
-        @shareRemoved="removeShare(item.data.id)"
+        :canDelete="currentUser && item.data.userName === currentUser.userName"
+        @postDeleted="handlePostDeleted"
+        @shareCreated="handleShareCreated"
+        @shareRemoved="handleShareRemoved"
       />
     </div>
   </div>

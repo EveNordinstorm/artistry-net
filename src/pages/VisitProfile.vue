@@ -145,9 +145,12 @@ export default {
       }
     },
     constructAbsoluteUrl(url) {
-      if (!url) {
-        return "";
+      if (!url || url === "null" || url === "") {
+        return `${
+          import.meta.env.VITE_API_BASE_URL
+        }/images/banners/david-pisnoy-46juD4zY1XA-unsplash.jpg`;
       }
+
       const baseUrl = process.env.VUE_APP_API_URL || "https://localhost:5000";
       return url.startsWith("http") ? url : `${baseUrl}${url}`;
     },

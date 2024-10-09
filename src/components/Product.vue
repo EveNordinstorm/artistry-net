@@ -53,9 +53,14 @@ export default {
   },
   methods: {
     navigateToProfile(userName) {
-      this.$router.push({ name: "VisitProfile", params: { userName } });
+      const storedUser = JSON.parse(sessionStorage.getItem("userData"));
+      if (storedUser && storedUser.userName === userName) {
+        this.$router.push({ path: "/profile" });
+      } else {
+        this.$router.push({ name: "VisitProfile", params: { userName } });
+      }
     },
-    // Confirm delete
+
     confirmDelete() {
       this.showConfirm = true;
     },

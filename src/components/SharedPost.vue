@@ -6,6 +6,7 @@ export default {
   name: "SharedPost",
   components: { Post },
   props: {
+    shareId: { type: Number, required: true },
     shareUserName: { type: String, required: true },
     shareUserPhoto: { type: String, required: true },
     shareDateTime: { type: String, required: true },
@@ -18,8 +19,6 @@ export default {
   },
   data() {
     return {
-      user: null,
-      error: null,
       showConfirm: false,
     };
   },
@@ -35,21 +34,13 @@ export default {
     },
   },
   methods: {
-    navigateToProfile(isSharer) {
-      const userName = isSharer
-        ? this.shareUserName
-        : this.originalPostUserName;
-      this.$router.push({ name: "VisitProfile", params: { userName } });
-    },
-    confirmUnshare() {
-      this.showConfirm = true;
-    },
-    async unsharePost() {
-      await axios.delete(`/shares/${this.shareId}`);
-      this.$emit("shareRemoved", this.shareId);
-    },
-    handlePostDeleted(postId) {
-      this.$emit("postDeleted", postId);
+    navigateToProfile(userName) {
+      const storedUser = JSON.parse(sessionStorage.getItem("userData"));
+      if (storedUser && storedUser.userName === userName) {
+        this.$router.push({ path: "/profile" });
+      } else {
+        this.$router.push({ name: "VisitProfile", params: { userName } });
+      }
     },
   },
 };
@@ -57,15 +48,17 @@ export default {
 
 <template>
   <div
-    class="w-[50px] bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 p-5 my-5"
+    class="bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 p-5 my-5"
   >
-    <div class="flex" @click="navigateToProfile(true)">
+    <div class="flex" @click="navigateToProfile(shareUserName)">
       <img
         :src="shareUserPhoto"
         class="w-14 h-14 object-cover rounded-full"
         alt="Profile photo"
       />
-      <span class="pl-5 pt-2 text-3xl font-bold">{{ shareUserName }}</span>
+      <span class="pl-5 pt-2 text-3xl font-bold break-all">{{
+        shareUserName
+      }}</span>
     </div>
     <p class="text-right font-bold">
       Shared this post on <br />
@@ -81,5 +74,3 @@ export default {
     />
   </div>
 </template>
-
-<style scoped></style>
