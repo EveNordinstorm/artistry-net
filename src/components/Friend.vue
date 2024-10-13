@@ -112,11 +112,11 @@ export default {
     <div class="flex items-center justify-between">
       <div class="flex items-center" @click="navigateToProfile">
         <img
-          class="w-14 h-14 rounded-full"
+          class="w-14 h-14 rounded-full object-cover"
           :src="profilePhoto"
           alt="profile picture"
         />
-        <p class="pl-5 pt-2 text-2xl font-bold">{{ userName }}</p>
+        <p class="pl-5 pt-2 text-2xl font-bold break-all">{{ userName }}</p>
       </div>
       <button
         @click="toggleFollow"

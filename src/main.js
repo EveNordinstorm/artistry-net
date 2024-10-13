@@ -5,15 +5,10 @@ import App from "./App.vue";
 import Home from "./pages/Home.vue";
 import Profile from "./pages/Profile.vue";
 import VisitProfile from "./pages/VisitProfile.vue";
-import Explore from "./pages/Explore.vue";
-import Events from "./pages/Events.vue";
 import Market from "./pages/Market.vue";
-import Auction from "./pages/Auction.vue";
 import Likes from "./pages/Likes.vue";
 import Saved from "./pages/Saved.vue";
-import Groups from "./pages/Groups.vue";
 import Friends from "./pages/Friends.vue";
-import Messages from "./pages/Messages.vue";
 import Register from "./pages/Registration.vue";
 import Login from "./pages/Login.vue";
 import store from "./store/index";
@@ -29,15 +24,10 @@ const router = createRouter({
       component: VisitProfile,
       props: true,
     },
-    { path: "/explore", component: Explore },
-    { path: "/events", component: Events },
     { path: "/market", component: Market },
-    { path: "/auction", component: Auction },
     { path: "/likes", component: Likes },
     { path: "/saved", component: Saved },
-    { path: "/groups", component: Groups },
     { path: "/friends", component: Friends },
-    { path: "/messages", component: Messages },
     { path: "/register", component: Register },
     { path: "/login", component: Login },
   ],

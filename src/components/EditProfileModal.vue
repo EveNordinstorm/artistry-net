@@ -113,23 +113,25 @@ export default {
 <template>
   <div
     v-if="isOpen"
-    class="fixed inset-0 bg-gray-500 bg-opacity-50 flex items-center justify-center"
+    class="fixed inset-0 bg-gray-100 dark:bg-gray-900 bg-opacity-50 flex items-center justify-center"
   >
-    <div class="bg-white rounded-lg shadow-lg p-6 w-96">
-      <h2 class="text-lg font-bold text-blue-600 mb-4">Edit Profile</h2>
+    <div class="bg-white dark:bg-gray-700 rounded-lg shadow-lg mt-14 p-6 w-96">
+      <h2 class="text-blue-600 dark:text-white text-lg font-bold mb-4">
+        Edit Profile
+      </h2>
       <form @submit.prevent="submitForm">
         <div class="my-3">
           <label
             for="profilePhoto"
-            class="block text-md font-medium leading-6 text-gray-900 mb-1"
+            class="text-black dark:text-white block text-md font-medium leading-6 text-gray-900 mb-1"
             >Update your profile photo:</label
           >
           <div
-            class="flex bg-white rounded-md shadow-sm ring-2 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md ps-3 py-1"
+            class="flex rounded-md shadow-sm ring-2 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md ps-3 py-1"
           >
             <input
               id="profilePhoto"
-              class="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 focus:ring-0 sm:text-sm sm:leading-6"
+              class="text-black dark:text-white block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 focus:ring-0 sm:text-sm sm:leading-6 overflow-hidden whitespace-nowrap text-ellipsis"
               type="file"
               @change="(event) => handleFileUpload(event, 'profile')"
             />
@@ -139,15 +141,15 @@ export default {
         <div class="my-3">
           <label
             for="bannerPhoto"
-            class="block text-md font-medium leading-6 text-gray-900 mb-1"
+            class="text-black dark:text-white block text-md font-medium leading-6 text-gray-900 mb-1"
             >Add a new banner image:</label
           >
           <div
-            class="flex bg-white rounded-md shadow-sm ring-2 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md ps-3 py-1"
+            class="flex rounded-md shadow-sm ring-2 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md ps-3 py-1"
           >
             <input
               id="bannerPhoto"
-              class="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 focus:ring-0 sm:text-sm sm:leading-6"
+              class="text-black dark:text-white block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 focus:ring-0 sm:text-sm sm:leading-6"
               type="file"
               @change="(event) => handleFileUpload(event, 'banner')"
             />
@@ -155,11 +157,11 @@ export default {
         </div>
 
         <div
-          class="my-6 flex bg-white rounded-md shadow-sm ring-2 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md"
+          class="my-6 flex rounded-md shadow-sm ring-2 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md"
         >
           <textarea
             id="bio"
-            class="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 focus:ring-0 sm:text-sm sm:leading-6"
+            class="text-black dark:text-white block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 focus:ring-0 sm:text-sm sm:leading-6"
             v-model="bio"
           ></textarea>
         </div>

@@ -144,7 +144,9 @@ export default {
     aria-labelledby="following-tab"
   >
     <div v-if="followingList.length === 0">
-      <p>No users found that you're following.</p>
+      <p class="text-black dark:text-white">
+        No users found that you're following.
+      </p>
     </div>
     <div v-else>
       <Friend
@@ -165,7 +167,7 @@ export default {
     aria-labelledby="followers-tab"
   >
     <div v-if="followersList.length === 0">
-      <p>No followers found.</p>
+      <p class="text-black dark:text-white">No followers found.</p>
     </div>
     <div v-else>
       <Friend
