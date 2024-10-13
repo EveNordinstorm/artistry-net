@@ -364,10 +364,15 @@ export default {
         :src="profilePhoto"
         alt="profile picture"
       />
-      <span class="pl-5 pt-2 text-3xl font-bold break-all">{{ userName }}</span>
+      <span
+        class="text-black dark:text-white pl-5 pt-2 text-3xl font-bold break-all"
+        >{{ userName }}</span
+      >
     </div>
-    <p class="text-right font-bold">{{ formattedDateTime }}</p>
-    <p class="pt-3">{{ description }}</p>
+    <p class="text-black dark:text-white text-right font-bold">
+      {{ formattedDateTime }}
+    </p>
+    <p class="text-black dark:text-white pt-3">{{ description }}</p>
     <img
       v-if="imageUrl && !imageUrl.endsWith('/images/posts/')"
       class="w-96 h-96 object-cover mt-5"
@@ -515,8 +520,12 @@ export default {
             class="border-b border-gray-200 dark:border-gray-700 pb-2 mb-2"
           >
             <div class="flex items-start pl-4">
-              <p class="font-semibold">{{ comment.userName }}:</p>
-              <p class="pl-2 break-words">{{ comment.commentText }}</p>
+              <p class="text-black dark:text-white font-semibold">
+                {{ comment.userName }}:
+              </p>
+              <p class="text-black dark:text-white pl-2 break-words">
+                {{ comment.commentText }}
+              </p>
             </div>
           </li>
         </ul>

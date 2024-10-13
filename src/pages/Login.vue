@@ -49,14 +49,14 @@ export default {
       <div class="my-3">
         <label
           for="userName"
-          class="block text-md font-medium leading-6 text-gray-900"
+          class="text-black dark:text-white block text-md font-medium leading-6 text-gray-900"
           >UserName:</label
         >
         <div
           class="flex rounded-md shadow-sm ring-2 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md"
         >
           <input
-            class="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 focus:ring-0 sm:text-sm sm:leading-6"
+            class="text-black dark:text-white block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 focus:ring-0 sm:text-sm sm:leading-6"
             type="text"
             id="userName"
             v-model="form.userName"
@@ -67,14 +67,14 @@ export default {
       <div class="my-3">
         <label
           for="password"
-          class="block text-md font-medium leading-6 text-gray-900"
+          class="text-black dark:text-white block text-md font-medium leading-6 text-gray-900"
           >Password:</label
         >
         <div
           class="flex rounded-md shadow-sm ring-2 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md"
         >
           <input
-            class="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 focus:ring-0 sm:text-sm sm:leading-6"
+            class="text-black dark:text-white block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 focus:ring-0 sm:text-sm sm:leading-6"
             type="password"
             id="password"
             v-model="form.password"
@@ -93,7 +93,9 @@ export default {
     </form>
 
     <p v-if="message">{{ message }}</p>
-    <p class="text-lg text-center">Not a member yet?</p>
+    <p class="text-black dark:text-white text-lg text-center">
+      Not a member yet?
+    </p>
     <p class="font-bold text-xl underline text-blue-600 text-center">
       <router-link to="/register">Sign up here</router-link>
     </p>

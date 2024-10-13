@@ -50,7 +50,7 @@ export default {
 <template>
   <div class="bg-blue-200 p-5 rounded">
     <div class="my-3">
-      <label class="block text-xl font-bold leading-6 text-blue-600 mb-3"
+      <label class="block text-xl font-bold leading-6 text-blue-900 mb-3"
         >List a Product</label
       >
       <div

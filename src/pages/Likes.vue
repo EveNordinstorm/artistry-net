@@ -66,5 +66,7 @@ export default {
       :canDelete="false"
     />
   </div>
-  <p v-else>You haven't liked any posts yet.</p>
+  <p v-else class="dark:text-white mt-5 text-center">
+    You haven't liked any posts yet.
+  </p>
 </template>

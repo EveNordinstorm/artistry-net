@@ -6,6 +6,7 @@ export default {
     return {
       dropdownOpen: false,
       isLoading: true,
+      isDarkMode: false,
     };
   },
   computed: {
@@ -26,6 +27,10 @@ export default {
     this.fetchUserData().then(() => {
       this.isLoading = false;
     });
+    this.isDarkMode = localStorage.getItem("theme") === "dark";
+    if (this.isDarkMode) {
+      document.documentElement.classList.add("dark");
+    }
   },
   methods: {
     ...mapActions(["logout"]),
@@ -70,6 +75,17 @@ export default {
         console.error("Logout failed:", error);
       }
     },
+
+    toggleDarkMode() {
+      this.isDarkMode = !this.isDarkMode;
+      if (this.isDarkMode) {
+        document.documentElement.classList.add("dark");
+        localStorage.setItem("theme", "dark");
+      } else {
+        document.documentElement.classList.remove("dark");
+        localStorage.setItem("theme", "light");
+      }
+    },
   },
 };
 </script>
@@ -77,7 +93,7 @@ export default {
 <template>
   <header class="antialiased">
     <nav
-      class="bg-red-600 fixed z-50 w-full border-gray-200 px-4 lg:px-6 py-2.5 dark:bg-gray-800"
+      class="bg-red-600 dark:bg-blue-800 fixed z-50 w-full border-gray-200 px-4 lg:px-6 py-2.5"
     >
       <div class="flex flex-wrap justify-between items-center">
         <div class="flex justify-start items-center">
@@ -115,6 +131,7 @@ export default {
         <div class="flex items-center ml-auto space-x-2">
           <!-- Dark Mode Button -->
           <button
+            @click="toggleDarkMode"
             type="button"
             class="p-2 text-gray-500 rounded-lg hover:text-gray-900 hover:bg-gray-900 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-700 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
           >

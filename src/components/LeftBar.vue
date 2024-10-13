@@ -39,7 +39,7 @@ const toggleLeftbar = () => {
 
   <aside
     :class="{ '-translate-x-full': !props.open, 'translate-x-0': props.open }"
-    class="leftbar-container fixed w-64 shadow-md transition-transform -translate-x-full sm:translate-x-0"
+    class="leftbar-container fixed z-10 w-64 shadow-md transition-transform -translate-x-full sm:translate-x-0"
     aria-label="Leftbar"
   >
     <div class="h-full px-3 py-4 overflow-y-auto bg-white dark:bg-gray-800">

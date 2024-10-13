@@ -133,7 +133,7 @@ export default {
     </div>
     <div class="bg-red-600 p-5 flex justify-between mb-10">
       <div>
-        <h1 class="text-white font-bold text-3xl">{{ userName }}</h1>
+        <h1 class="text-white font-bold text-3xl break-all">{{ userName }}</h1>
 
         <button
           class="mt-3 text-white text-xl bg-gradient-to-br from-red-400 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2"

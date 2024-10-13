@@ -1,7 +1,7 @@
 <script setup>
-import { ref } from 'vue';
-import NavBar from './components/NavBar.vue';
-import LeftBar from './components/LeftBar.vue';
+import { ref } from "vue";
+import NavBar from "./components/NavBar.vue";
+import LeftBar from "./components/LeftBar.vue";
 
 const leftBarOpen = ref(false);
 
@@ -11,24 +11,36 @@ const toggleLeftbar = () => {
 </script>
 
 <template>
-  <NavBar @toggle-leftbar="toggleLeftbar" />
-    <LeftBar :open="leftBarOpen" @update:open="val => leftBarOpen.value = val" />
+  <div class="dark:bg-gray-900 bg-white pb-5">
+    <NavBar @toggle-leftbar="toggleLeftbar" />
+    <LeftBar
+      :open="leftBarOpen"
+      @update:open="(val) => (leftBarOpen.value = val)"
+    />
     <div class="content-container">
       <router-view></router-view>
     </div>
-    
-</template> 
-
+  </div>
+</template>
 
 <style scoped>
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
 
-/* MAIN CONTENT BREAKPOINTS */
+#app {
+  height: 100%;
+}
 
+/* CONTENT CONTAINER BREAKPOINTS */
 .content-container {
-    padding-top: 3rem;
-    margin-left: 2rem;
-    margin-right: 2rem;
-  }
+  padding-top: 3rem;
+  margin-left: 2rem;
+  margin-right: 2rem;
+}
 
 @media only screen and (min-width: 600px) {
   .content-container {

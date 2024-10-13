@@ -99,7 +99,7 @@ export default {
       <button
         @click="openModal"
         type="button"
-        class="py-2.5 px-5 text-md font-bold text-white bg-red-600 rounded-lg hover:bg-white hover:text-blue-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-700"
+        class="py-2.5 px-5 text-md font-bold text-white rounded-lg bg-blue-700 text-white hover:bg-gray-700"
       >
         Edit Profile
       </button>
@@ -113,7 +113,7 @@ export default {
     />
   </div>
   <div class="bg-red-600 p-5 flex justify-between mb-10">
-    <h1 class="text-white font-bold text-3xl">{{ userName }}</h1>
+    <h1 class="text-white font-bold text-3xl break-all">{{ userName }}</h1>
     <div class="text-white text-center">
       <a href="/friends">
         <p class="text-2xl font-medium">{{ followingCount }}</p>

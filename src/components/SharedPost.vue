@@ -56,11 +56,12 @@ export default {
         class="w-14 h-14 object-cover rounded-full"
         alt="Profile photo"
       />
-      <span class="pl-5 pt-2 text-3xl font-bold break-all">{{
-        shareUserName
-      }}</span>
+      <span
+        class="text-black dark:text-white pl-5 pt-2 text-3xl font-bold break-all"
+        >{{ shareUserName }}</span
+      >
     </div>
-    <p class="text-right font-bold">
+    <p class="text-black dark:text-white text-right font-bold">
       Shared this post on <br />
       {{ formattedShareDateTime }}
     </p>

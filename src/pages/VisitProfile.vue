@@ -171,8 +171,10 @@ export default {
       <ul class="flex flex-wrap -mb-px text-sm font-bold text-center text-xl">
         <li class="me-2">
           <button
-            class="inline-block p-4 border-b-2 rounded-t-lg"
-            :class="{ 'border-blue-800': activeTab === 'profile' }"
+            class="text-blue-800 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-400 inline-block p-4 border-b-2 rounded-t-lg"
+            :class="{
+              'border-blue-800 dark:border-blue-400': activeTab === 'profile',
+            }"
             @click="activeTab = 'profile'"
           >
             Profile
@@ -180,8 +182,10 @@ export default {
         </li>
         <li class="me-2">
           <button
-            class="inline-block p-4 border-b-2 rounded-t-lg"
-            :class="{ 'border-blue-800': activeTab === 'products' }"
+            class="text-blue-800 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-400 inline-block p-4 border-b-2 rounded-t-lg"
+            :class="{
+              'border-blue-800 dark:border-blue-400': activeTab === 'products',
+            }"
             @click="activeTab = 'products'"
           >
             Products
@@ -189,8 +193,10 @@ export default {
         </li>
         <li class="me-2">
           <button
-            class="inline-block p-4 border-b-2 rounded-t-lg"
-            :class="{ 'border-blue-800': activeTab === 'posts' }"
+            class="text-blue-800 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-400 inline-block p-4 border-b-2 rounded-t-lg"
+            :class="{
+              'border-blue-800 dark:border-blue-400': activeTab === 'posts',
+            }"
             @click="activeTab = 'posts'"
           >
             Posts
@@ -225,7 +231,7 @@ export default {
           </div>
         </div>
         <div v-else>
-          <p>No products available.</p>
+          <p class="text-black dark:text-white">No products available.</p>
         </div>
       </div>
 
@@ -264,14 +270,14 @@ export default {
           </div>
         </div>
         <div v-else>
-          <p>No posts or shares yet.</p>
+          <p class="text-black dark:text-white">No posts or shares yet.</p>
         </div>
       </div>
     </div>
   </div>
 
   <div v-else>
-    <p v-if="error">{{ error }}</p>
-    <p v-else>Loading...</p>
+    <p v-if="error" class="text-black dark:text-white">{{ error }}</p>
+    <p v-else class="text-black dark:text-white">Loading...</p>
   </div>
 </template>

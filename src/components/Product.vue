@@ -100,15 +100,20 @@ export default {
         :src="profilePhoto"
         alt="profile picture"
       />
-      <span class="pl-5 pt-2 text-3xl font-bold">{{ userName }}</span>
+      <span
+        class="text-black dark:text-white pl-5 pt-2 text-3xl font-bold break-all"
+        >{{ userName }}</span
+      >
     </div>
-    <p class="pt-3 text-xl">{{ title }}</p>
+    <p class="text-black dark:text-white pt-3 text-xl">{{ title }}</p>
     <img
       class="w-96 h-96 object-cover mt-5"
       :src="imageUrl"
       alt="product photo"
     />
-    <p class="pt-3 text-2xl font-bold text-blue-900">{{ formattedPrice }}</p>
+    <p class="pt-3 text-2xl font-bold text-blue-900 dark:text-blue-400">
+      {{ formattedPrice }}
+    </p>
     <button
       class="mt-3 text-lg uppercase bg-gradient-to-br from-red-400 to-blue-500 text-white hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
     >

@@ -84,8 +84,10 @@ export default {
           type: "post",
           data: {
             ...post,
-            profilePhoto: this.constructAbsoluteUrl(post.profilePhoto),
-            imageUrl: this.constructAbsoluteUrl(post.imageUrl),
+            profilePhoto: `${import.meta.env.VITE_API_BASE_URL}${
+              post.profilePhoto
+            }`,
+            imageUrl: `${import.meta.env.VITE_API_BASE_URL}${post.imageUrl}`,
             postDateTime: post.postDateTime
               ? new Date(post.postDateTime).toISOString()
               : "",
@@ -105,18 +107,18 @@ export default {
                 ...share,
                 sharer: {
                   userName: share.sharer?.userName || "Unknown",
-                  profilePhoto: this.constructAbsoluteUrl(
+                  profilePhoto: `${import.meta.env.VITE_API_BASE_URL}${
                     share.sharer?.profilePhoto
-                  ),
+                  }`,
                 },
                 postDetails: {
                   ...share.originalPost,
-                  profilePhoto: this.constructAbsoluteUrl(
+                  profilePhoto: `${import.meta.env.VITE_API_BASE_URL}${
                     share.originalPost?.profilePhoto
-                  ),
-                  imageUrl: this.constructAbsoluteUrl(
+                  }`,
+                  imageUrl: `${import.meta.env.VITE_API_BASE_URL}${
                     share.originalPost?.imageUrl
-                  ),
+                  }`,
                   userName: share.originalPost?.userName || "Unknown",
                   description:
                     share.originalPost?.description ||
@@ -287,7 +289,7 @@ export default {
         </div>
       </div>
       <div v-else>
-        <p>No products available.</p>
+        <p class="text-black dark:text-white">No products available.</p>
       </div>
     </div>
 
@@ -316,9 +318,10 @@ export default {
 
           <SharedPost
             v-else-if="item.type === 'share'"
+            :shareId="item.data.id"
             :shareUserName="item.data.sharer.userName"
             :shareUserPhoto="item.data.sharer.profilePhoto"
-            :shareDateTime="item.shareDateTime"
+            :shareDateTime="item.data.shareDateTime"
             :originalPostUserName="item.data.postDetails.userName"
             :originalPostProfilePhoto="item.data.postDetails.profilePhoto"
             :originalPostDateTime="item.data.postDetails.postDateTime"
@@ -331,7 +334,7 @@ export default {
         </div>
       </div>
       <div v-else>
-        <p>No posts or shares yet.</p>
+        <p class="text-black dark:text-white">No posts or shares yet.</p>
       </div>
     </div>
   </div>
