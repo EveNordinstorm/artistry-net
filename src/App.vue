@@ -11,7 +11,7 @@ const toggleLeftbar = () => {
 </script>
 
 <template>
-  <div class="dark:bg-gray-900 bg-white pb-5">
+  <div class="pb-5">
     <NavBar @toggle-leftbar="toggleLeftbar" />
     <LeftBar
       :open="leftBarOpen"
