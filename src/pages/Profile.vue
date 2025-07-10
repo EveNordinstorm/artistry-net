@@ -51,11 +51,11 @@ export default {
         return;
       }
 
-      if (userData) {
+      if (userData && userData.userName) {
         this.setUser(userData);
         await this.$store.dispatch("fetchFollowerCounts", userData.userName);
       } else {
-        this.error = "User data is not available.";
+        this.error = "User data is not available or incomplete.";
         this.isLoading = false;
         return;
       }
@@ -65,9 +65,8 @@ export default {
     async fetchUserPosts() {
       const token = sessionStorage.getItem("authToken");
       if (!token) {
-        console.error("Auth token is missing.");
-        this.error = "Auth token is missing.";
-        this.isLoading = false;
+        // If there's no auth token, just return early
+        this.isLoading = false; // Stop loading
         return;
       }
       try {
@@ -145,9 +144,6 @@ export default {
     async fetchUserProducts() {
       const token = sessionStorage.getItem("authToken");
       if (!token) {
-        console.error("Auth token is missing.");
-        this.error = "Auth token is missing.";
-        this.isLoading = false;
         return;
       }
       try {
@@ -189,7 +185,11 @@ export default {
   mounted() {
     const authToken = sessionStorage.getItem("authToken");
     const userData = JSON.parse(sessionStorage.getItem("userData"));
-    if (authToken && userData?.userName) {
+    if (!authToken || !userData) {
+      alert("Register an account to create a profile."); // Show alert if not logged in
+      return; // Exit early if no auth token
+    }
+    if (userData?.userName) {
       this.currentUser = {
         token: authToken,
         userName: userData.userName,

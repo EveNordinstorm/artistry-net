@@ -10,6 +10,7 @@ export default {
   data() {
     return {
       savedPosts: [],
+      message: "",
     };
   },
   methods: {
@@ -22,7 +23,7 @@ export default {
     async fetchSavedPosts() {
       const token = sessionStorage.getItem("authToken");
       if (!token) {
-        console.error("Auth token is missing.");
+        this.message = "Create an account to save posts."; // Message for no token
         return;
       }
       try {
@@ -40,6 +41,13 @@ export default {
               : "",
           }))
           .sort((a, b) => new Date(b.postDateTime) - new Date(a.postDateTime));
+
+        // Set message if no saved posts are found
+        if (this.savedPosts.length === 0) {
+          this.message = "You haven't saved any posts yet.";
+        } else {
+          this.message = ""; // Clear message if posts are found
+        }
       } catch (error) {
         console.error("Error fetching saved posts:", error);
       }
@@ -67,7 +75,8 @@ export default {
       :canDelete="false"
     />
   </div>
+
   <p v-else class="dark:text-white mt-5 text-center">
-    You haven't saved any posts yet.
+    {{ message }}
   </p>
 </template>

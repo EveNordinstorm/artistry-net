@@ -10,6 +10,7 @@ export default {
   data() {
     return {
       likedPosts: [],
+      message: "",
     };
   },
   methods: {
@@ -22,13 +23,14 @@ export default {
     async fetchLikedPosts() {
       const token = sessionStorage.getItem("authToken");
       if (!token) {
-        console.error("Auth token is missing.");
+        this.message = "Create an account to like posts."; // Message for no token
         return;
       }
       try {
         const response = await axios.get("/likes/user", {
           headers: { Authorization: `Bearer ${token}` },
         });
+
         this.likedPosts = response.data
           .map((post) => ({
             ...post,
@@ -38,7 +40,14 @@ export default {
               ? new Date(post.postDateTime).toISOString()
               : "",
           }))
-          .sort((a, b) => new Date(b.postDateTime) - new Date(a.postDateTime)); // Sort by date
+          .sort((a, b) => new Date(b.postDateTime) - new Date(a.postDateTime));
+
+        // Set message if no liked posts are found
+        if (this.likedPosts.length === 0) {
+          this.message = "You haven't liked any posts yet.";
+        } else {
+          this.message = ""; // Clear message if posts are found
+        }
       } catch (error) {
         console.error("Error fetching liked posts:", error);
       }
@@ -66,7 +75,8 @@ export default {
       :canDelete="false"
     />
   </div>
+
   <p v-else class="dark:text-white mt-5 text-center">
-    You haven't liked any posts yet.
+    {{ message }}
   </p>
 </template>

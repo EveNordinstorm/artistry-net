@@ -14,14 +14,72 @@ export default {
       },
       profilePhotoFile: null,
       message: "",
+      errors: {
+        userName: "",
+        email: "",
+        password: "",
+        bio: "",
+        profilePhoto: "",
+      },
     };
   },
   methods: {
     ...mapActions(["login"]),
     handleFileUpload(event) {
       this.profilePhotoFile = event.target.files[0];
+      this.errors.profilePhoto = ""; // Clear error if file is selected
+    },
+    validateFields() {
+      let valid = true;
+      // Reset errors
+      this.errors = {
+        userName: "",
+        email: "",
+        password: "",
+        bio: "",
+        profilePhoto: "",
+      };
+
+      // Validate username
+      const usernamePattern = /^[a-zA-Z0-9_-]{3,16}$/;
+      if (!usernamePattern.test(this.form.userName)) {
+        this.errors.userName =
+          "Username must be 3-16 characters long with no spaces and can only contain letters, numbers, underscores, and hyphens.";
+        valid = false;
+      }
+
+      // Validate email
+      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailPattern.test(this.form.email)) {
+        this.errors.email = "Please enter a valid email address.";
+        valid = false;
+      }
+
+      // Validate password
+      if (this.form.password.length < 6) {
+        this.errors.password = "Password must be at least 6 characters long.";
+        valid = false;
+      }
+
+      // Validate bio
+      if (!this.form.bio) {
+        this.errors.bio = "Bio is required.";
+        valid = false;
+      }
+
+      // Validate profile photo
+      if (!this.profilePhotoFile) {
+        this.errors.profilePhoto = "Profile photo is required.";
+        valid = false;
+      }
+
+      return valid;
     },
     async register() {
+      if (!this.validateFields()) {
+        return; // Stop registration if validation fails
+      }
+
       try {
         const formData = new FormData();
         formData.append("userName", this.form.userName);
@@ -96,6 +154,9 @@ export default {
             required
           />
         </div>
+        <p v-if="errors.userName" class="my-2 text-red-500">
+          {{ errors.userName }}
+        </p>
       </div>
       <div class="my-3">
         <label
@@ -114,6 +175,7 @@ export default {
             required
           />
         </div>
+        <p v-if="errors.email" class="my-2 text-red-500">{{ errors.email }}</p>
       </div>
       <div class="my-3">
         <label
@@ -132,6 +194,9 @@ export default {
             required
           />
         </div>
+        <p v-if="errors.password" class="my-2 text-red-500">
+          {{ errors.password }}
+        </p>
       </div>
       <div class="my-3">
         <label
@@ -149,6 +214,9 @@ export default {
             @change="handleFileUpload"
           />
         </div>
+        <p v-if="errors.profilePhoto" class="my-2 text-red-500">
+          {{ errors.profilePhoto }}
+        </p>
       </div>
       <div class="my-3">
         <label
@@ -165,6 +233,7 @@ export default {
             v-model="form.bio"
           ></textarea>
         </div>
+        <p v-if="errors.bio" class="my-2 text-red-500">{{ errors.bio }}</p>
       </div>
       <div class="flex justify-center">
         <button

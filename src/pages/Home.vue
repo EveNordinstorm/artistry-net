@@ -160,7 +160,9 @@ export default {
 
 <template>
   <Publish @postCreated="handlePostCreated" />
-  <div v-if="isLoading">Loading...</div>
+  <div class="text-black dark:text-white mt-5 text-center" v-if="isLoading">
+    Loading...
+  </div>
   <div v-else>
     <div v-for="item in postsAndShares" :key="item.data.id">
       <Post

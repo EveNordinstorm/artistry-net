@@ -70,11 +70,10 @@ export default {
       }
     },
 
-    getAuthToken() {
+    getAuthToken(showAlert = false) {
       const token = sessionStorage.getItem("authToken");
-      if (!token) {
-        console.error("Auth token is missing.");
-        alert("Authentication required to perform this action.");
+      if (!token && showAlert) {
+        alert("Account required to perform this action.");
         return null;
       }
       return token;
@@ -82,25 +81,24 @@ export default {
 
     // Toggle like
     async toggleLike() {
-      if (!this.postId) {
-        console.error("Post ID is undefined");
-        return;
-      }
+      const token = this.getAuthToken(true); // Show alert if token is missing
+      if (!token) return;
+
       try {
         if (this.liked) {
-          const response = await axios.delete(`/likes/${this.postId}`);
-          if (response.status === 200) {
-            this.liked = false;
-          } else {
-            console.error("Failed to remove like");
-          }
+          const response = await axios.delete(`/likes/${this.postId}`, {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          if (response.status === 200) this.liked = false;
         } else {
-          const response = await axios.post(`/likes`, { postId: this.postId });
-          if (response.status === 200) {
-            this.liked = true;
-          } else {
-            console.error("Failed to add like");
-          }
+          const response = await axios.post(
+            `/likes`,
+            { postId: this.postId },
+            {
+              headers: { Authorization: `Bearer ${token}` },
+            }
+          );
+          if (response.status === 200) this.liked = true;
         }
       } catch (error) {
         console.error("Error toggling like:", error);
@@ -108,12 +106,19 @@ export default {
     },
 
     async fetchLikeStatus() {
-      if (!this.postId) {
-        console.error("Post ID is undefined");
+      const token = this.getAuthToken();
+      if (!token || !this.postId) {
+        this.liked = false;
+        console.log("Login or Sign Up to view your likes");
         return;
       }
+
       try {
-        const response = await axios.get(`/likes/${this.postId}`);
+        const response = await axios.get(`/likes/${this.postId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         this.liked = response.data.isLikedByUser;
       } catch (error) {
         console.error("Error fetching like status:", error);
@@ -127,18 +132,23 @@ export default {
         return;
       }
 
+      const token = this.getAuthToken(true); // Show alert if token is missing
+      if (!token) {
+        return; // Exit if no token available
+      }
+
       try {
         if (this.shared) {
+          // If the post is already shared, unshare it
           const response = await axios.delete(`/shares/${this.postId}`, {
             headers: {
-              Authorization: `Bearer ${sessionStorage.getItem("authToken")}`,
+              Authorization: `Bearer ${token}`,
             },
           });
 
           if (response.status === 200 || response.status === 204) {
             this.shared = false;
             alert("Post unshared");
-
             this.$emit("shareRemoved", this.postId);
           } else {
             console.error("Failed to unshare the post");
@@ -149,7 +159,7 @@ export default {
             { postId: this.postId },
             {
               headers: {
-                Authorization: `Bearer ${sessionStorage.getItem("authToken")}`,
+                Authorization: `Bearer ${token}`,
               },
             }
           );
@@ -160,7 +170,7 @@ export default {
 
             const shareId = response.data.id;
             if (!shareId) {
-              console.error("Share ID is missing from response");
+              console.error("Share ID is missing from the response");
               return;
             }
 
@@ -199,7 +209,7 @@ export default {
                   shareDateTime: new Date(newShare.shareDateTime).toISOString(),
                 });
               } else {
-                console.error("No share data received");
+                console.error("No share data received from the server");
               }
             } catch (fetchError) {
               console.error("Error fetching share details:", fetchError);
@@ -212,13 +222,23 @@ export default {
         console.error("Error toggling share:", error);
       }
     },
+
     async fetchShareStatus() {
-      if (!this.postId) {
-        console.error("Post ID is undefined");
+      const token = this.getAuthToken();
+      if (!token || !this.postId) {
+        this.shared = false;
+        console.log("Login or Sign Up to view your shares");
         return;
       }
       try {
-        const response = await axios.get(`/shares/share-status/${this.postId}`);
+        const response = await axios.get(
+          `/shares/share-status/${this.postId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
         this.shared = response.data.isSharedByUser;
       } catch (error) {
         console.error("Error fetching share status:", error);
@@ -227,39 +247,43 @@ export default {
 
     // Toggle save
     async toggleSave() {
-      if (!this.postId) {
-        console.error("Post ID is undefined");
-        return;
-      }
+      const token = this.getAuthToken(true); // Show alert if token is missing
+      if (!token) return;
+
       try {
         if (this.saved) {
-          const response = await axios.delete(`/saves/${this.postId}`);
-          if (response.status === 200) {
-            this.saved = false;
-            alert("Post unsaved");
-          } else {
-            console.error("Failed to remove save");
-          }
+          const response = await axios.delete(`/saves/${this.postId}`, {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          if (response.status === 200) this.saved = false;
         } else {
-          const response = await axios.post(`/saves`, { postId: this.postId });
-          if (response.status === 200) {
-            this.saved = true;
-            alert("Post saved");
-          } else {
-            console.error("Failed to add save");
-          }
+          const response = await axios.post(
+            `/saves`,
+            { postId: this.postId },
+            {
+              headers: { Authorization: `Bearer ${token}` },
+            }
+          );
+          if (response.status === 200) this.saved = true;
         }
       } catch (error) {
         console.error("Error toggling save:", error);
       }
     },
+
     async fetchSaveStatus() {
-      if (!this.postId) {
-        console.error("Post ID is undefined");
+      const token = this.getAuthToken();
+      if (!token || !this.postId) {
+        this.saved = false;
+        console.log("Login or Sign Up to view your saves");
         return;
       }
       try {
-        const response = await axios.get(`/saves/${this.postId}`);
+        const response = await axios.get(`/saves/${this.postId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         this.saved = response.data.isSavedByUser;
       } catch (error) {
         console.error("Error fetching save status:", error);
@@ -287,25 +311,26 @@ export default {
 
     // Add comment
     async addComment() {
-      if (!this.postId) {
-        console.error("Post ID is undefined");
-        return;
-      }
+      const token = this.getAuthToken(true); // Show alert if token is missing
+      if (!token) return;
 
       try {
-        const response = await axios.post(`/posts/${this.postId}/comments`, {
-          commentText: this.newComment,
-        });
+        const response = await axios.post(
+          `/posts/${this.postId}/comments`,
+          {
+            commentText: this.newComment,
+          },
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
 
         if (response.status === 200) {
           const commentsResponse = await axios.get(
             `/posts/${this.postId}/comments`
           );
           this.comments = commentsResponse.data;
-
           this.newComment = "";
-        } else {
-          console.error("Failed to add comment");
         }
       } catch (error) {
         console.error("Error adding comment:", error);
@@ -344,9 +369,12 @@ export default {
   mounted() {
     if (this.postId) {
       this.fetchComments();
-      this.fetchLikeStatus();
-      this.fetchShareStatus();
-      this.fetchSaveStatus();
+      const token = this.getAuthToken();
+      if (token) {
+        this.fetchLikeStatus();
+        this.fetchShareStatus();
+        this.fetchSaveStatus();
+      }
     } else {
       console.error("Post ID is undefined during mounted");
     }
