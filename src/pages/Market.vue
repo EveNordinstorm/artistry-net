@@ -53,7 +53,7 @@ export default {
 </script>
 
 <template>
-  <img src="../assets/market.jpg" />
+  <img src="../assets/market.png" />
 
   <div v-for="product in products" :key="product.id">
     <Product
