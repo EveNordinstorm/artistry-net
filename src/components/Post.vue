@@ -402,7 +402,7 @@ export default {
       <p class="text-black dark:text-white pt-3">{{ description }}</p>
       <img
         v-if="imageUrl && !imageUrl.endsWith('/images/posts/')"
-        class="w-full h-96 border-2 border-gray-200 rounded-lg object-cover mt-5"
+        class=":w-96 h-96 border-2 border-gray-200 rounded-lg object-cover mt-5"
         :src="imageUrl"
         alt="post photo"
       />
