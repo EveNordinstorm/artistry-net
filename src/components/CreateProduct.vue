@@ -55,7 +55,7 @@ export default {
         >List a Product</label
       >
       <div
-        class="flex bg-white dark:bg-blue-800 rounded-md shadow-sm ring-2 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md"
+        class="flex bg-white dark:bg-blue-900 rounded-md shadow-sm ring-2 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md"
       >
         <textarea
           class="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 dark:text-white focus:ring-0 sm:text-sm sm:leading-6"
@@ -71,7 +71,7 @@ export default {
         >Product Image:</label
       >
       <div
-        class="flex bg-white dark:bg-blue-800 rounded-md shadow-sm ring-2 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md ps-3 py-1"
+        class="flex bg-white dark:bg-blue-900 rounded-md shadow-sm ring-2 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md ps-3 py-1"
       >
         <input
           class="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 dark:text-white focus:ring-0 sm:text-sm sm:leading-6"
@@ -88,7 +88,7 @@ export default {
       <input
         type="number"
         step="0.01"
-        class="block flex-1 w-full font-semibold border-2 border-gray-300 bg-white dark:bg-blue-800 dark:text-white rounded py-1.5 pl-1 text-gray-900 focus:ring-0 sm:text-sm sm:leading-6"
+        class="block flex-1 w-full font-semibold border-2 border-gray-300 bg-white dark:bg-blue-900 dark:text-white rounded py-1.5 pl-1 text-gray-900 focus:ring-0 sm:text-sm sm:leading-6"
         v-model="price"
         placeholder="Price"
       />

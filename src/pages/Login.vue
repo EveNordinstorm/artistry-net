@@ -44,7 +44,11 @@ export default {
 
 <template>
   <div class="login">
-    <h2 class="font-bold text-2xl text-center text-blue-700 mb-5">Login</h2>
+    <h2
+      class="font-bold text-2xl text-center text-blue-700 dark:text-blue-300 mb-5"
+    >
+      Login
+    </h2>
     <form @submit.prevent="handleLogin">
       <div class="my-3">
         <label
@@ -59,6 +63,7 @@ export default {
             class="dark:text-white block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 focus:ring-0 sm:text-sm sm:leading-6"
             type="text"
             id="userName"
+            placeholder="Enter your one-word username"
             v-model="form.userName"
             required
           />
@@ -77,6 +82,7 @@ export default {
             class="dark:text-white block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 focus:ring-0 sm:text-sm sm:leading-6"
             type="password"
             id="password"
+            placeholder="Enter password"
             v-model="form.password"
             required
           />

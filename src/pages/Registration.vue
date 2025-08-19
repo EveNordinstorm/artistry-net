@@ -135,7 +135,16 @@ export default {
 
 <template>
   <div class="register">
-    <h2 class="font-bold text-2xl text-center text-blue-700 mb-5">Register</h2>
+    <h2
+      class="font-bold text-2xl text-center text-blue-700 dark:text-blue-300 mb-5"
+    >
+      Register
+    </h2>
+    <p
+      class="dark:text-white font-medium text-center bg-gray-100 dark:bg-gray-800 rounded-lg p-3"
+    >
+      Create an Artistry Net account below. <br />Express yourself!
+    </p>
     <form @submit.prevent="register">
       <div class="my-3">
         <label
@@ -150,6 +159,7 @@ export default {
             class="dark:text-white block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 focus:ring-0 sm:text-sm sm:leading-6"
             type="text"
             id="userName"
+            placeholder="Create a unique one-word username"
             v-model="form.userName"
             required
           />
@@ -171,6 +181,7 @@ export default {
             class="dark:text-white block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 focus:ring-0 sm:text-sm sm:leading-6"
             type="email"
             id="email"
+            placeholder="Enter a valid format email"
             v-model="form.email"
             required
           />
@@ -190,6 +201,7 @@ export default {
             class="dark:text-white block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 focus:ring-0 sm:text-sm sm:leading-6"
             type="password"
             id="password"
+            placeholder="Create a memorable password"
             v-model="form.password"
             required
           />
@@ -230,6 +242,7 @@ export default {
           <textarea
             class="dark:text-white block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 focus:ring-0 sm:text-sm sm:leading-6"
             id="bio"
+            placeholder="Tell us about yourself!"
             v-model="form.bio"
           ></textarea>
         </div>
