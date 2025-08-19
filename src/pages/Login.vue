@@ -50,7 +50,7 @@ export default {
         <label
           for="userName"
           class="dark:text-white block text-md font-medium leading-6 text-gray-900"
-          >UserName:</label
+          >Username:</label
         >
         <div
           class="flex rounded-md shadow-sm ring-2 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md"

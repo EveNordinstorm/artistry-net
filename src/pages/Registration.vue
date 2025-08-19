@@ -140,14 +140,14 @@ export default {
       <div class="my-3">
         <label
           for="userName"
-          class="text-black dark:text-white block text-md font-medium leading-6 text-gray-900"
-          >UserName:</label
+          class="dark:text-white block text-md font-medium leading-6 text-gray-900"
+          >Username:</label
         >
         <div
           class="flex rounded-md shadow-sm ring-2 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md"
         >
           <input
-            class="text-black dark:text-white block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 focus:ring-0 sm:text-sm sm:leading-6"
+            class="dark:text-white block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 focus:ring-0 sm:text-sm sm:leading-6"
             type="text"
             id="userName"
             v-model="form.userName"
@@ -161,14 +161,14 @@ export default {
       <div class="my-3">
         <label
           for="email"
-          class="text-black dark:text-white block text-md font-medium leading-6 text-gray-900"
+          class="dark:text-white block text-md font-medium leading-6 text-gray-900"
           >Email:</label
         >
         <div
           class="flex rounded-md shadow-sm ring-2 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md"
         >
           <input
-            class="text-black dark:text-white block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 focus:ring-0 sm:text-sm sm:leading-6"
+            class="dark:text-white block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 focus:ring-0 sm:text-sm sm:leading-6"
             type="email"
             id="email"
             v-model="form.email"
@@ -180,14 +180,14 @@ export default {
       <div class="my-3">
         <label
           for="password"
-          class="text-black dark:text-white block text-md font-medium leading-6 text-gray-900"
+          class="dark:text-white block text-md font-medium leading-6 text-gray-900"
           >Password:</label
         >
         <div
           class="flex rounded-md shadow-sm ring-2 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md"
         >
           <input
-            class="text-black dark:text-white block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 focus:ring-0 sm:text-sm sm:leading-6"
+            class="dark:text-white block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 focus:ring-0 sm:text-sm sm:leading-6"
             type="password"
             id="password"
             v-model="form.password"
@@ -201,14 +201,14 @@ export default {
       <div class="my-3">
         <label
           for="profilePhoto"
-          class="text-black dark:text-white block text-md font-medium leading-6 text-gray-900"
+          class="dark:text-white block text-md font-medium leading-6 text-gray-900"
           >Profile Photo:</label
         >
         <div
           class="flex rounded-md shadow-sm ring-2 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md ps-3 py-1"
         >
           <input
-            class="text-black dark:text-white block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 focus:ring-0 sm:text-sm sm:leading-6"
+            class="dark:text-white block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 focus:ring-0 sm:text-sm sm:leading-6"
             type="file"
             id="profilePhoto"
             @change="handleFileUpload"
@@ -221,14 +221,14 @@ export default {
       <div class="my-3">
         <label
           for="bio"
-          class="text-black dark:text-white block text-md font-medium leading-6 text-gray-900"
+          class="dark:text-white block text-md font-medium leading-6 text-gray-900"
           >Bio:</label
         >
         <div
           class="flex rounded-md shadow-sm ring-2 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md"
         >
           <textarea
-            class="text-black dark:text-white block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 focus:ring-0 sm:text-sm sm:leading-6"
+            class="dark:text-white block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 focus:ring-0 sm:text-sm sm:leading-6"
             id="bio"
             v-model="form.bio"
           ></textarea>
