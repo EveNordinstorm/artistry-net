@@ -28,12 +28,10 @@ export default {
 </script>
 
 <template>
-  <div class="flex items-center justify-center">
-    <div
-      class="block w-full bg-white border border-gray-200 rounded-lg shadow dark:bg-blue-900 dark:border-gray-700"
-    >
+  <div class="flex items-center justify-center bg-blue-600 rounded-xl">
+    <div class="block w-full">
       <ul
-        class="flex flex-wrap text-xl font-medium text-center p-3 text-gray-500 border-b border-gray-200 rounded-t-lg bg-blue-600 dark:border-gray-700 dark:text-gray-400 dark:bg-blue-800"
+        class="flex flex-wrap text-xl font-medium text-center p-3 text-gray-500 border-b border-gray-200 rounded-t-lg bg-blue-600 dark:border-gray-700 dark:text-gray-400"
         id="defaultTab"
         role="tablist"
       >
@@ -45,7 +43,12 @@ export default {
             aria-controls="post"
             :aria-selected="activeTab === 'post'"
             @click="activeTab = 'post'"
-            class="inline-block p-4 rounded-ss-lg text-white hover:text-blue-900"
+            :class="[
+              'inline-block py-4 px-6 rounded-ss-lg transition',
+              activeTab === 'post'
+                ? 'bg-white text-blue-600'
+                : 'bg-blue-600 text-white hover:bg-blue-500',
+            ]"
           >
             Post
           </button>
@@ -58,7 +61,12 @@ export default {
             aria-controls="sell"
             :aria-selected="activeTab === 'sell'"
             @click="activeTab = 'sell'"
-            class="inline-block p-4 rounded-ss-lg text-white hover:text-blue-900"
+            :class="[
+              'inline-block py-4 px-6 transition',
+              activeTab === 'sell'
+                ? 'bg-white text-blue-600'
+                : 'bg-blue-600 text-white hover:bg-blue-500',
+            ]"
           >
             Sell
           </button>
@@ -67,7 +75,6 @@ export default {
       <div id="defaultTabContent">
         <div
           :class="{ hidden: activeTab !== 'post', block: activeTab === 'post' }"
-          class="bg-white rounded-lg dark:bg-gray-800"
           id="post"
           role="tabpanel"
           aria-labelledby="post-tab"
@@ -76,7 +83,6 @@ export default {
         </div>
         <div
           :class="{ hidden: activeTab !== 'sell', block: activeTab === 'sell' }"
-          class="bg-white rounded-lg dark:bg-gray-800"
           id="sell"
           role="tabpanel"
           aria-labelledby="sell-tab"

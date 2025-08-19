@@ -48,16 +48,17 @@ export default {
 </script>
 
 <template>
-  <div class="bg-blue-200 p-5 rounded">
+  <div class="bg-white dark:bg-blue-800 rounded-lg p-5 m-2">
     <div class="my-3">
-      <label class="block text-xl font-bold leading-6 text-blue-900 mb-3"
+      <label
+        class="block text-xl font-bold leading-6 text-blue-800 dark:text-white mb-3"
         >List a Product</label
       >
       <div
-        class="flex bg-white rounded-md shadow-sm ring-2 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md"
+        class="flex bg-white dark:bg-blue-800 rounded-md shadow-sm ring-2 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md"
       >
         <textarea
-          class="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 focus:ring-0 sm:text-sm sm:leading-6"
+          class="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 dark:text-white focus:ring-0 sm:text-sm sm:leading-6"
           v-model="title"
           placeholder="Title"
         ></textarea>
@@ -66,37 +67,41 @@ export default {
     <div class="my-3">
       <label
         for="profilePhoto"
-        class="block text-md font-medium leading-6 text-gray-900 mb-1"
+        class="block text-md font-medium leading-6 text-gray-900 dark:text-white mb-1"
         >Product Image:</label
       >
       <div
-        class="flex bg-white rounded-md shadow-sm ring-2 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md ps-3 py-1"
+        class="flex bg-white dark:bg-blue-800 rounded-md shadow-sm ring-2 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md ps-3 py-1"
       >
         <input
-          class="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 focus:ring-0 sm:text-sm sm:leading-6"
+          class="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 dark:text-white focus:ring-0 sm:text-sm sm:leading-6"
           type="file"
           @change="handleFileUpload"
         />
       </div>
     </div>
     <div class="my-3 mt-5">
-      <label class="block text-md font-medium leading-6 text-gray-900 mb-1"
+      <label
+        class="block text-md font-medium leading-6 text-gray-900 dark:text-white mb-1"
         >Price (in £):</label
       >
       <input
         type="number"
         step="0.01"
-        class="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 focus:ring-0 sm:text-sm sm:leading-6"
+        class="block flex-1 w-full font-semibold border-2 border-gray-300 bg-white dark:bg-blue-800 dark:text-white rounded py-1.5 pl-1 text-gray-900 focus:ring-0 sm:text-sm sm:leading-6"
         v-model="price"
         placeholder="Price"
       />
     </div>
-    <button
-      @click="createProduct"
-      class="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-md px-5 py-2.5 text-center mt-2"
-    >
-      Create Listing
-    </button>
+    <div class="flex justify-end">
+      <button
+        @click="createProduct"
+        class="text-white font-bold bg-gradient-to-r from-red-400 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 rounded-lg text-md px-5 py-2.5 text-center mt-2"
+      >
+        Create Listing
+      </button>
+    </div>
+
     <p v-if="message">{{ message }}</p>
   </div>
 </template>
