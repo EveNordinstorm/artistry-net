@@ -80,9 +80,9 @@ export default {
 </script>
 
 <template>
-  <div class="relative">
+  <div class="relative bg-red-600 rounded-t-xl">
     <img
-      class="w-full h-56 object-cover"
+      class="w-full h-56 p-2 rounded-t-xl object-cover"
       :src="bannerPhoto"
       alt="banner image"
     />
@@ -99,7 +99,7 @@ export default {
       <button
         @click="openModal"
         type="button"
-        class="py-2.5 px-5 text-md font-bold text-white rounded-lg bg-blue-700 text-white hover:bg-gray-700"
+        class="py-2.5 px-5 text-lg font-bold text-white rounded-lg bg-blue-700 hover:bg-gray-700"
       >
         Edit Profile
       </button>
