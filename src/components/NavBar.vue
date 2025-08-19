@@ -266,6 +266,6 @@ export default {
 
 <style scoped>
 .dropdown-menu {
-  margin-top: 380px;
+  margin-top: 50px;
 }
 </style>
