@@ -37,7 +37,7 @@ body {
 
 /* CONTENT CONTAINER BREAKPOINTS */
 .content-container {
-  padding-top: 6rem;
+  padding-top: 8rem;
   margin-left: 2rem;
   margin-right: 2rem;
 }

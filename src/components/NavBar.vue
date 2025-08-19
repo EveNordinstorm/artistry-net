@@ -98,10 +98,10 @@ export default {
           <button
             @click="$emit('toggle-leftbar')"
             id="toggleLeftbar"
-            class="p-2 mr-2 text-gray-600 rounded-lg cursor-pointer lg:hidden hover:text-gray-900 hover:bg-gray-900 focus:bg-gray-300 dark:focus:bg-gray-700 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
+            class="p-2 mr-2 text-red rounded-lg cursor-pointer lg:hidden hover:text-white hover:bg-red-800 dark:hover:bg-blue-800 focus:bg-gray-300 dark:focus:bg-gray-700 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
           >
             <svg
-              class="w-[18px] h-[18px] text-white"
+              class="w-[18px] h-[18px] dark:text-white"
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               fill="white"
