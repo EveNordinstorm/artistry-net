@@ -60,7 +60,7 @@ export default {
 </script>
 
 <template>
-  <img src="../assets/saved.jpg" />
+  <img src="../assets/saved.png" />
 
   <div v-if="savedPosts.length">
     <Post

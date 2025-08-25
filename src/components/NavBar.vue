@@ -92,18 +92,16 @@ export default {
 
 <template>
   <header class="antialiased">
-    <nav
-      class="bg-red-600 dark:bg-blue-800 fixed z-50 w-full border-gray-200 px-4 lg:px-6 py-2.5"
-    >
-      <div class="flex flex-wrap justify-between items-center">
+    <nav class="fixed z-50 w-full border-gray-200 px-4 lg:px-6 py-2.5">
+      <div class="flex flex-wrap justify-between">
         <div class="flex justify-start items-center">
           <button
             @click="$emit('toggle-leftbar')"
             id="toggleLeftbar"
-            class="p-2 mr-2 text-gray-600 rounded-lg cursor-pointer lg:hidden hover:text-gray-900 hover:bg-gray-900 focus:bg-gray-300 dark:focus:bg-gray-700 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
+            class="p-2 mr-2 text-red rounded-lg cursor-pointer lg:hidden hover:text-white hover:bg-red-800 dark:hover:bg-blue-800 focus:bg-gray-300 dark:focus:bg-gray-700 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
           >
             <svg
-              class="w-[18px] h-[18px] text-white"
+              class="w-[18px] h-[18px] dark:text-white"
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               fill="white"
@@ -121,19 +119,24 @@ export default {
           </button>
           <a href="/" class="flex mr-4">
             <img
-              src="../assets/Artistry-Net-logo-05.png"
-              class="mr-3 h-14"
-              alt="Artistry Net Logo"
+              src="../assets/Artistry-net_logo-red.png"
+              class="mr-3 h-28 dark:hidden"
+              alt="Artistry Net Logo Light"
+            />
+            <img
+              src="../assets/Artistry-net_logo-blue.png"
+              class="mr-3 h-28 hidden dark:block"
+              alt="Artistry Net Logo Dark"
             />
           </a>
         </div>
 
-        <div class="flex items-center ml-auto space-x-2">
+        <div class="flex items-start mt-3 ml-auto space-x-2">
           <!-- Dark Mode Button -->
           <button
             @click="toggleDarkMode"
             type="button"
-            class="p-2 text-gray-500 rounded-lg hover:text-gray-900 hover:bg-gray-900 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-700 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
+            class="p-2.5 bg-blue-600 rounded-lg hover:bg-blue-900 focus:ring-2 focus:ring-blue-800"
           >
             <svg
               class="w-6 h-6"
@@ -153,7 +156,7 @@ export default {
           <button
             v-if="!isLoggedIn"
             type="button"
-            class="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-md px-5 py-2.5"
+            class="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-2 focus:outline-none focus:ring-blue-800 font-medium rounded-lg text-md px-5 py-2.5"
             @click="goToLogin"
           >
             <span class="sr-only">Login</span>
@@ -263,6 +266,6 @@ export default {
 
 <style scoped>
 .dropdown-menu {
-  margin-top: 380px;
+  margin-top: 50px;
 }
 </style>

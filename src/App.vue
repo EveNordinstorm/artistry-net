@@ -37,7 +37,7 @@ body {
 
 /* CONTENT CONTAINER BREAKPOINTS */
 .content-container {
-  padding-top: 3rem;
+  padding-top: 8rem;
   margin-left: 2rem;
   margin-right: 2rem;
 }
@@ -60,7 +60,7 @@ body {
 
 @media only screen and (min-width: 992px) {
   .content-container {
-    padding-top: 6rem;
+    padding-top: 1.5rem;
     margin-left: 18rem;
     margin-right: 18rem;
   }

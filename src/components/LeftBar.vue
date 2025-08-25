@@ -1,5 +1,5 @@
 <script setup>
-import { defineProps, defineEmits } from "vue";
+import { defineProps } from "vue";
 
 const props = defineProps({
   open: {
@@ -7,50 +7,23 @@ const props = defineProps({
     default: false,
   },
 });
-
-const emit = defineEmits(["update:open"]);
-
-const toggleLeftbar = () => {
-  emit("update:open", !props.open);
-};
 </script>
 
 <template>
-  <button
-    @click="toggleLeftbar"
-    type="button"
-    class="inline-flex items-center p-2 mt-2 ms-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
-  >
-    <span class="sr-only">Open left bar</span>
-    <svg
-      class="w-6 h-6"
-      aria-hidden="true"
-      fill="currentColor"
-      viewBox="0 0 20 20"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        clip-rule="evenodd"
-        fill-rule="evenodd"
-        d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"
-      ></path>
-    </svg>
-  </button>
-
   <aside
     :class="{ '-translate-x-full': !props.open, 'translate-x-0': props.open }"
-    class="leftbar-container fixed z-10 w-64 shadow-md transition-transform -translate-x-full sm:translate-x-0"
+    class="leftbar-container fixed z-10 w-64 transition-transform -translate-x-full sm:translate-x-0 bg-white dark:bg-gray-900"
     aria-label="Leftbar"
   >
-    <div class="h-full px-3 py-4 overflow-y-auto bg-white dark:bg-gray-800">
+    <div class="h-full px-3 py-4 overflow-y-auto">
       <ul class="space-y-2 font-medium">
         <li>
           <a
             href="/"
-            class="flex items-center p-2 text-blue-900 rounded-lg dark:text-white hover:bg-blue-100 dark:hover:bg-gray-700 group"
+            class="flex items-center p-2 text-red-600 rounded-lg dark:text-white hover:bg-red-200 dark:hover:bg-gray-700 group"
           >
             <svg
-              class="flex-shrink-0 w-5 h-5 text-blue-900 transition duration-75 dark:text-gray-400 group-hover:text-blue-900 dark:group-hover:text-white"
+              class="flex-shrink-0 w-5 h-5 text-red-600 transition duration-75 dark:text-blue-400 group-hover:text-blue-900 dark:group-hover:text-white"
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               fill="currentColor"
@@ -80,10 +53,10 @@ const toggleLeftbar = () => {
         <li>
           <a
             href="/market"
-            class="flex items-center p-2 text-blue-900 rounded-lg dark:text-white hover:bg-blue-100 dark:hover:bg-gray-700 group"
+            class="flex items-center p-2 text-red-600 rounded-lg dark:text-white hover:bg-red-200 dark:hover:bg-gray-700 group"
           >
             <svg
-              class="flex-shrink-0 w-5 h-5 text-blue-900 transition duration-75 dark:text-gray-400 group-hover:text-blue-900 dark:group-hover:text-white"
+              class="flex-shrink-0 w-5 h-5 text-red-600 transition duration-75 dark:text-blue-400 group-hover:text-blue-900 dark:group-hover:text-white"
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               fill="currentColor"
@@ -108,10 +81,10 @@ const toggleLeftbar = () => {
         <li>
           <a
             href="/friends"
-            class="flex items-center p-2 text-blue-900 rounded-lg dark:text-white hover:bg-blue-100 dark:hover:bg-gray-700 group"
+            class="flex items-center p-2 text-red-600 rounded-lg dark:text-white hover:bg-red-200 dark:hover:bg-gray-700 group"
           >
             <svg
-              class="w-5 h-5 text-blue-900 transition duration-75 dark:text-gray-400 group-hover:text-blue-900 dark:group-hover:text-white"
+              class="w-5 h-5 text-red-600 transition duration-75 dark:text-blue-400 group-hover:text-blue-900 dark:group-hover:text-white"
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               fill="currentColor"
@@ -140,10 +113,10 @@ const toggleLeftbar = () => {
         <li>
           <a
             href="/profile"
-            class="flex items-center p-2 text-blue-900 rounded-lg dark:text-white hover:bg-blue-100 dark:hover:bg-gray-700 group"
+            class="flex items-center p-2 text-red-600 rounded-lg dark:text-white hover:bg-red-200 dark:hover:bg-gray-700 group"
           >
             <svg
-              class="flex-shrink-0 w-5 h-5 text-blue-900 transition duration-75 dark:text-gray-400 group-hover:text-blue-900 dark:group-hover:text-white"
+              class="flex-shrink-0 w-5 h-5 text-red-600 transition duration-75 dark:text-blue-400 group-hover:text-blue-900 dark:group-hover:text-white"
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               fill="currentColor"
@@ -164,10 +137,10 @@ const toggleLeftbar = () => {
         <li>
           <a
             href="/saved"
-            class="flex items-center p-2 text-blue-900 rounded-lg dark:text-white hover:bg-blue-100 dark:hover:bg-gray-700 group"
+            class="flex items-center p-2 text-red-600 rounded-lg dark:text-white hover:bg-red-200 dark:hover:bg-gray-700 group"
           >
             <svg
-              class="flex-shrink-0 w-5 h-5 text-blue-900 transition duration-75 dark:text-gray-400 group-hover:text-blue-900 dark:group-hover:text-white"
+              class="flex-shrink-0 w-5 h-5 text-red-600 transition duration-75 dark:text-blue-400 group-hover:text-blue-900 dark:group-hover:text-white"
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               fill="currentColor"
@@ -187,10 +160,10 @@ const toggleLeftbar = () => {
         <li>
           <a
             href="/likes"
-            class="flex items-center p-2 text-blue-900 rounded-lg dark:text-white hover:bg-blue-100 dark:hover:bg-gray-700 group"
+            class="flex items-center p-2 text-red-600 rounded-lg dark:text-white hover:bg-red-200 dark:hover:bg-gray-700 group"
           >
             <svg
-              class="flex-shrink-0 w-5 h-5 text-blue-900 transition duration-75 dark:text-gray-400 group-hover:text-blue-900 dark:group-hover:text-white"
+              class="flex-shrink-0 w-5 h-5 text-red-600 transition duration-75 dark:text-blue-400 group-hover:text-blue-900 dark:group-hover:text-white"
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               fill="currentColor"
@@ -209,15 +182,7 @@ const toggleLeftbar = () => {
 </template>
 
 <style scoped>
-/* LEFTBAR BREAKPOINTS */
-
 .leftbar-container {
-  padding-top: 1.5rem;
-}
-
-@media only screen and (min-width: 600px) {
-  .leftbar-container {
-    padding-top: 4.5rem;
-  }
+  margin-top: 8rem;
 }
 </style>

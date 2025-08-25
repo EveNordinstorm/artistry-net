@@ -44,21 +44,26 @@ export default {
 
 <template>
   <div class="login">
-    <h2 class="font-bold text-2xl text-center text-blue-700 mb-5">Login</h2>
+    <h2
+      class="font-bold text-2xl text-center text-blue-700 dark:text-blue-300 mb-5"
+    >
+      Login
+    </h2>
     <form @submit.prevent="handleLogin">
       <div class="my-3">
         <label
           for="userName"
-          class="text-black dark:text-white block text-md font-medium leading-6 text-gray-900"
-          >UserName:</label
+          class="dark:text-white block text-md font-medium leading-6 text-gray-900"
+          >Username:</label
         >
         <div
           class="flex rounded-md shadow-sm ring-2 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md"
         >
           <input
-            class="text-black dark:text-white block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 focus:ring-0 sm:text-sm sm:leading-6"
+            class="dark:text-white block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 focus:ring-0 sm:text-sm sm:leading-6"
             type="text"
             id="userName"
+            placeholder="Enter your one-word username"
             v-model="form.userName"
             required
           />
@@ -67,16 +72,17 @@ export default {
       <div class="my-3">
         <label
           for="password"
-          class="text-black dark:text-white block text-md font-medium leading-6 text-gray-900"
+          class="dark:text-white block text-md font-medium leading-6 text-gray-900"
           >Password:</label
         >
         <div
           class="flex rounded-md shadow-sm ring-2 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md"
         >
           <input
-            class="text-black dark:text-white block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 focus:ring-0 sm:text-sm sm:leading-6"
+            class="dark:text-white block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 focus:ring-0 sm:text-sm sm:leading-6"
             type="password"
             id="password"
+            placeholder="Enter password"
             v-model="form.password"
             required
           />

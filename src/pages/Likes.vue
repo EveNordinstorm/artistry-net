@@ -60,7 +60,7 @@ export default {
 </script>
 
 <template>
-  <img src="../assets/likes.jpg" />
+  <img src="../assets/likes.png" />
 
   <div v-if="likedPosts.length">
     <Post
