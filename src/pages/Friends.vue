@@ -105,12 +105,13 @@ export default {
 <template>
   <div class="mb-4 border-b border-gray-200 dark:border-gray-700">
     <ul
-      class="flex flex-wrap -mb-px text-sm font-bold text-center text-xl"
+      class="flex flex-wrap -mb-px font-bold text-center text-xl"
       id="default-styled-tab"
       role="tablist"
     >
       <li class="me-2" role="presentation">
         <button
+          class="z-50"
           @click="activeTab = 'following'"
           :class="[getTabClass(activeTab === 'following')]"
           type="button"
@@ -124,6 +125,7 @@ export default {
 
       <li class="me-2" role="presentation">
         <button
+          class="z-50"
           @click="activeTab = 'followers'"
           :class="[getTabClass(activeTab === 'followers')]"
           type="button"
