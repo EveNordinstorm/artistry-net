@@ -108,7 +108,7 @@ export default {
 </script>
 
 <template>
-  <div class="rounded bg-gray-200 mb-4 p-2">
+  <div class="rounded bg-gray-200 dark:bg-blue-800 dark:text-white mb-4 p-2">
     <div class="flex items-center justify-between">
       <div class="flex items-center" @click="navigateToProfile">
         <img
@@ -116,7 +116,7 @@ export default {
           :src="profilePhoto"
           alt="profile picture"
         />
-        <p class="pl-5 pt-2 text-2xl font-bold break-all">{{ userName }}</p>
+        <p class="pl-5 text-2xl font-bold break-all">{{ userName }}</p>
       </div>
       <button
         @click="toggleFollow"
