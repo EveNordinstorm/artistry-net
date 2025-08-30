@@ -21,13 +21,16 @@ export default {
     async fetchProducts() {
       try {
         const response = await axios.get("/products");
-        this.products = response.data.map((product) => ({
-          ...product,
-          profilePhoto: `${import.meta.env.VITE_API_BASE_URL}${
-            product.profilePhoto
-          }`,
-          imageUrl: `${import.meta.env.VITE_API_BASE_URL}${product.imageUrl}`,
-        }));
+        this.products = response.data
+          .map((product) => ({
+            ...product,
+            profilePhoto: `${import.meta.env.VITE_API_BASE_URL}${
+              product.profilePhoto
+            }`,
+            imageUrl: `${import.meta.env.VITE_API_BASE_URL}${product.imageUrl}`,
+          }))
+          .sort((a, b) => b.id - a.id);
+
         this.isLoading = false;
       } catch (error) {
         console.error("Error fetching products:", error);
