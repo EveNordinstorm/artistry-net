@@ -92,7 +92,7 @@ export default {
 
 <template>
   <header class="antialiased">
-    <nav class="fixed z-50 w-full border-gray-200 px-4 lg:px-6 py-2.5">
+    <nav class="fixed w-full border-gray-200 px-4 lg:px-6 py-2.5">
       <div class="flex flex-wrap justify-between">
         <div class="flex justify-start items-center">
           <button

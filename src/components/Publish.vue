@@ -29,7 +29,7 @@ export default {
 
 <template>
   <div class="flex items-center justify-center bg-blue-600 rounded-xl">
-    <div class="block w-full">
+    <div class="block w-full z-0 md:z-20">
       <ul
         class="flex flex-wrap text-xl font-medium text-center p-3 text-gray-500 border-b border-gray-200 rounded-t-lg bg-blue-600 dark:border-gray-700 dark:text-gray-400"
         id="defaultTab"

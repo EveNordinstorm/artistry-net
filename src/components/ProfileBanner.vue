@@ -95,7 +95,7 @@ export default {
       />
     </div>
 
-    <div class="absolute top-4 right-0 left-0 flex justify-end p-4">
+    <div class="absolute top-4 right-0 left-0 flex justify-end p-4 z-0 md:z-20">
       <button
         @click="openModal"
         type="button"
